@@ -22,7 +22,7 @@ import { ProductManager } from './config/ProductManager.js';
 //hago referencia a lo q seria todo el codigo de express
 const app = express()
 //variable para cambios de puertos
-const PORT = 8000
+const PORT = 8080
 // Crea una instancia de ProdutManager
 const productManager = new ProductManager('./products.json');
 

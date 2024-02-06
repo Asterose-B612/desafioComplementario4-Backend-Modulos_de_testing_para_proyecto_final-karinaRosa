@@ -5,7 +5,7 @@ import { promises as fs } from 'fs'
 
 export class ProductManager {
     constructor(path) {
-        this.path = path
+        this.path = './products.json';
     }//path:seria la ruta donde van a estar alojados nuestros elementos. YA NO VA EL ARRAY VACIO
 
 
@@ -22,7 +22,7 @@ export class ProductManager {
             for (const field of REQUIREDFIELDS) {
                 if (!(field in newProduct) || newProduct[field] === undefined || newProduct[field] === '') {
                     return "Error: El campo '" + field + "' es obligatorio.";
-                   
+
                 }
             }
             return null;
@@ -35,7 +35,7 @@ export class ProductManager {
         //buscame 1 prod cuyo code sea igual al code del nuevo producto
         const INDICE = PRODS.findIndex(prod => prod.code === newProduct.code)
         //si el indice es distinto de -1(-1 significa que el elemento no existe)OJO CON PONER  !=-1
-              if (INDICE === -1) {
+        if (INDICE === -1) {
             //si no existe lo agrego al array
             PRODS.push(newProduct)
             //vuelvo a escribir este archivo.De lo que seria este nuevo array con este nuevo producto (DE ESTA LOCACION, ENVIAME ESTE ARRAY)
@@ -52,7 +52,7 @@ export class ProductManager {
     async getProducts() {
         const PRODS = JSON.parse(await fs.readFile(this.path, 'utf-8'))
         //misma linea de codigo q al inicio
-       return PRODS
+        return PRODS
     }
 
 
@@ -93,7 +93,7 @@ export class ProductManager {
             if (actualizacionExitosa) {
                 // Guardar el array actualizado en el archivo
                 await fs.writeFile(this.path, JSON.stringify(productosActualizados, null, 2));
-               return 'Actualización satisfactoria';
+                return 'Actualización satisfactoria';
             } else {
                 return 'Producto inexistente o no hubo cambios';
             }
@@ -116,7 +116,7 @@ export class ProductManager {
             const PRODSFILTRADOS = PRODS.filter(e => e.id != id)
             //una vez que tengo este array editado, lo voy a pisar con el writeFile
             await fs.writeFile(this.path, JSON.stringify(PRODSFILTRADOS))
-            return'Producto Eliminado'
+            return 'Producto Eliminado'
         } else {
             return 'Producto no encontrado'
         }
