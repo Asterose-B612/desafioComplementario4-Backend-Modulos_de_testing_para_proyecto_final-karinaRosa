@@ -127,6 +127,7 @@ app.post('/products', async (req, res) => {
             res.status(200).send(mensaje)     
     //en el caso que no ingresaron todas las propiedades
             }else {
+                //BAD REQUEST error del cliente crear un prod con 1 id existente
                 res.status(400).send(mensaje)
             }  
 
@@ -137,7 +138,8 @@ app.post('/products', async (req, res) => {
 })
 
 
-//********METDOS PUT***************
+//********METDOS PUT***************actualiza
+//ver ProductManager→ updateProducts
 //Metodo put /products/:id sí o sí, necesito un id y un nuevo producto
 
 app.put('/products/:pid', async (req, res) => {
@@ -145,22 +147,22 @@ app.put('/products/:pid', async (req, res) => {
     try {
         //consulto ese id (string sino parsearlo)
         const PRODUCTID = req.params.pid
-    
+        let updateProduct = req.body
         
-        const PROD = await productManager.getProductById(PRODUCTID)
-        //llamo a ProductManager para devolver prod c/id solicitado}
+        const mensaje = await productManager.updateProduct(PRODUCTID, updateProduct )
+      // Llama a ProductManager para actualizar el producto con el ID solicitado.Me va a devolver un mensaje
 
         //si mi producto existe lo devuelvo sino mensaje 404:ERROR cliente por mandar un id que no existe
-        if (PROD) {
+        if (mensaje === 'Actualización satisfactoria') {
 
-            res.status(200).send(PROD)
+            res.status(200).send(mensaje)
 
         } else {
-            res.status(404).send("Producto no encontrado")
+            res.status(404).send(mensaje)
         }
 
     } catch (e) {
-        res.status(500).send(`Error interno del servidor al consultar producto: ${e}`)
+        res.status(500).send(`Error interno del servidor al actualizar producto: ${e}`)
     }
 
 })
