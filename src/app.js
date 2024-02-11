@@ -57,11 +57,15 @@ import { ProductManager } from './config/ProductManager.js';
 const app = express();
 
 // Se define el puerto en el que el servidor estará escuchando.
-const PORT = 8080;
+const PORT = 8000;
 
 // Se crea una instancia de ProductManager para manejar la gestión de productos.
 const productManager = new ProductManager('./src/data/products.json');
 
+//el servidor podrá recibir json al momento de la petición
+app.use(express.json())
+//permite que se pueda mandar informacion tambien desde la URL
+app.use(express.urlencoded({ extended: true }))
 
 
 //********METDOS GET***************
@@ -72,39 +76,40 @@ app.get('/', (req, res) => {
     res.send("Servidor creado recientemente en Express");
 })
 
-// Función asincrónica para obtener todos los productos. Uso del método getProducts.
+// Esta ruta maneja las solicitudes GET a '/products'.
+// Recibe opcionalmente el parámetro 'limit' desde la URL para limitar la cantidad de productos devueltos.
 app.get('/products', async (req, res) => {
-    // Captura de errores con try y catch.
     try {
-        // Esta ruta recibe un límite opcional de cantidad de productos.
-        // Si se proporciona el límite, se limita el número de productos a mostrar; de lo contrario, se envían todos los productos.
-        // Consulta el array de productos que se obtiene desde el sistema de archivos (FS), consultando los parámetros de la solicitud, en particular el elemento 'limit'.
+        // Paso 1: Obtiene el parámetro 'limit' de la consulta HTTP.
         const { limit } = req.query;
-        // Utiliza destructuring para obtener el límite de la consulta. {limit} porque pueden ir varios elementos a consultar.
-        // Consulta el ProductManager para obtener los productos.
+        
+        // Paso 2: Obtiene todos los productos del gestor de productos.
         const PRODS = await productManager.getProducts();
-        const LIMITE = parseInt(limit);
-
-        // Verifica si el valor de 'LIMITE' no es un número o es menor o igual a cero.
-        if (isNaN(LIMITE) || LIMITE <= 0) {
-            // Si el límite no es válido, devuelve un error con el código de estado 400 (Bad Request).
-            return res.status(400).send("ERROR al consultar productos, ingrese un número válido para 'limit'");
+        
+        // Paso 3: Verifica si el parámetro 'limit' está presente en la consulta HTTP.
+        if (limit !== undefined) {
+            // Paso 4: Convierte el valor del parámetro 'limit' en un número entero.
+            const LIMITE = parseInt(limit);
+            // Paso 5: Verifica si el valor del parámetro 'limit' es un número válido y mayor o igual que cero.
+            if (!isNaN(LIMITE) && LIMITE >= 0) {
+                // Paso 6: Si el límite es válido, limita el número de productos a mostrar.
+                const prodsLimit = PRODS.slice(0, LIMITE);
+                // Paso 7: Devuelve una respuesta con el código de estado 200 (OK) y los productos limitados.
+                return res.status(200).send(prodsLimit);
+            } else {
+                // Paso 8: Si el valor del parámetro 'limit' es inválido o negativo, devuelve un mensaje de error 400 (Bad Request).
+                return res.status(400).send("ERROR: El parámetro 'limit' debe ser un número válido mayor o igual a cero.");
+            }
         }
 
-        // Si el cliente no proporciona un límite, se muestran todos los productos.
-        if (limit === undefined) {
-            return res.send(PRODS);
-        } else {
-            // Devuelve una copia del array de productos sin modificar su valor, desde el índice inicial (0) hasta el límite especificado.
-            const prodsLimit = PRODS.slice(0, LIMITE);
-            // Devuelve la respuesta con el código de estado 200 (OK) y los productos limitados.
-            res.status(200).send(prodsLimit);
-        }
+        // Paso 9: Si no se proporciona un límite, se envían todos los productos.
+        return res.send(PRODS);
     } catch (e) {
-        // Captura cualquier error que pueda ocurrir durante la consulta de productos y devuelve un mensaje de error con el código de estado 500 (Internal Server Error).
+        // Paso 10: Captura cualquier error que pueda ocurrir durante la consulta de productos y devuelve un mensaje de error con el código de estado 500 (Internal Server Error).
         res.status(500).send(`Error interno del servidor al consultar productos: ${e}`);
     }
 });
+
 
 
 
