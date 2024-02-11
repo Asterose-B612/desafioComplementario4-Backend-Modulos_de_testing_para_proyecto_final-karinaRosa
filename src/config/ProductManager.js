@@ -5,7 +5,7 @@ import { promises as fs } from 'fs'
 
 export class ProductManager {
     constructor(path) {
-        this.path = './products.json';
+        this.path = './src/data/products.json';
     }//path:seria la ruta donde van a estar alojados nuestros elementos. YA NO VA EL ARRAY VACIO
 
 
@@ -29,7 +29,7 @@ export class ProductManager {
         })();
 
         if (HASERROR) {
-            return // Salir de la función si hay un error
+            return HASERROR// Salir de la función si hay un error
         }
         //1 vez q tengo el producto corroboro si existe VOY A VALIDAR
         //buscame 1 prod cuyo code sea igual al code del nuevo producto

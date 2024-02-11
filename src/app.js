@@ -22,9 +22,12 @@ import { ProductManager } from './config/ProductManager.js';
 //hago referencia a lo q seria todo el codigo de express
 const app = express()
 //variable para cambios de puertos
-const PORT = 8080
+const PORT = 8000
 // Crea una instancia de ProdutManager
-const productManager = new ProductManager('./products.json');
+const productManager = new ProductManager('./src/data/products.json');
+
+
+//********METDOS GET***************
 
 
 
@@ -36,52 +39,150 @@ app.get('/', (req, res) => {
 
 })
 
-
 //FUNCION ASINCRONICA PARA OBTENER TODOS LOS PRODUCTOS.Uso: metodo getProducts
 
 app.get('/products', async (req, res) => {
-    // esta Ruta recibe 1 límite opcional de cant.de prods.
-    // IF se proporciona → limita, ELSE → envía todos.
-    //CONSULTAR EL ARRAY DE PRODS QUE TRAIGO DESDE FS:consulto mis querys, el elemento limit.
-    const { limit } = req.query
-    //{limit} xq pueden ir varios elementos a consultar
-    //consulto mi productManager, me return prods
-    const PRODS = await productManager.getProducts()
+    //capturo errores con try y catch
+    try {
+        // esta Ruta recibe 1 límite opcional de cant.de prods.
+        // IF se proporciona → limita, ELSE → envía todos.
+        //CONSULTAR EL ARRAY DE PRODS QUE TRAIGO DESDE FS:consulto mis querys, el elemento limit.
+        const { limit } = req.query
+        //{limit} xq pueden ir varios elementos a consultar
+        //consulto mi productManager, me return prods
+        const PRODS = await productManager.getProducts()
+        const LIMITE = parseInt(limit)
 
-    const LIMITE = parseInt(limit)
-    if(limit ===undefined) return res.send (PRODS)
-
-    if (LIMITE) {
-
-        if (LIMITE < 0) {
-            res.send("ingrese un valor valido numeral para las queries")
-        } else {
-            //devuelve una copia del array sin modificar su valor
-            //valor inicial→0, al fin→ limit
-            const prodsLimit = PRODS.slice(0, limit)
-              //lo devuelve
-        res.send(prodsLimit)
+// Verifica si el valor de 'LIMITE' no es un número o es menor o igual a cero.
+        if (isNaN(LIMITE) || LIMITE <= 0) {
+            return res.status(400).send("ERROR al consultar productos, ingrese un número válido para 'limit'");
         }
-      
-    } else {
-        res.send("valor no aceptado en queries")
+
+
+        //si cliente no proporciona 1 limite se muestran todos los productos
+        if (limit === undefined) {
+            return res.send(PRODS)
+        }else {
+              //devuelve una copia del array sin modificar su valor
+            //valor inicial→0, al fin→ limit
+            const prodsLimit = PRODS.slice(0, LIMITE)
+            //lo devuelve y resondo con 200: exitoso
+            res.status(200).send(prodsLimit)
+        }                     
+
+        //e=error
+    } catch (e) {
+        //res.status devuelve un n° de http
+        res.status(500).send(`Error interno del servidor al consultar productos: ${e}`)
     }
+
 })
 
 
 
 //consulta en ruta productos. pid no es valor fijo.pid creado x crypto
 app.get('/products/:pid', async (req, res) => {
-    //consulto por parametro la solicitud
-    const PRODUCTID = req.params.pid
-    //consulto por id de producto
-    /*todo dato q se consulta desde un parametro es un string. Si tenemos un id tipo numerico hay que parsearlo*/
-    const PROD = await productManager.getProductById(PRODUCTID)
-    //llamo a ProductManager para devolver prod c/id solicitado
 
-        res.send(PROD);
+    try {
+        //consulto por parametro la solicitud
+        const PRODUCTID = req.params.pid
+        //consulto por id de producto
+        /*todo dato q se consulta desde un parametro es un string. Si tenemos un id tipo numerico hay que parsearlo*/
+        const PROD = await productManager.getProductById(PRODUCTID)
+        //llamo a ProductManager para devolver prod c/id solicitado}
+
+        //si mi producto existe lo devuelvo sino mensaje 404:ERROR cliente por mandar un id que no existe
+        if (PROD) {
+
+            res.status(200).send(PROD)
+
+        } else {
+            res.status(404).send("Producto no encontrado")
+        }
+
+    } catch (e) {
+        res.status(500).send(`Error interno del servidor al consultar producto: ${e}`)
+    }
 
 })
+
+
+
+
+//********METDOS POST***************
+//Metodo post en /products, todos
+
+
+app.post('/products', async (req, res) => {
+    //req.body: me permite enviar informacion (como en un formulario, seria el contenido de un formulario)
+
+    try {
+        //LO QUE VENGA DEL BODY VA A VENIR DE lo que voy a llamar producto
+        let product = req.body       
+        const mensaje = await productManager.addProduct(product)
+        //llamo a ProductManager para devolver mensajes
+
+        //si mi producto
+        if (mensaje === "Creado con éxito") {
+            res.status(200).send(mensaje)     
+    //en el caso que no ingresaron todas las propiedades
+            }else {
+                res.status(400).send(mensaje)
+            }  
+
+        } catch (e) {
+        res.status(500).send(`Error interno del servidor al consultar producto: ${e}`)
+    }
+
+})
+
+
+//********METDOS PUT***************
+//Metodo put /products/:id sí o sí, necesito un id y un nuevo producto
+
+app.put('/products/:pid', async (req, res) => {
+
+    try {
+        //consulto ese id (string sino parsearlo)
+        const PRODUCTID = req.params.pid
+    
+        
+        const PROD = await productManager.getProductById(PRODUCTID)
+        //llamo a ProductManager para devolver prod c/id solicitado}
+
+        //si mi producto existe lo devuelvo sino mensaje 404:ERROR cliente por mandar un id que no existe
+        if (PROD) {
+
+            res.status(200).send(PROD)
+
+        } else {
+            res.status(404).send("Producto no encontrado")
+        }
+
+    } catch (e) {
+        res.status(500).send(`Error interno del servidor al consultar producto: ${e}`)
+    }
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
