@@ -127,7 +127,7 @@ app.get('/products/:pid', async (req, res) => {
         const PROD = await productManager.getProductById(PRODUCTID)
 
         // Paso 3: Si producto existe, lo devuelve. Sino, devuelve un mensaje de error 404 al cliente por solicitar un ID que no existe.
-        if (PROD) {
+    
             if (PROD) {
 
                 res.status(200).send(PROD)
@@ -137,7 +137,7 @@ app.get('/products/:pid', async (req, res) => {
                 res.status(404).send("Producto no encontrado")
                 // Devuelve un mensaje de error 404 (Not Found).
             }
-        }
+       
 
     } catch (e) {
         res.status(500).send(`Error interno del servidor al consultar producto: ${e}`)

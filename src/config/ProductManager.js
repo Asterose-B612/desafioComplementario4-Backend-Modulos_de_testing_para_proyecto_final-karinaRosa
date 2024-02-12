@@ -2,6 +2,8 @@
 //genero 1 clase con 1 constructor que me pide path como paramentro para poderlo almacenar
 
 import { promises as fs } from 'fs'
+import crypto from 'crypto'
+
 
 export class ProductManager {
     constructor(path) {
@@ -36,7 +38,9 @@ export class ProductManager {
         const INDICE = PRODS.findIndex(prod => prod.code === newProduct.code)
         //si el indice es distinto de -1(-1 significa que el elemento no existe)OJO CON PONER  !=-1
         if (INDICE === -1) {
-            //si no existe lo agrego al array
+            //si no existe lo agrego al arrayF
+            //creo el id antes de crearlo
+            newProduct.id = crypto.randomBytes(10).toString('hex')
             PRODS.push(newProduct)
             //vuelvo a escribir este archivo.De lo que seria este nuevo array con este nuevo producto (DE ESTA LOCACION, ENVIAME ESTE ARRAY)
             await fs.writeFile(this.path, JSON.stringify(PRODS))
@@ -63,11 +67,7 @@ export class ProductManager {
         //pregunto x el array de productos.Buscame el elemento cuyo id sea el id ingresado
         const PROD = PRODS.find(e => e.id === id)
 
-        if (PROD) {
-            return PROD
-        } else {
-            return "El producto no existe"
-        }
+        return PROD
     }
 
 
