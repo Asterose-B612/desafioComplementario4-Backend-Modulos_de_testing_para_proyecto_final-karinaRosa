@@ -1,12 +1,12 @@
 import { Router } from "express";
 // Importa la clase ProductManager desde el módulo correspondiente
-import { ProductManager } from './config/ProductManager.js';
+import { ProductManager } from '../config/ProductManager.js';
 
 
 // Se crea una instancia de ProductManager para manejar la gestión de productos.
 const productManager = new ProductManager('./src/data/products.json');
 
-productsRouter = Router()
+let productsRouter = Router()
 
 //TRAIGO TODOS LOS METODOS QUE ESTABA EN app.js y reemplazo app x productsRouter
 
@@ -184,4 +184,5 @@ productsRouter.delete('/:pid', async (req, res) => {
 })
 
 //exporto de este archivo para ser importado en app.js
+
 export default productsRouter

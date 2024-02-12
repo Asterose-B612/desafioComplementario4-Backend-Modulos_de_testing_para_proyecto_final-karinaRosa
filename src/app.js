@@ -47,51 +47,48 @@ Formato: Link al repositorio de Github con el proyecto completo, sin la carpeta 
 Sugerencias: No olvides app.use(express.json()). No es necesario implementar multer
 */
 
+
+//*******IMPORTACIONES******************
+
 // Importa el módulo Express para crear el servidor
-import express from 'express';
-import productsRouter from './routes/productsRouter';
+import express from 'express'
+import productsRouter from './routes/productsRouter.js'
+
+
+//*******CONSTANTES******************
 
 // Se crea una instancia de Express para configurar el servidor.
 const app = express();
 // Se define el puerto en el que el servidor estará escuchando.
 const PORT = 8000
 
+
+//*******MIDDLEBARS******************
+
 //el servidor podrá recibir json al momento de la petición
 app.use(express.json())
 //permite que se pueda mandar informacion tambien desde la URL
 app.use(express.urlencoded({ extended: true }))
-
+// Para poder utilizar los recursos de una carpeta de manera estática.
+//SE DEFINE ANTES DE DEFINIR LAS RUTAS.
+// Esta línea configura Express para servir archivos estáticos desde el directorio 'public'
+// Cuando se recibe una solicitud en la ruta '/static', Express buscará y devolverá archivos estáticos desde el directorio 'public'.
+// Por ejemplo, si se recibe una solicitud GET a '/static/css/style.css', Express buscará el archivo 'style.css' en el directorio 'public/css' y lo devolverá como respuesta.
+app.use('/static', express.static('public'));
 
 //para poder utilizar el import de Router 2 maneras. En el metodo get en productsRouter o definirla aqui con el app.use
 //para la siguiente ruta ejecutame lo que seria productsRouter
 //defino la ruta products va a trabajar con productsRouter
 //defino que cada uno de mis elementos va a estar en la ruta products
+
+
+//*******RUTAS******************
+
 app.use('/products', productsRouter)
+//productsRouter va a importar las rutas de todos esos elementos. Divido mi aplicacion en pequeñas partes.
 
 
-
-//********METDOS GET***************
-
-
-// En la ruta inicial ("/"), responde con un mensaje indicando que se ha creado recientemente un servidor en Express.
-app.get('/', (req, res) => {
-    res.send("Servidor creado recientemente en Express");
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//*******SERVIDOR******************
 
 // Se define el servidor utilizando la variable 'app'.
 // El servidor escucha en el puerto definido por la variable 'PORT'.
