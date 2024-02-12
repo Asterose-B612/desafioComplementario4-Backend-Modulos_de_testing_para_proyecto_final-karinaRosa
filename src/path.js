@@ -1,10 +1,10 @@
 //Para que me devuelva la url. Dado este archivo devolveme el path
 // Importa las funciones fileUrlToPath y dirname de los módulos 'url' y 'path' respectivamente.
-import { fileUrlToPath } from 'url';
+import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 // Convierte la URL del archivo actual en su correspondiente ruta de sistema de archivos.
-let __filename = fileUrlToPath(import.meta.url);
+let __filename = fileURLToPath(import.meta.url);
 
 //dirname NO es palabra reservada
 //se implementa guiones bajos al trabajar con path

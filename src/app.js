@@ -53,7 +53,8 @@ Sugerencias: No olvides app.use(express.json()). No es necesario implementar mul
 // Importa el módulo Express para crear el servidor
 import express from 'express'
 import productsRouter from './routes/productsRouter.js'
-
+import { __dirname } from './path.js'
+console.log(__dirname)
 
 //*******CONSTANTES******************
 
@@ -74,7 +75,7 @@ app.use(express.urlencoded({ extended: true }))
 // Esta línea configura Express para servir archivos estáticos desde el directorio 'public'
 // Cuando se recibe una solicitud en la ruta '/static', Express buscará y devolverá archivos estáticos desde el directorio 'public'.
 // Por ejemplo, si se recibe una solicitud GET a '/static/css/style.css', Express buscará el archivo 'style.css' en el directorio 'public/css' y lo devolverá como respuesta.
-app.use('/static', express.static('public'));
+app.use('/static', express.static(__dirname + '/public'));
 
 //para poder utilizar el import de Router 2 maneras. En el metodo get en productsRouter o definirla aqui con el app.use
 //para la siguiente ruta ejecutame lo que seria productsRouter
