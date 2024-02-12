@@ -1,17 +1,21 @@
 import { Router } from "express";
-// Se crea una instancia de ProductManager para manejar la gestión de productos.
-const productManager = new ProductManager('./src/data/products.json');
 // Importa la clase ProductManager desde el módulo correspondiente
 import { ProductManager } from './config/ProductManager.js';
 
+
+// Se crea una instancia de ProductManager para manejar la gestión de productos.
+const productManager = new ProductManager('./src/data/products.json');
+
 productsRouter = Router()
 
-//TRAIGO TODO LO QUE ESTABA EN productsRouter.js
+//TRAIGO TODOS LOS METODOS QUE ESTABA EN app.js y reemplazo app x productsRouter
+
+//********METDOS GET***************
 
 
 // Esta ruta maneja las solicitudes GET a '/products'.
 // Recibe opcionalmente el parámetro 'limit' desde la URL para limitar la cantidad de productos devueltos.
-productsRouter.get('/products', async (req, res) => {
+productsRouter.get('/', async (req, res) => {
     try {
         // Paso 1: Obtiene el parámetro 'limit' de la consulta HTTP.
         const { limit } = req.query;
@@ -49,7 +53,7 @@ productsRouter.get('/products', async (req, res) => {
 
 // Esta ruta maneja la consulta de productos. El identificador de producto (pid) no es un valor fijo, es generado por crypto.
 
-productsRouter.get('/products/:pid', async (req, res) => {
+productsRouter.get('/:pid', async (req, res) => {
 
     try {
         // Paso 1: Consulta el parámetro de la solicitud para obtener el identificador del producto.
@@ -85,7 +89,7 @@ productsRouter.get('/products/:pid', async (req, res) => {
 
 // Esta ruta maneja la creación de productos mediante una solicitud POST.
 
-productsRouter.post('/products', async (req, res) => {
+productsRouter.post('/', async (req, res) => {
     // req.body: Permite recibir información enviada desde el cliente, similar al contenido de un formulario.
 
     try {
@@ -118,7 +122,7 @@ productsRouter.post('/products', async (req, res) => {
 // Esta ruta maneja la actualización de productos mediante una solicitud PUT.
 // Verifica en ProductManager el método updateProducts.
 // La solicitud debe ser de tipo PUT y debe incluir un ID de producto válido y los datos actualizados del producto.
-productsRouter.put('/products/:pid', async (req, res) => {
+productsRouter.put('/:pid', async (req, res) => {
 
     try {
         // Paso 1: Se consulta el ID del producto desde los parámetros de la solicitud. Se convierte a cadena si es necesario.
@@ -151,7 +155,7 @@ productsRouter.put('/products/:pid', async (req, res) => {
 
 // Esta ruta maneja la eliminación de productos mediante una solicitud DELETE.
 // Se refiere a la función deleteProduct en ProductsManager.js para la lógica de eliminación.
-productsRouter.delete('/products/:pid', async (req, res) => {
+productsRouter.delete('/:pid', async (req, res) => {
 
     try {
         // Paso 1: Se consulta el ID del producto desde los parámetros de la solicitud. Se convierte a cadena si es necesario.
@@ -178,3 +182,6 @@ productsRouter.delete('/products/:pid', async (req, res) => {
     }
 
 })
+
+//exporto de este archivo para ser importado en app.js
+export default productsRouter

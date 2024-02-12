@@ -49,17 +49,25 @@ Sugerencias: No olvides app.use(express.json()). No es necesario implementar mul
 
 // Importa el módulo Express para crear el servidor
 import express from 'express';
+import productsRouter from './routes/productsRouter';
 
 // Se crea una instancia de Express para configurar el servidor.
 const app = express();
-
 // Se define el puerto en el que el servidor estará escuchando.
-const PORT = 8000;
+const PORT = 8000
 
 //el servidor podrá recibir json al momento de la petición
 app.use(express.json())
 //permite que se pueda mandar informacion tambien desde la URL
 app.use(express.urlencoded({ extended: true }))
+
+
+//para poder utilizar el import de Router 2 maneras. En el metodo get en productsRouter o definirla aqui con el app.use
+//para la siguiente ruta ejecutame lo que seria productsRouter
+//defino la ruta products va a trabajar con productsRouter
+//defino que cada uno de mis elementos va a estar en la ruta products
+app.use('/products', productsRouter)
+
 
 
 //********METDOS GET***************
