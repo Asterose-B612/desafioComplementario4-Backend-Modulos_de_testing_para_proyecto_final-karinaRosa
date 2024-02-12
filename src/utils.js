@@ -4,8 +4,9 @@ import multer from 'multer';
 const STORAGE = multer.diskStorage({
     // Establece la carpeta de destino como 'src/public/img'
     destination: (req, file, callback) => {
-        // Llama al callback sin errores y especifica la carpeta de destino donde se almacenan las imágenes
+        //Trabajo con una funcion.  Llama al callback sin errores y especifica la carpeta de destino donde se almacenan las imágenes
         callback(null, 'src/public/img');
+        //null no hubo error y ruta donde alojo las imagenes
     },
 
     // Define el nombre de archivo como una marca de tiempo seguida del nombre original

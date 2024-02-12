@@ -53,10 +53,12 @@ Sugerencias: No olvides app.use(express.json()). No es necesario implementar mul
 // Importa el módulo Express para crear el servidor
 import express from 'express'
 import productsRouter from './routes/productsRouter.js'
+import upload from './utils.js';
 import { __dirname } from './path.js'
-console.log(__dirname)
 
-//*******CONSTANTES******************
+//console.log(__dirname)
+
+//*******CONFIGURACIONES O DECLARACIONES******************
 
 // Se crea una instancia de Express para configurar el servidor.
 const app = express();
@@ -64,7 +66,7 @@ const app = express();
 const PORT = 8000
 
 
-//*******MIDDLEBARS******************
+//*******MIDDLEWARES******************
 
 //el servidor podrá recibir json al momento de la petición
 app.use(express.json())
@@ -87,7 +89,16 @@ app.use('/static', express.static(__dirname + '/public'));
 
 app.use('/products', productsRouter)
 //productsRouter va a importar las rutas de todos esos elementos. Divido mi aplicacion en pequeñas partes.
-
+//Genero ruta donde subo las imagenes. El middleware se encuentra entre la ruta y el contenido de la ruta
+app.post('/upload', upload.single('product'), (req, res) => {
+  try {
+      console.log(req.file)
+      console.log(req.body)
+      res.status(200).send("Imagen cargada correctamente")
+  } catch (e) {
+      res.status(500).send("Error al cargar imagen")
+  }
+})
 
 //*******SERVIDOR******************
 
