@@ -27,7 +27,9 @@ cartRouter.get('/', async (req, res) => {
 cartRouter.post('/:pid', async (req, res) => {
     // Obtiene el ID del producto y la cantidad proporcionada del cuerpo de la solicitud.
     try {
+        //consulto parametros
         const productId = req.params.pid
+        //body: consulto cantidad
         const { quantity } = req.body
         // Agrega el producto al carrito utilizando el método addProductByCart de la instancia de CartManager.
         const mensaje = await cartManager.addProductByCart(productId, quantity)

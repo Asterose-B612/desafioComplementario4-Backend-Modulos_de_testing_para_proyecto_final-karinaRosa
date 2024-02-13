@@ -96,7 +96,6 @@ productsRouter.post('/', async (req, res) => {
         // Paso 1: Se extrae la información del cuerpo de la solicitud, que se espera contenga los datos del producto a crear.
         let product = req.body;
         console.log(product)
-
         // Paso 2: Se llama a ProductManager para agregar el producto a la base de datos y obtener un mensaje de confirmación.
         const mensaje = await productManager.addProduct(product);
 
