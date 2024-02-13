@@ -87,16 +87,15 @@ app.use('/static', express.static(__dirname + '/public'));
 
 //*******RUTAS******************
 
-app.use('/products', productsRouter)
+app.use('/api/products', productsRouter)
 //productsRouter va a importar las rutas de todos esos elementos. Divido mi aplicacion en pequeñas partes.
 //Genero ruta donde subo las imagenes. El middleware se encuentra entre la ruta y el contenido de la ruta
 app.post('/upload', upload.single('product'), (req, res) => {
   try {
-      console.log(req.file)
-      console.log(req.body)
-      res.status(200).send("Imagen cargada correctamente")
+    console.log(req.file)
+    res.status(200).send("Imagen cargada correctamente")
   } catch (e) {
-      res.status(500).send("Error al cargar imagen")
+    res.status(500).send("Error al cargar imagen")
   }
 })
 
@@ -106,8 +105,8 @@ app.post('/upload', upload.single('product'), (req, res) => {
 // El servidor escucha en el puerto definido por la variable 'PORT'.
 // Cuando el servidor está activo, se ejecuta una función anónima para mostrar un mensaje de estado en la consola.
 app.listen(PORT, () => {
-    // Muestra un mensaje en la consola indicando que el servidor está activo y escuchando en el puerto especificado.
-    console.log(`Server on port ${PORT}`);
+  // Muestra un mensaje en la consola indicando que el servidor está activo y escuchando en el puerto especificado.
+  console.log(`Server on port ${PORT}`);
 });
 
 

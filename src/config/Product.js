@@ -4,13 +4,14 @@
 import crypto from 'crypto'
 
 export class Product {
-    constructor(title, description, price, thumbnail, code, stock) {
+    constructor(title, description, price, thumbnail, code, stock, category) {
         this.title = title
         this.description = description
         this.price = price
-        this.thumbnail = []
+        this.thumbnail = thumbnail
         this.code = code
         this.stock = stock
+        this.category = category
         this.id = crypto.randomBytes(10).toString('hex')
     }
 }

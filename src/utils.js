@@ -1,11 +1,12 @@
 import multer from 'multer';
+import { __dirname } from "./path.js";
 
 // Configuración para el almacenamiento de imágenes
 const STORAGE = multer.diskStorage({
     // Establece la carpeta de destino como 'src/public/img'
     destination: (req, file, callback) => {
         //Trabajo con una funcion.  Llama al callback sin errores y especifica la carpeta de destino donde se almacenan las imágenes
-        callback(null, 'src/public/img');
+        callback(null, `${__dirname}/public/img`)
         //null no hubo error y ruta donde alojo las imagenes
     },
 

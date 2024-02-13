@@ -18,8 +18,8 @@ export class ProductManager {
         //voy a consultar mis elementos, donde esta alojado mi array de productos en la ruta que me de this.path, lo voy a tomar como utf-8
         const PRODS = JSON.parse(await fs.readFile(this.path, 'utf-8'))
 
-        // Verificar campos obligatorios
-        const REQUIREDFIELDS = ['title', 'description', 'price', 'thumbnail', 'code', 'stock'];
+        // Verificar campos obligatorios.// Todos los campos son obligatorios excepto thumbnail
+        const REQUIREDFIELDS = ['title', 'description', 'price',  'code', 'stock','category'];
         const HASERROR = await (async () => {
             for (const field of REQUIREDFIELDS) {
                 if (!(field in newProduct) || newProduct[field] === undefined || newProduct[field] === '') {
@@ -41,6 +41,11 @@ export class ProductManager {
             //si no existe lo agrego al arrayF
             //creo el id antes de crearlo
             newProduct.id = crypto.randomBytes(10).toString('hex')
+            //No se envia como parametro. Siempre true por defecto
+            newProduct.status = true
+          //Como no lo pido. Si existe no le hago nada y si no existe lo creo vacio al array
+            if (!newProduct.thumbnail)
+               newProduct.thumbnail = []
             PRODS.push(newProduct)
             //vuelvo a escribir este archivo.De lo que seria este nuevo array con este nuevo producto (DE ESTA LOCACION, ENVIAME ESTE ARRAY)
             await fs.writeFile(this.path, JSON.stringify(PRODS))
