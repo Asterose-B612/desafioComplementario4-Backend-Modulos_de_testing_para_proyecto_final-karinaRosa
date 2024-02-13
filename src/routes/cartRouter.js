@@ -9,8 +9,6 @@ const cartManager = new CartManager('./src/data/cart.json');
 // Se crea una nueva instancia de Router para manejar las rutas relacionadas con el carrito.
 let cartRouter = Router()
 
-
-
 // Define una ruta para obtener el carrito actual.
 cartRouter.get('/', async (req, res) => {
     try {
@@ -32,6 +30,7 @@ cartRouter.post('/:pid', async (req, res) => {
         //body: consulto cantidad
         const { quantity } = req.body
         // Agrega el producto al carrito utilizando el método addProductByCart de la instancia de CartManager.
+        console.log(productId)
         const mensaje = await cartManager.addProductByCart(productId, quantity)
         //devuelve mensaje indicando que el producto se ha agregado correctamente con un código de estado 200 (OK).
         res.status(200).send(mensaje)

@@ -100,13 +100,13 @@ productsRouter.post('/', async (req, res) => {
         const mensaje = await productManager.addProduct(product);
 
         // Paso 3: Si el producto se crea con éxito, se devuelve un mensaje de éxito con el código de estado 200 (OK).
-        if (mensaje == "Creado con éxito") {
-            res.status(200).send(mensaje);
-        } else {
+        if (mensaje == "Producto creado correctamente")
+        if (mensaje == "Producto cargado correctamente") 
+            res.status(200).send(mensaje)
+         else 
             // Paso 4: Si no se proporcionaron todas las propiedades necesarias para crear el producto, se devuelve un mensaje de error 400 (Bad Request).
             // Esto indica un error del cliente al intentar crear un producto con un ID existente o faltan datos.
-            res.status(400).send(mensaje);
-        }
+            res.status(400).send(mensaje);  
 
     } catch (e) {
         // Paso 5: Si ocurre algún error durante el proceso de creación del producto, se maneja aquí y se devuelve un mensaje de error 500 (Internal Server Error).
