@@ -56,7 +56,7 @@ import productsRouter from './routes/productsRouter.js'
 import cartRouter from './routes/cartRouter.js';
 import upload from './utils.js';
 import { __dirname } from './path.js'
-
+import { engine } from 'express-handlebars'; 
 
 //console.log(__dirname)
 
@@ -85,6 +85,16 @@ app.use('/static', express.static(__dirname + '/public'));
 //defino la ruta products va a trabajar con productsRouter
 //defino que cada uno de mis elementos va a estar en la ruta products
 
+
+//CON ESTO CONFIGURO HANDLEBARS
+app.engine('handlebars', engine())
+//voy a trabajar con handlebars, esto implementa lo que me devuelve mi dependencia
+app.set('view engine', 'handlebars')
+//para las vistas de mi aplicacion voy a implementar handlebars
+
+//CON ESTO INDICO DONDE SE ESTA UTILIZANDO
+app.set('views', __dirname + '/views')
+//las vistas de mi aplicacion se encuentran en __dirname es mi path →seria la carpeta src y lo concateno con la carpeta views
 
 //*******RUTAS******************
 
