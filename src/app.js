@@ -77,14 +77,15 @@ app.get('/static', (req, res) => {
 
   //necesito mostrar un listado de productos
   const PRODS = [
-    {id:1, title: "celular" , price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg"}},
-    {id:2, title: "celular" , price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg"}},
-    {id:3, title: "celular" , price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg"}},
-    {id:4, title: "celular" , price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg"}
-  ]
+    //img: con ruta interna
+    { id: 1, title: "celular", price: 1500, img: "./img/src/public/img/1707780153245celu1.jpg" },
+    { id: 2, title: "celular", price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg" },
+    { id: 3, title: "celular", price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg" },
+    { id: 4, title: "celular", price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg" }
+  ];
 
 
-  res.render ('productos' , {
+  res.render ('templates/productos' , {
     //mostrame estos productos bajo lo que seria un condicional. Por eso se usa :
     //cuando renderizo estos productos envio este condicional true, y envio este condicional de productos.
 mostrarProductos : true,
