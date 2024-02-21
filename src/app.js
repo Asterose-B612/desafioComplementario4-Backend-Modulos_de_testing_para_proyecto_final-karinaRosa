@@ -1,50 +1,5 @@
-/*Entrega N°1:
-Desarrollo de un servidor que contenga los endpoints y servicios necesarios para gestionar los productos y carritos de compra en el e-commerce
-*basado en node.js y express
-*que escuche en puerto 8080
-*disponga de 2 grupos de rutas: 
-   1-/products    2-/carts
-* Dichos endopints estaran implementados con el router de express, con las siguientes espicificaciones:
-   -PARA EL MANEJO DE PRODUCTOS
-    tendra su router en /api/products/, configurar las siguientes rutas:
-      *La ruta raíz GET/ debera listar todos los productos de la base (incluyendo la limitacion ?limit del desafio anterior)
-      *La ruta GET/:pid deberá traer solo el producto con el id proporcionado
-
-      *La ruta POST/ deberá agregar un nuevo producto con los campos:
-          -id: Number/String (a tu eleccion, el ID NO SE MANDA DESDE EL BODY, se autogenera con el crypto, asegurando que nunca se repetiran los id en el archivo.)
-          -title:String
-          -description:String
-          -code:String
-          -proce:Number
-          -status:Boolean
-          -stock:Number
-          -category:String
-          -Thumbnails: Array de Strings que contenga las rutas donde estan almacenadas las imágenes referente a dicho producto.
-                  *STATUS ES TRUE POR DEFECTO
-                  *TODOS LOS CAMPOS SON OBLIGATORIOS, A EXCEPCION DE THUMBNAILS
-
-      *La ruta PUT /:pid deberá tomar un producto y actualizarlo por los campos enviados desde body.
-        NUNCA se debe actualizar o eliminar el id al momento de hacer dicha actualización.
-        La ruta DELETE /:pid deberá eliminar el producto con el pid indicado.
-
-   -PARA EL CARRITO, el cual tendrá su router en /api/carts/
-    configurar dos rutas:
-      *La ruta raíz POST / deberá crear un nuevo carrito con la siguiente estructura:
-              -Id:Number/String (A tu elección, de igual manera como con los productos, debes asegurar que nunca se dupliquen los ids y que este se autogenere).
-              -products: Array que contendrá objetos que representen cada producto          
-      *La ruta GET /:cid deberá listar los productos que pertenezcan al carrito con el parámetro cid proporcionados.
-
-      *La ruta POST /:cid/product/:pid deberá agregar el producto al arreglo "products" del carrito seleccionado, agregándose como un objeto bajo el siguiente formato:
-                   -product: SÓLO DEBE CONTENER EL ID DEL PRODUCTO (Es crucial que no agregues el producto completo)
-                   -quantity: debe contener el número de ejemplares de dicho producto. El producto, de momento, se agregará de uno en uno.
-                   Además, si un producto ya existente intenta agregarse al producto, incrementar el campo quantity de dicho producto.
-
-
-La persistencia de la información se implementará utilizando el file system, donde los archivos "productos,json" y "carrito.json", respaldan la información.
-No es necesario realizar ninguna implementación visual, todo el flujo se puede realizar por Postman o por el cliente de tu preferencia.
-
+/*Desafío N°4
 Formato: Link al repositorio de Github con el proyecto completo, sin la carpeta de Node_modules.
-Sugerencias: No olvides app.use(express.json()). No es necesario implementar multer
 */
 
 
@@ -53,10 +8,10 @@ Sugerencias: No olvides app.use(express.json()). No es necesario implementar mul
 // Importa el módulo Express para crear el servidor
 import express from 'express'
 import productsRouter from './routes/productsRouter.js'
-import cartRouter from './routes/cartRouter.js';
-import upload from './utils.js';
+import cartRouter from './routes/cartRouter.js'
+import upload from './utils.js'
 import { __dirname } from './path.js'
-import { engine } from 'express-handlebars'; 
+import { engine } from 'express-handlebars'
 
 //console.log(__dirname)
 
@@ -90,6 +45,7 @@ app.use('/static', express.static(__dirname + '/public'));
 app.engine('handlebars', engine())
 //voy a trabajar con handlebars, esto implementa lo que me devuelve mi dependencia
 app.set('view engine', 'handlebars')
+//set es para setear un valor
 //para las vistas de mi aplicacion voy a implementar handlebars
 
 //CON ESTO INDICO DONDE SE ESTA UTILIZANDO
@@ -117,15 +73,32 @@ app.post('/upload', upload.single('product'), (req, res) => {
 //GENERAMOS UNA VISTA PARA LA IMPLEMENTACIÓN CON HANDLEBARS.
 //en la ruta static, voy a renderizar una plantilla xeje: home
 app.get('/static', (req, res) => {
-  //para esta ruta renderizame home
-  res.render ('home')
+  //para esta ruta renderizame productos y el css de productos de la carpeta public
+
+  //necesito mostrar un listado de productos
+  const PRODS = [
+    {id:1, title: "celular" , price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg"}},
+    {id:2, title: "celular" , price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg"}},
+    {id:3, title: "celular" , price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg"}},
+    {id:4, title: "celular" , price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg"}
+  ]
+
+
+  res.render ('productos' , {
+    //mostrame estos productos bajo lo que seria un condicional. Por eso se usa :
+    //cuando renderizo estos productos envio este condicional true, y envio este condicional de productos.
+mostrarProductos : true,
+productos : PRODS,
+
+    css: 'productos.css'
+  })
 })
 //sabe lo que voy a enviar por la configuracion previa app.set....
 
 
 
 
-//*******SERVIDOR******************
+//*******SERVER******************
 
 // Se define el servidor utilizando la variable 'app'.
 // El servidor escucha en el puerto definido por la variable 'PORT'.

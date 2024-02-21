@@ -1,13 +1,35 @@
 <h1>Productos</h1>
 
+<!--si mostrar productos es verdadero-->
+{{#if mostrarProductos}}
 
 
+<!--x c/u de los e de productos en app.js lo voy a renderizar. TODOS LOS PRODUCTOS-->
+{{#each productos}}
 
 
+<div style="width: 16rem;">
+
+  <div>
+
+    <h3>Producto: {{this.title}}</h3>  
+
+    <p>Descripcion: {{ this.description }}</p>
+
+    <p>Precio: ${{this.price}}</p>
+
+<!--atributo para imagen-->
+<img src="{{this.img}}" alt="{{this.title}}">
+
+  </div>
+
+</div>
+
+{{/each}}
 
 
+<!--sino muestro esto-->
+{{else}}
+    <p>No hay productos para mostrar</p>
 
-
-
-
-
+{{/if}}
