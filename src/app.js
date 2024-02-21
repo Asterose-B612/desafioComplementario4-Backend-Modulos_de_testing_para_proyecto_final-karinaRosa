@@ -104,6 +104,7 @@ app.use('/api/products', productsRouter)
 //Genero ruta donde subo las imagenes. El middleware se encuentra entre la ruta y el contenido de la ruta
 app.use('/api/cart', cartRouter)
 
+//PARA LA CARGA DE IMAGENES
 app.post('/upload', upload.single('product'), (req, res) => {
   try {
     console.log(req.file)
@@ -112,6 +113,17 @@ app.post('/upload', upload.single('product'), (req, res) => {
     res.status(500).send("Error al cargar imagen")
   }
 })
+
+//GENERAMOS UNA VISTA PARA LA IMPLEMENTACIÓN CON HANDLEBARS.
+//en la ruta static, voy a renderizar una plantilla xeje: home
+app.get('/static', (req, res) => {
+  //para esta ruta renderizame home
+  res.render ('home')
+})
+//sabe lo que voy a enviar por la configuracion previa app.set....
+
+
+
 
 //*******SERVIDOR******************
 
