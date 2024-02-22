@@ -1,4 +1,5 @@
 /*Desafío N°4
+Crear una vista llamada homehandlebars con todos los productos agregados hasta el momento.
 Formato: Link al repositorio de Github con el proyecto completo, sin la carpeta de Node_modules.
 */
 
@@ -84,8 +85,8 @@ io.on('connection', (socket) => {
 
 //*******RUTAS******************
 
-
-app.use('/api/products', productsRouter)
+//defino que la ruta products va a implementar la carpeta publica
+app.use('/api/products', productsRouter, express.static(__dirname + '/public'))
 //productsRouter va a importar las rutas de todos esos elementos. Divido mi aplicacion en pequeñas partes.
 //Genero ruta donde subo las imagenes. El middleware se encuentra entre la ruta y el contenido de la ruta
 app.use('/api/cart', cartRouter)
@@ -115,13 +116,13 @@ app.get('/static', (req, res) => {
   ];
 
 
-  res.render('templates/productos', {
+  res.render('templates/home', {
     //mostrame estos productos bajo lo que seria un condicional. Por eso se usa :
     //cuando renderizo estos productos envio este condicional true, y envio este condicional de productos.
     mostrarProductos: true,
     productos: PRODS,
 
-    css: 'productos.css'
+    css: 'home.css'
   })
 })
 //sabe lo que voy a enviar por la configuracion previa app.set....
