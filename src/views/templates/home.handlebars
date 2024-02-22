@@ -11,16 +11,12 @@
 <div style="width: 16rem;">
 
   <div>
-
-    <h3>Producto: {{this.title}}</h3>  
-
-    <p>Descripcion: {{ this.description }}</p>
-
+    <!--atributo para imagen-->
+    <img src="{{this.image}}" alt="{{this.title}}">
+    <h3>{{this.title}}</h3>
+    <p>{{ this.description }}</p>
     <p>Precio: ${{this.price}}</p>
-
-<!--atributo para imagen-->
-<img src="{{this.img}}" alt="{{this.title}}">
-
+    <p>Stock:{{this.stock}}</p>
   </div>
 
 </div>
@@ -30,6 +26,6 @@
 
 <!--sino muestro esto-->
 {{else}}
-    <p>No hay productos para mostrar</p>
+<p>No hay productos para mostrar</p>
 
 {{/if}}

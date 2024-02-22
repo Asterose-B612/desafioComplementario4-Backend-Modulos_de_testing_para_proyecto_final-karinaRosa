@@ -6,7 +6,7 @@ import { ProductManager } from '../config/ProductManager.js';
 // Se crea una instancia de ProductManager para manejar la gestión de productos.
 const productManager = new ProductManager('./src/data/products.json');
 
-let productsRouter = Router()
+let productsRouter = Router();
 
 //TRAIGO TODOS LOS METODOS QUE ESTABA EN app.js y reemplazo app x productsRouter
 
@@ -32,18 +32,22 @@ productsRouter.get('/', async (req, res) => {
                 // Paso 6: Si el límite es válido, limita el número de productos a mostrar.
                 const prodsLimit = PRODS.slice(0, LIMITE);
                 // Paso 7: Devuelve una respuesta con el código de estado 200 (OK) y los productos limitados.
-                return res.status(200).send(prodsLimit);
-            } else {
-                // Paso 8: Si el valor del parámetro 'limit' es inválido o negativo, devuelve un mensaje de error 400 (Bad Request).
-                return res.status(400).send("ERROR: El parámetro 'limit' debe ser un número válido mayor o igual a cero.");
-            }
+                
+               res.status(200).render ('templates/home', {
+                    //mostrame estos productos bajo lo que seria un condicional. Por eso se usa :
+                    //cuando renderizo estos productos envio este condicional true, y envio este condicional de productos.
+                    mostrarProductos: true,
+                    productos: prodsLimit,                
+                    css: 'home.css'
+                  })
+            } 
         }
-
-        // Paso 9: Si no se proporciona un límite, se envían todos los productos.
-        return res.send(PRODS);
-    } catch (e) {
-        // Paso 10: Captura cualquier error que pueda ocurrir durante la consulta de productos y devuelve un mensaje de error con el código de estado 500 (Internal Server Error).
-        res.status(500).send(`Error interno del servidor al consultar productos: ${e}`);
+     
+    } catch (error) {
+        res.status(500).send(`Error interno del servidor al consultar productos: ${error}`)
+        res.status(500).render('templates/error', {
+            error: error,
+        })
     }
 });
 
