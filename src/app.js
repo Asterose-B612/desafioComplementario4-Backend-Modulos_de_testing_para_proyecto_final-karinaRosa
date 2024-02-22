@@ -12,6 +12,7 @@ import cartRouter from './routes/cartRouter.js'
 import upload from './utils.js'
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
+import { Server } from 'socket.io'
 
 //console.log(__dirname)
 
@@ -21,7 +22,17 @@ import { engine } from 'express-handlebars'
 const app = express();
 // Se define el puerto en el que el servidor estará escuchando.
 const PORT = 8000
+//----SERVER---------
+// Se define el servidor utilizando la variable 'app'.
+// El servidor escucha en el puerto definido por la variable 'PORT'.
+// Cuando el servidor está activo, se ejecuta una función anónima para mostrar un mensaje de estado en la consola.
+const SERVER = app.listen(PORT, () => {
+  console.log(`Server on port ${PORT}`);
+});
+// Muestra un mensaje en la consola indicando que el servidor está activo y escuchando en el puerto especificado.
 
+//declaro un nuevo servidor de sockets.io
+const io = new Server(SERVER)
 
 //*******MIDDLEWARES******************
 
@@ -51,6 +62,32 @@ app.set('view engine', 'handlebars')
 //CON ESTO INDICO DONDE SE ESTA UTILIZANDO
 app.set('views', __dirname + '/views')
 //las vistas de mi aplicacion se encuentran en __dirname es mi path →seria la carpeta src y lo concateno con la carpeta views
+
+
+
+//...........SOCKET.IO..................
+// Cuando se establece una conexión con Socket.io, se ejecuta esta función IO.ON. Esta conexion me devuelve un socket que seria mi listener, el cliente que esta escuchando "APRETON DE MANOS"
+io.on('connection', (socket) => {
+  //cuando tenga ese "apreton de manos" de distintos clientes agrego a la consola el mensaje
+  console.log("Conexion con Socket.io")
+  // Cuando el cliente envía un mensaje de 'movimiento', se ejecuta esta función
+  socket.on('movimiento', info => {
+    // Imprime en la consola del servidor la información recibida desde el cliente
+    console.log(info)
+  })
+
+  // Cuando el cliente envía un mensaje de 'rendirse', se ejecuta esta función
+  socket.on('rendirse', info => {
+    // Imprime en la consola del servidor la información recibida desde el cliente
+    console.log(info)
+    // Envía un mensaje solo al cliente que ha enviado el mensaje de rendirse
+    socket.emit('mensaje-jugador', "Te has rendido")
+    })
+   // Envía un mensaje a todos los clientes excepto al que envió el mensaje de rendirse
+  socket.broadcast.emit('rendicion', "El jugador se rindio") //
+})
+
+
 
 //*******RUTAS******************
 
@@ -85,11 +122,11 @@ app.get('/static', (req, res) => {
   ];
 
 
-  res.render ('templates/productos' , {
+  res.render('templates/productos', {
     //mostrame estos productos bajo lo que seria un condicional. Por eso se usa :
     //cuando renderizo estos productos envio este condicional true, y envio este condicional de productos.
-mostrarProductos : true,
-productos : PRODS,
+    mostrarProductos: true,
+    productos: PRODS,
 
     css: 'productos.css'
   })
@@ -97,17 +134,6 @@ productos : PRODS,
 //sabe lo que voy a enviar por la configuracion previa app.set....
 
 
-
-
-//*******SERVER******************
-
-// Se define el servidor utilizando la variable 'app'.
-// El servidor escucha en el puerto definido por la variable 'PORT'.
-// Cuando el servidor está activo, se ejecuta una función anónima para mostrar un mensaje de estado en la consola.
-app.listen(PORT, () => {
-  // Muestra un mensaje en la consola indicando que el servidor está activo y escuchando en el puerto especificado.
-  console.log(`Server on port ${PORT}`);
-});
 
 
 /*
