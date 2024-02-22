@@ -9,10 +9,10 @@ Formato: Link al repositorio de Github con el proyecto completo, sin la carpeta 
 import express from 'express'
 import productsRouter from './routes/productsRouter.js'
 import cartRouter from './routes/cartRouter.js'
-import upload from './utils.js'
+import upload from './utils.js'//.js es un archivo
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
-import { Server } from 'socket.io'
+import { Server } from 'socket.io' //llaves es una dependencia
 
 //console.log(__dirname)
 
@@ -40,21 +40,14 @@ const io = new Server(SERVER)
 app.use(express.json())
 //permite que se pueda mandar informacion tambien desde la URL
 app.use(express.urlencoded({ extended: true }))
-// Para poder utilizar los recursos de una carpeta de manera estática.
-//SE DEFINE ANTES DE DEFINIR LAS RUTAS.
-// Esta línea configura Express para servir archivos estáticos desde el directorio 'public'
-// Cuando se recibe una solicitud en la ruta '/static', Express buscará y devolverá archivos estáticos desde el directorio 'public'.
-// Por ejemplo, si se recibe una solicitud GET a '/static/css/style.css', Express buscará el archivo 'style.css' en el directorio 'public/css' y lo devolverá como respuesta.
-app.use('/static', express.static(__dirname + '/public'));
-//para poder utilizar el import de Router 2 maneras. En el metodo get en productsRouter o definirla aqui con el app.use
-//para la siguiente ruta ejecutame lo que seria productsRouter
-//defino la ruta products va a trabajar con productsRouter
-//defino que cada uno de mis elementos va a estar en la ruta products
 
 
-//CON ESTO CONFIGURO HANDLEBARS
+
+//......CON ESTO CONFIGURO HANDLEBARS.....
+
 app.engine('handlebars', engine())
 //voy a trabajar con handlebars, esto implementa lo que me devuelve mi dependencia
+
 app.set('view engine', 'handlebars')
 //set es para setear un valor
 //para las vistas de mi aplicacion voy a implementar handlebars
