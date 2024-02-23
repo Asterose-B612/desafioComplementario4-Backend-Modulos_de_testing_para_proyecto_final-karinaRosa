@@ -1,4 +1,4 @@
-<h2>Productos</h2>
+<h2>Productos destacados</h2>
 
 <!--si mostrar productos es verdadero-->
 {{#if mostrarProductos}}
@@ -8,11 +8,13 @@
   {{#each productos}}
 
 
-  <div style="width: 16rem;">
+  <div class="card-container">
 
     <div class="card">
-      <!--atributo para imagen-->
-      <img src="{{this.image}}" alt="{{this.title}}">
+      <div class="image-container">
+        <!--atributo para imagen-->
+        <img src="{{this.image}}" alt="{{this.title}}">
+      </div>
       <div class="card-body">
         <h3 class="product-title">{{this.title}}</h3>
         <p class="product-description">{{ this.description }}</p>
