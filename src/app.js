@@ -84,11 +84,24 @@ io.on('connection', (socket) => {
 
 
 //*******RUTAS******************
-
+/*
 //defino que la ruta products va a implementar la carpeta publica
 app.use('/api/products', productsRouter, express.static(__dirname + '/public'))
 //productsRouter va a importar las rutas de todos esos elementos. Divido mi aplicacion en pequeñas partes.
 //Genero ruta donde subo las imagenes. El middleware se encuentra entre la ruta y el contenido de la ruta
+*/
+
+// Primero, configura el enrutador de productos
+app.use('/api/products', productsRouter);
+
+// Luego, configura Express para servir archivos estáticos desde la carpeta '/public'
+app.use(express.static(__dirname + '/public'));
+
+
+
+
+
+
 app.use('/api/cart', cartRouter)
 
 //PARA LA CARGA DE IMAGENES
