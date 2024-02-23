@@ -91,6 +91,10 @@ app.use('/api/products', productsRouter, express.static(__dirname + '/public'))
 //Genero ruta donde subo las imagenes. El middleware se encuentra entre la ruta y el contenido de la ruta
 */
 
+
+
+
+
 // Primero, configura el enrutador de productos
 app.use('/api/products', productsRouter);
 
