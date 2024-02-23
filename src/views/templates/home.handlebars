@@ -10,13 +10,15 @@
 
 <div style="width: 16rem;">
 
-  <div>
+  <div class="card">
     <!--atributo para imagen-->
     <img src="{{this.image}}" alt="{{this.title}}">
-    <h3>{{this.title}}</h3>
-    <p>{{ this.description }}</p>
-    <p>Precio: ${{this.price}}</p>
-    <p>Stock:{{this.stock}}</p>
+    <div class="card-body">
+      <h3 class="product-title">{{this.title}}</h3>
+      <p class="product-description">{{ this.description }}</p>
+      <p class="product-price">Precio: ${{this.price}}</p>
+      <p>Stock: {{this.stock}}</p>
+    </div>
   </div>
 
 </div>
