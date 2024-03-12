@@ -1,10 +1,6 @@
 import { Router } from "express";
-// Importa la clase ProductManager desde el módulo correspondiente
-import { ProductManager } from '../config/ProductManager.js';
+import productModel from "../models/product.js";
 
-
-// Se crea una instancia de ProductManager para manejar la gestión de productos.
-const productManager = new ProductManager('./src/data/products.json');
 
 let productsRouter = Router();
 
@@ -20,9 +16,10 @@ productsRouter.get('/', async (req, res) => {
         // Paso 1: Obtiene el parámetro 'limit' de la consulta HTTP.
         const { limit } = req.query;
         
-        // Paso 2: Obtiene todos los productos del gestor de productos.
-        const PRODS = await productManager.getProducts();
-        
+        // Paso 2:Devuelve todos los productos. Modifiqué productManager.getProducts();  x productModel.find()
+        const PRODS = await productModel.find()      
+
+
         // Paso 3: Verifica si el parámetro 'limit' está presente en la consulta HTTP.
         if (limit !== undefined) {
             // Paso 4: Convierte el valor del parámetro 'limit' en un número entero.
@@ -65,7 +62,7 @@ productsRouter.get('/:pid', async (req, res) => {
         // Paso 2: Consulta en la base de datos el producto con el ID proporcionado.
         /* Nota: Todo dato consultado desde un parámetro es de tipo string. Si el ID es numérico, se necesita convertirlo. */
         // Llama a ProductManager para devolver el producto con el ID solicitado.
-        const PROD = await productManager.getProductById(PRODUCTID)
+        const PROD = await productModel.findById(PRODUCTID)
 
         // Paso 3: Si producto existe, lo devuelve. Sino, devuelve un mensaje de error 404 al cliente por solicitar un ID que no existe.
     
@@ -100,8 +97,10 @@ productsRouter.post('/', async (req, res) => {
         // Paso 1: Se extrae la información del cuerpo de la solicitud, que se espera contenga los datos del producto a crear.
         let product = req.body;
         console.log(product)
-        // Paso 2: Se llama a ProductManager para agregar el producto a la base de datos y obtener un mensaje de confirmación.
-        const mensaje = await productManager.addProduct(product);
+
+        // Paso 2: Llamo al modelo. Al crear un nuevo prod.
+        //reemplacé productManager.addProduct x
+        const mensaje = await productModel.create(product);
 
         // Paso 3: Si el producto se crea con éxito, se devuelve un mensaje de éxito con el código de estado 200 (OK).
         if (mensaje == "Producto creado correctamente")
@@ -135,7 +134,7 @@ productsRouter.put('/:pid', async (req, res) => {
         let updateProduct = req.body;
 
         // Paso 3: Se llama a ProductManager para actualizar el producto en la base de datos y obtener un mensaje de confirmación.
-        const mensaje = await productManager.updateProduct(PRODUCTID, updateProduct);
+        const mensaje = await productModel.findByIdAndUpdate(PRODUCTID, updateProduct);
 
         // Paso 4: Si la actualización del producto es exitosa, se devuelve un mensaje de éxito con el código de estado 200 (OK).
         if (mensaje == 'Actualización satisfactoria') {
@@ -167,7 +166,7 @@ productsRouter.delete('/:pid', async (req, res) => {
         // Paso 2: No se consultan datos adicionales del cuerpo de la solicitud ya que la eliminación se realiza solo con el ID del producto.
 
         // Paso 3: Se llama a ProductManager para eliminar el producto de la base de datos y obtener un mensaje de confirmación.
-        const mensaje = await productManager.deleteProduct(PRODUCTID);
+        const mensaje = await productModel.findByIdAndDelete(PRODUCTID);
 
         if (mensaje === 'Producto Eliminado') {
             // Paso 4: Si la eliminación del producto es exitosa, se devuelve un mensaje de éxito con el código de estado 200 (OK).
