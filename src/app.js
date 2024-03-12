@@ -10,7 +10,9 @@ Formato: Link al repositorio de Github con el proyecto completo, sin la carpeta 
 import express from 'express'
 import productsRouter from './routes/productsRouter.js'
 import cartRouter from './routes/cartRouter.js'
+import userRouter from './routes/userRoutes.js'
 import upload from './utils.js'//.js es un archivo
+import mongoose from 'mongoose'
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
@@ -23,6 +25,8 @@ import { Server } from 'socket.io' //llaves es una dependencia
 const app = express();
 // Se define el puerto en el que el servidor estará escuchando.
 const PORT = 8000
+
+
 //----SERVER---------
 // Se define el servidor utilizando la variable 'app'.
 // El servidor escucha en el puerto definido por la variable 'PORT'.
@@ -34,6 +38,15 @@ const SERVER = app.listen(PORT, () => {
 
 //declaro un nuevo servidor de sockets.io
 const io = new Server(SERVER)
+
+//----CONECTION DB---------
+//contraseña que yo defino
+mongoose.connect("mongodb+srv://karina:rosa@cluster0.m0y1rtl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+//cuando esta conexion me devuelva un valor voy a mostrar este mensaje
+.then(() => console.log ("DB is connected"))
+//si hay error muestro el error
+.catch(e => console.log (e))
+
 
 //*******MIDDLEWARES******************
 
@@ -83,6 +96,7 @@ io.on('connection', (socket) => {
 
 
 
+
 //*******RUTAS******************
 /*
 //defino que la ruta products va a implementar la carpeta publica
@@ -101,12 +115,10 @@ app.use('/api/products', productsRouter);
 // Luego, configura Express para servir archivos estáticos desde la carpeta '/public'
 app.use(express.static(__dirname + '/public'));
 
-
-
-
-
-
 app.use('/api/cart', cartRouter)
+
+//
+app.use('/api/users', userRouter)
 
 //PARA LA CARGA DE IMAGENES
 app.post('/upload', upload.single('product'), (req, res) => {

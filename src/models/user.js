@@ -9,7 +9,7 @@ const userSchema = new Schema({
     name: String,
     surname: String,
     password: String,
-    edad: Number,
+    age: Number,
 /*En la BDD no existe el tipo email, sí en los formularios.
 EL EMAIL ES ÚNICO,todas las aplicaciones sociales y Ecommerce tiene en común. NO PUEDE HABER 2 EMAILS= EN MI APLICACION. Lo puedo restringir desde el BACK, Front y BBD*/
 
