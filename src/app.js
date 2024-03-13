@@ -13,6 +13,7 @@ import cartRouter from './routes/cartRouter.js'
 import userRouter from './routes/userRoutes.js'
 import upload from './utils.js'//.js es un archivo
 import mongoose from 'mongoose'
+import messageModel from './models/messages.js'
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
@@ -74,23 +75,26 @@ app.set('views', __dirname + '/views')
 
 //...........SOCKET.IO..................
 
-// Arreglo para almacenar mensajes
-const mensajes = []
-// Cuando se establece una conexión con Socket.io, se ejecuta esta función IO.ON. Esta conexion me devuelve un socket que seria mi listener, el cliente que esta escuchando "APRETON DE MANOS"
+// Cuando se establece una conexión con Socket.io, se ejecuta esta función.
+// Esta función recibe un socket que representa la conexión con el cliente.
 io.on('connection', (socket) => {
-  //cuando tenga ese "apreton de manos" de distintos clientes agrego a la consola el mensaje
-  console.log("Conexion establecida con Socket.io")
+  // Se imprime un mensaje en la consola del servidor para indicar la conexión exitosa.
+  console.log("Conexión establecida con Socket.io")
 
-  // Cuando el cliente envía un mensaje de 'movimiento', se ejecuta esta función
-  socket.on('mensaje', info => {
-    // Imprime en la consola del servidor la información recibida desde el cliente
-    console.log(info)
-
-    // Se agrega el mensaje al arreglo de mensajes
-    mensajes.push(info)
-
-    // Se emite el arreglo actualizado de mensajes a todos los clientes conectados
-    io.emit('mensajeLogs', mensajes)
+  // Cuando el cliente envía un mensaje de 'mensaje', se ejecuta esta función.
+  socket.on('mensaje', async (mensaje) => {
+    // Se intenta almacenar el mensaje en la base de datos.
+    try {
+      // Se utiliza un modelo de mensaje (messageModel) para crear un nuevo mensaje en la base de datos.
+      await messageModel.create(mensaje)
+      // Busca todos los mensajes en la base de datos utilizando el modelo de mensaje (messageModel) y los almacena en la variable 'mensajes'
+      const mensajes = await messageModel.find()
+      // Se emite el evento 'mensajeLogs' a todos los clientes conectados, enviando el arreglo actualizado de mensajes.
+      io.emit('mensajeLogs', mensajes)
+    } catch (e) {
+      // Si ocurre un error al almacenar el mensaje, se emite el error a todos los clientes conectados.
+      io.emit('mensajeLogs', e)
+    }
   })
 })
 
