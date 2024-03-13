@@ -56,14 +56,16 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
 
         // Buscar el índice del producto en el array de productos del carrito
         const indice = cart.products.findIndex(product => product.id_prod == productId)
-
+        //Consulta un producto cuyo id sea igual a product Id
         if (indice != -1) {
             // Si el producto ya existe en el carrito, actualizar su cantidad
             cart.products[indice].quantity = quantity
+            //RECORDAR: cart sería EL OBJETO EN SU TOTALIDAD
+            //cart.products→ sería EL ARRAY DE MIS ELEMENTOS
         } else {
             // Si el producto no existe en el carrito, agregarlo al array de productos
             cart.products.push({ id_prod: productId, quantity: quantity })
-        }
+        }//tanto si lo agrego o lo modifico lo tengo que actualizar
 
         // ......Actualizar el carrito en la base de datos.........
 
