@@ -6,6 +6,8 @@ let productsRouter = Router();
 
 //TRAIGO TODOS LOS METODOS QUE ESTABA EN app.js y reemplazo app x productsRouter
 
+
+
 //********METDOS GET***************
 
 
@@ -15,9 +17,9 @@ productsRouter.get('/', async (req, res) => {
     try {
         // Paso 1: Obtiene el parámetro 'limit' de la consulta HTTP.
         const { limit } = req.query;
-        
+
         // Paso 2:Devuelve todos los productos. Modifiqué productManager.getProducts();  x productModel.find()
-        const PRODS = await productModel.find()      
+        const PRODS = await productModel.find()
 
 
         // Paso 3: Verifica si el parámetro 'limit' está presente en la consulta HTTP.
@@ -29,17 +31,17 @@ productsRouter.get('/', async (req, res) => {
                 // Paso 6: Si el límite es válido, limita el número de productos a mostrar.
                 const prodsLimit = PRODS.slice(0, LIMITE);
                 // Paso 7: Devuelve una respuesta con el código de estado 200 (OK) y los productos limitados.
-                
-               res.status(200).render ('templates/home', {
+
+                res.status(200).render('templates/home', {
                     //mostrame estos productos bajo lo que seria un condicional. Por eso se usa :
                     //cuando renderizo estos productos envio este condicional true, y envio este condicional de productos.
                     mostrarProductos: true,
-                    productos: prodsLimit,                
+                    productos: prodsLimit,
                     css: 'home.css'
-                  })
-            } 
+                })
+            }
         }
-     
+
     } catch (error) {
         res.status(500).send(`Error interno del servidor al consultar productos: ${error}`)
         res.status(500).render('templates/error', {
@@ -65,17 +67,17 @@ productsRouter.get('/:pid', async (req, res) => {
         const PROD = await productModel.findById(PRODUCTID)
 
         // Paso 3: Si producto existe, lo devuelve. Sino, devuelve un mensaje de error 404 al cliente por solicitar un ID que no existe.
-    
-            if (PROD) {
 
-                res.status(200).send(PROD)
-                // Devuelve el producto con el código de estado 200 (OK).
+        if (PROD) {
 
-            } else {
-                res.status(404).send("Producto no encontrado")
-                // Devuelve un mensaje de error 404 (Not Found).
-            }
-       
+            res.status(200).send(PROD)
+            // Devuelve el producto con el código de estado 200 (OK).
+
+        } else {
+            res.status(404).send("Producto no encontrado")
+            // Devuelve un mensaje de error 404 (Not Found).
+        }
+
 
     } catch (e) {
         res.status(500).send(`Error interno del servidor al consultar producto: ${e}`)
@@ -104,12 +106,12 @@ productsRouter.post('/', async (req, res) => {
 
         // Paso 3: Si el producto se crea con éxito, se devuelve un mensaje de éxito con el código de estado 200 (OK).
         if (mensaje == "Producto creado correctamente")
-        if (mensaje == "Producto cargado correctamente") 
-            res.status(200).send(mensaje)
-         else 
-            // Paso 4: Si no se proporcionaron todas las propiedades necesarias para crear el producto, se devuelve un mensaje de error 400 (Bad Request).
-            // Esto indica un error del cliente al intentar crear un producto con un ID existente o faltan datos.
-            res.status(400).send(mensaje);  
+            if (mensaje == "Producto cargado correctamente")
+                res.status(200).send(mensaje)
+            else
+                // Paso 4: Si no se proporcionaron todas las propiedades necesarias para crear el producto, se devuelve un mensaje de error 400 (Bad Request).
+                // Esto indica un error del cliente al intentar crear un producto con un ID existente o faltan datos.
+                res.status(400).send(mensaje);
 
     } catch (e) {
         // Paso 5: Si ocurre algún error durante el proceso de creación del producto, se maneja aquí y se devuelve un mensaje de error 500 (Internal Server Error).
