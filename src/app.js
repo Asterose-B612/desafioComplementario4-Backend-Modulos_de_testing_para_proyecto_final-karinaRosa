@@ -73,25 +73,25 @@ app.set('views', __dirname + '/views')
 
 
 //...........SOCKET.IO..................
+
+// Arreglo para almacenar mensajes
+const mensajes = []
 // Cuando se establece una conexión con Socket.io, se ejecuta esta función IO.ON. Esta conexion me devuelve un socket que seria mi listener, el cliente que esta escuchando "APRETON DE MANOS"
 io.on('connection', (socket) => {
   //cuando tenga ese "apreton de manos" de distintos clientes agrego a la consola el mensaje
-  console.log("Conexion con Socket.io")
-  // Cuando el cliente envía un mensaje de 'movimiento', se ejecuta esta función
-  socket.on('movimiento', info => {
-    // Imprime en la consola del servidor la información recibida desde el cliente
-    console.log(info)
-  })
+  console.log("Conexion establecida con Socket.io")
 
-  // Cuando el cliente envía un mensaje de 'rendirse', se ejecuta esta función
-  socket.on('rendirse', info => {
+  // Cuando el cliente envía un mensaje de 'movimiento', se ejecuta esta función
+  socket.on('mensaje', info => {
     // Imprime en la consola del servidor la información recibida desde el cliente
     console.log(info)
-    // Envía un mensaje solo al cliente que ha enviado el mensaje de rendirse
-    socket.emit('mensaje-jugador', "Te has rendido")
-    })
-   // Envía un mensaje a todos los clientes excepto al que envió el mensaje de rendirse
-  socket.broadcast.emit('rendicion', "El jugador se rindio") //
+
+    // Se agrega el mensaje al arreglo de mensajes
+    mensajes.push(info)
+
+    // Se emite el arreglo actualizado de mensajes a todos los clientes conectados
+    io.emit('mensajeLogs', mensajes)
+  })
 })
 
 
