@@ -29,7 +29,10 @@ const userSchema = new Schema({
         La restriccion se da desde el Front: ej tiene que tener un @, etc. Para la BDD ES UN STRING.
         Ya para este punto el email deberia estar validado*/
         type: String,
-        unique: true
+        unique: true,
+        //agrego el indice
+        index: true
+
     },
     //rol→ creado por defecto cada vez que se ingrese un usuario
     rol: {
