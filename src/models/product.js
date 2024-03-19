@@ -4,7 +4,9 @@ const productSchema = new Schema({
 
     title: {
         type: String,
-        required: true
+        required: true,
+        //agrego el indice
+        index: true
     },
     description: {
         type: String,
