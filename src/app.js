@@ -8,12 +8,9 @@ Formato: Link al repositorio de Github con el proyecto completo, sin la carpeta 
 
 // Importa el módulo Express para crear el servidor
 import express from 'express'
-import productsRouter from './routes/productsRouter.js'
-import cartRouter from './routes/cartRouter.js'
-import userRouter from './routes/userRoutes.js'
-import upload from './utils.js'//.js es un archivo
 import mongoose from 'mongoose'
 import messageModel from './models/messages.js'
+import indexRouter from './routes/indexRouter.js'
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
@@ -71,7 +68,8 @@ app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
 //las vistas de mi aplicacion se encuentran en __dirname es mi path →seria la carpeta src y lo concateno con la carpeta views
 
-
+//establece que el middleware indexRouter manejará las solicitudes en la ruta raíz de la aplicación.
+app.use('/', indexRouter) 
 
 //...........SOCKET.IO..................
 
@@ -101,66 +99,5 @@ io.on('connection', (socket) => {
 
 
 
-//*******RUTAS******************
-/*
-//defino que la ruta products va a implementar la carpeta publica
-app.use('/api/products', productsRouter, express.static(__dirname + '/public'))
-//productsRouter va a importar las rutas de todos esos elementos. Divido mi aplicacion en pequeñas partes.
-//Genero ruta donde subo las imagenes. El middleware se encuentra entre la ruta y el contenido de la ruta
-*/
 
 
-
-
-
-// Primero, configura el enrutador de productos
-app.use('/api/products', productsRouter);
-
-// Luego, configura Express para servir archivos estáticos desde la carpeta '/public'
-app.use(express.static(__dirname + '/public'));
-
-app.use('/api/cart', cartRouter)
-
-//
-app.use('/api/users', userRouter)
-
-//PARA LA CARGA DE IMAGENES
-app.post('/upload', upload.single('product'), (req, res) => {
-  try {
-    console.log(req.file)
-    res.status(200).send("Imagen cargada correctamente")
-  } catch (e) {
-    res.status(500).send("Error al cargar imagen")
-  }
-})
-
-//GENERAMOS UNA VISTA PARA LA IMPLEMENTACIÓN CON HANDLEBARS.
-//en la ruta static, voy a renderizar una plantilla xeje: home
-/*app.get('/static', (req, res) => {
-  //para esta ruta renderizame productos y el css de productos de la carpeta public
-
-  //necesito mostrar un listado de productos
-  //los comento xq esto es para probar.
-  const PRODS = [
-    //img: con ruta interna
-    { id: 1, title: "celular", price: 1500, img: "./img/src/public/img/1707780153245celu1.jpg" },
-    { id: 2, title: "celular", price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg" },
-    { id: 3, title: "celular", price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg" },
-    { id: 4, title: "celular", price: 1500, img: "https://www.megatone.net/Images/Articulos/zoom2x/209/02/KIT0454SSG.jpg" }
-  ];
-
-})*/
-
-//sabe lo que voy a enviar por la configuracion previa app.set....
-
-
-
-
-/*
-RESUMEN: Se implementó un CRUD (Crear, Leer, Actualizar, Eliminar) para gestionar los productos utilizando el ProductManager.
-Las operaciones incluyen:
-- Obtener todos los productos y obtener un producto por su ID.
-- Agregar un nuevo producto.
-- Actualizar un producto existente.
-- Eliminar un producto.
-*/
