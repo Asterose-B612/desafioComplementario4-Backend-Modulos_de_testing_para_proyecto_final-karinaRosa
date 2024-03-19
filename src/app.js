@@ -42,7 +42,7 @@ const io = new Server(SERVER)
 
 //----CONECTION DB---------
 //contraseña que yo defino
-mongoose.connect("mongodb+srv://karina:password@cluster0.m0y1rtl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 //cuando esta conexion me devuelva un valor voy a mostrar este mensaje
 .then(() => console.log ("DB is connected"))
 //si hay error muestro el error

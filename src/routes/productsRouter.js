@@ -2,7 +2,7 @@ import { Router } from "express";
 import productModel from "../models/product.js";
 
 
-let productsRouter = Router();
+const productsRouter = Router();
 
 //TRAIGO TODOS LOS METODOS QUE ESTABA EN app.js y reemplazo app x productsRouter
 
@@ -19,31 +19,40 @@ productsRouter.get('/', async (req, res) => {
         const { limit } = req.query;
 
         // Paso 2:Devuelve todos los productos. Modifiqué productManager.getProducts();  x productModel.find()
-        const PRODS = await productModel.find()
+        //
+        //El método .lean() en Mongoose simplifica los resultados de una consulta a objetos JavaScript básicos, útiles para operaciones de lectura eficientes.
+        const PRODS = await productModel.find().lean()
 
 
         // Paso 3: Verifica si el parámetro 'limit' está presente en la consulta HTTP.
-        if (limit !== undefined) {
-            // Paso 4: Convierte el valor del parámetro 'limit' en un número entero.
-            const LIMITE = parseInt(limit);
-            // Paso 5: Verifica si el valor del parámetro 'limit' es un número válido y mayor o igual que cero.
-            if (!isNaN(LIMITE) && LIMITE >= 0) {
-                // Paso 6: Si el límite es válido, limita el número de productos a mostrar.
-                const prodsLimit = PRODS.slice(0, LIMITE);
-                // Paso 7: Devuelve una respuesta con el código de estado 200 (OK) y los productos limitados.
-
-                res.status(200).render('templates/home', {
-                    //mostrame estos productos bajo lo que seria un condicional. Por eso se usa :
-                    //cuando renderizo estos productos envio este condicional true, y envio este condicional de productos.
-                    mostrarProductos: true,
-                    productos: prodsLimit,
-                    css: 'home.css'
-                })
-            }
+        let LIMITE = parseInt(limit);
+        // Paso 5: Verifica si el valor del parámetro 'limit' es un número válido y mayor o igual que cero.
+        if (!isNaN(LIMITE) && LIMITE >= 0) {
+            // Paso 6: Si el límite es válido, limita el número de productos a mostrar.
+            const prodsLimit = PRODS.slice(0, LIMITE);
+            console.log(PRODS)
+            console.log(prodsLimit)
+            // Paso 7: Devuelve una respuesta con el código de estado 200 (OK) y los productos limitados.
+            res.status(200).render('templates/home', {
+                //mostrame estos productos bajo lo que seria un condicional. Por eso se usa :
+                //cuando renderizo estos productos envio este condicional true, y envio este condicional de productos.
+                mostrarProductos: true,
+                productos: prodsLimit,
+                css: 'home.css'
+            });
+        } else {
+            // Si el límite no es válido, muestra todos los productos sin limitar.
+            const prodsLimit = PRODS;
+            res.status(200).render('templates/home', {
+                mostrarProductos: true,
+                productos: prodsLimit,
+                css: 'home.css'
+            });
         }
 
+
+
     } catch (error) {
-        res.status(500).send(`Error interno del servidor al consultar productos: ${error}`)
         res.status(500).render('templates/error', {
             error: error,
         })
@@ -78,7 +87,6 @@ productsRouter.get('/:pid', async (req, res) => {
             // Devuelve un mensaje de error 404 (Not Found).
         }
 
-
     } catch (e) {
         res.status(500).send(`Error interno del servidor al consultar producto: ${e}`)
         // Paso 4: Si ocurre algún error durante la consulta del producto, se maneja aquí y se devuelve un mensaje de error 500 (Internal Server Error).
@@ -104,20 +112,13 @@ productsRouter.post('/', async (req, res) => {
         //reemplacé productManager.addProduct x
         const mensaje = await productModel.create(product);
 
-        // Paso 3: Si el producto se crea con éxito, se devuelve un mensaje de éxito con el código de estado 200 (OK).
-        if (mensaje == "Producto creado correctamente")
-            if (mensaje == "Producto cargado correctamente")
-                res.status(200).send(mensaje)
-            else
-                // Paso 4: Si no se proporcionaron todas las propiedades necesarias para crear el producto, se devuelve un mensaje de error 400 (Bad Request).
-                // Esto indica un error del cliente al intentar crear un producto con un ID existente o faltan datos.
-                res.status(400).send(mensaje);
+        // Paso 3: Si el producto se crea con éxito, mensaje de estado 201. 201 porqu fue creado.  
+        res.status(201).send(mensaje)
 
-    } catch (e) {
+    } catch (error) {
         // Paso 5: Si ocurre algún error durante el proceso de creación del producto, se maneja aquí y se devuelve un mensaje de error 500 (Internal Server Error).
-        res.status(500).send(`Error interno del servidor al consultar producto: ${e}`);
+        res.status(500).send(`Error interno del servidor al consultar producto: ${error}`);
     }
-
 })
 
 
@@ -136,22 +137,14 @@ productsRouter.put('/:pid', async (req, res) => {
         let updateProduct = req.body;
 
         // Paso 3: Se llama a ProductManager para actualizar el producto en la base de datos y obtener un mensaje de confirmación.
-        const mensaje = await productModel.findByIdAndUpdate(PRODUCTID, updateProduct);
+        const prod = await productModel.findByIdAndUpdate(PRODUCTID, updateProduct);
 
         // Paso 4: Si la actualización del producto es exitosa, se devuelve un mensaje de éxito con el código de estado 200 (OK).
-        if (mensaje == 'Actualización satisfactoria') {
-            res.status(200).send(mensaje);
-        } else {
-            // Paso 5: Si el ID del producto proporcionado no existe en la base de datos, se devuelve un mensaje de error 404 (Not Found).
-            // Esto indica un error del cliente al intentar actualizar un producto con un ID inexistente.
-            res.status(404).send(mensaje);
-        }
-
+        res.status(200).send(prod);
     } catch (e) {
         // Paso 6: Si ocurre algún error durante el proceso de actualización del producto, se maneja aquí y se devuelve un mensaje de error 500 (Internal Server Error).
         res.status(500).send(`Error interno del servidor al actualizar producto: ${e}`);
     }
-
 })
 
 
@@ -169,16 +162,8 @@ productsRouter.delete('/:pid', async (req, res) => {
 
         // Paso 3: Se llama a ProductManager para eliminar el producto de la base de datos y obtener un mensaje de confirmación.
         const mensaje = await productModel.findByIdAndDelete(PRODUCTID);
-
-        if (mensaje === 'Producto Eliminado') {
-            // Paso 4: Si la eliminación del producto es exitosa, se devuelve un mensaje de éxito con el código de estado 200 (OK).
+                  // Paso 4: Si la eliminación del producto es exitosa, se devuelve un mensaje de éxito con el código de estado 200 (OK).
             res.status(200).send(mensaje);
-
-        } else {
-            // Paso 5: Si el ID del producto proporcionado no existe en la base de datos, se devuelve un mensaje de error 404 (Not Found).
-            // Esto indica un error del cliente al intentar eliminar un producto con un ID inexistente.
-            res.status(404).send(mensaje);
-        }
 
     } catch (e) {
         // Paso 6: Si ocurre algún error durante el proceso de eliminación del producto, se maneja aquí y se devuelve un mensaje de error 500 (Internal Server Error).
