@@ -30,8 +30,8 @@ cartRouter.get('/:cid', async (req, res) => {
         // Obtener el ID del carrito de los parámetros de la URL
         const cartId = req.params.cid
         // Buscar el carrito por su ID        
-        const cart = await cartModel.findById(cartId).populate('products.id_prod')
         // Enviar respuesta con el carrito encontrado y código 200 (OK)
+        const cart = await cartModel.findOne({ _id : cartId })
         res.status(200).send(cart)
     } catch (error) {
         // Si ocurre un error al obtener el carrito, devuelve un mensaje de error con un código de estado 500 (Error interno del servidor).
