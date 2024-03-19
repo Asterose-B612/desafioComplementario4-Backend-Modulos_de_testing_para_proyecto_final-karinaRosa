@@ -30,7 +30,7 @@ cartRouter.get('/:cid', async (req, res) => {
         // Obtener el ID del carrito de los parámetros de la URL
         const cartId = req.params.cid
         // Buscar el carrito por su ID        
-        const cart = await cartModel.findById(cartId)
+        const cart = await cartModel.findById(cartId).populate('products.id_prod')
         // Enviar respuesta con el carrito encontrado y código 200 (OK)
         res.status(200).send(cart)
     } catch (error) {

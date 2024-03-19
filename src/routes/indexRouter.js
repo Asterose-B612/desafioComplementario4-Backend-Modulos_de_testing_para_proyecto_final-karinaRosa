@@ -4,7 +4,7 @@ import cartRouter from './cartRouter.js'
 import userRouter from './userRoutes.js'
 import upload from '../utils.js'//.js es un archivo
 import express from 'express'
-import { __dirname } from './path.js'
+import { __dirname } from '../path.js'
 
 
 const indexRouter = express.Router()
