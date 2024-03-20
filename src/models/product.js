@@ -32,7 +32,11 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
-
+    status : {
+        type : Boolean,
+        //por defecto va a ser verdadero.Si no lo envío se carga x defecto.
+        default : true
+    }
 })
 
 const productModel = model("products", productSchema)
