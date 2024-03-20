@@ -80,9 +80,12 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
 
 
 
-//*****ELIMINAR DEL CARRITO EL PRODUCTO SELECCIONADO****** */
 
-// Endpoint DELETE en el router de carritos que escucha en la URL, para eliminar un producto específico de un carrito
+
+//*****ELIMINAR DEL CARRITO EL PRODUCTO SELECCIONADO, BUSCAR Y ACTUALIZAR CARRITO EN LA BASE DE DATOS****** */
+
+
+// Endpoint DELETE en el router de carritos que escucha en la URL, para eliminar un producto específico de un carrito, buscar y actualizar los datos del carrito en la base de datos.
 cartRouter.delete('/:cid/products/:pid', async (req, res) => {
 
     try {
@@ -107,6 +110,42 @@ cartRouter.delete('/:cid/products/:pid', async (req, res) => {
     }
 
 });
+
+
+//LA SIGUIENTE RUTA ESTA DESTINADA PARA HACER PRÁCTICAS, PARA PODER MODIFICAR MI CARRITO HACIENDO PEQUEÑOS TEST SIN TENER QUE ESTAR VIENDO ELEMENTO A ELEMENTO, UNO X UNO. DIRECTAMENTE ENVÍO UN ARRAY DE OBJETOS EN EL BODY A MODIFICAR Y LISTO.
+//NO VA A SER USADA EN PRODUCCION, SÍ EN TESTING
+//     ↓
+
+
+//*******ACTUALIZAR EL CARRITO CON UN ARREGLO DE PRODUCTOS ****************
+
+//Endpoint PUT para actualizar el carrito con un arreglo de productos.
+//Esta ruta debe aceptar un parámetro en la URL :cid para el ID del carrito y recibir el arreglo de productos en el cuerpo de la solicitud.
+cartRouter.put ('/:cid', async (req, res)=> {
+
+try {
+// Obtener el ID del carrito de la URL
+    const cartId = req.params.cid; 
+    // Obtener el arreglo de productos del cuerpo de la solicitud
+    const newProducts = req.body.products; 
+
+    // Actualizar el carrito con el nuevo arreglo de productos
+    const updatedCart = await cartModel.findByIdAndUpdate(cartId, { products: newProducts });
+
+     // Enviar el carrito actualizado como respuesta
+     res.status(200).send(updatedCart); 
+
+} catch(error) {
+    // Manejar cualquier error y enviar una respuesta con el código de estado 500 (Error interno del servidor)
+    res.status(500).send(`Error interno del servidor al actualizar carrito: ${error}`);
+}
+
+})
+ 
+
+
+
+
 
 
 
