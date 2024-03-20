@@ -12,50 +12,55 @@ const productsRouter = Router();
 
 
 // Esta ruta maneja las solicitudes GET a '/products'.
-// Recibe opcionalmente el parámetro 'limit' desde la URL para limitar la cantidad de productos devueltos.
+// Recibe opcionalmente los parámetros 'limit', 'page', 'filter' y 'ord' desde la URL para limitar la cantidad de productos devueltos, paginar los resultados, filtrar por estado o categoría, y ordenar por precio.
 productsRouter.get('/', async (req, res) => {
     try {
-        // Paso 1: Obtiene el parámetro 'limit' de la consulta HTTP.
-        const { limit } = req.query;
+        //....CONSULTAS......
+        // Paso 1: Obtiene los parámetros 'limit', 'page', 'filter' y 'ord' de la consulta HTTP.
+        const { limit, page, filter, ord } = req.query;
+        //declaro la variable metFilter para determinar si se filtrará por estado o categoría.
+        let metFilter;
+        // Asigna el valor de 'page' enviado en la consulta, sino se especifica  por defecto consulto por 1.
 
-        // Paso 2:Devuelve todos los productos. Modifiqué productManager.getProducts();  x productModel.find()
-        //
-        //El método .lean() en Mongoose simplifica los resultados de una consulta a objetos JavaScript básicos, útiles para operaciones de lectura eficientes.
-        const PRODS = await productModel.find().lean()
+        const PAG = page !== undefined ? page : 1;
+        // Asigno el valor de 'limit' enviado en la consulta, o por defecto 10 si no se especifica.
+        const LIM = limit !== undefined ? limit : 10;
 
 
-        // Paso 3: Verifica si el parámetro 'limit' está presente en la consulta HTTP.
-        let LIMITE = parseInt(limit);
-        // Paso 5: Verifica si el valor del parámetro 'limit' es un número válido y mayor o igual que cero.
-        if (!isNaN(LIMITE) && LIMITE >= 0) {
-            // Paso 6: Si el límite es válido, limita el número de productos a mostrar.
-            const prodsLimit = PRODS.slice(0, LIMITE);
-            console.log(PRODS)
-            console.log(prodsLimit)
-            // Paso 7: Devuelve una respuesta con el código de estado 200 (OK) y los productos limitados.
-            res.status(200).render('templates/home', {
-                //mostrame estos productos bajo lo que seria un condicional. Por eso se usa :
-                //cuando renderizo estos productos envio este condicional true, y envio este condicional de productos.
-                mostrarProductos: true,
-                productos: prodsLimit,
-                css: 'home.css'
-            });
+
+
+        //Condicional: para determinar si se filtrará por estado o categoría.
+        // Si 'filter' es un booleano, se filtra por estado ('status'), de lo contrario se filtra por categoría ('category').
+        if (filter === "true" || filter === "false") {
+            metFilter = "status"
         } else {
-            // Si el límite no es válido, muestra todos los productos sin limitar.
-            const prodsLimit = PRODS;
-            res.status(200).render('templates/home', {
-                mostrarProductos: true,
-                productos: prodsLimit,
-                css: 'home.css'
-            });
+            if (filter !== undefined)
+                metFilter = "category";
         }
+        // Crea el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
+        const query = metFilter !== undefined ? { [metFilter]: filter } : {};
+        // Crea el objeto de consulta para el método de ordenamiento, utilizando 'price' como clave y 'ord' como dirección de ordenamiento.
+        const ordquery = ord !== undefined ? { price: ord } : {};
 
 
+        console.log(query)
 
+
+        // Realiza la consulta a la base de datos, aplicando el filtro, paginación y ordenamiento.
+        const PRODS = await productModel.paginate(query, { limit: LIM, page: PAG, sort: ordquery });
+
+
+        console.log(ordquery)
+
+
+        //Si ok: código de estado 200 y los productos limitados.
+        res.status(200).send(PRODS);
+
+        // Si hay un error, responde con código de estado 500 y renderiza una plantilla de error.
     } catch (error) {
         res.status(500).render('templates/error', {
             error: error,
-        })
+        });
     }
 });
 
@@ -162,8 +167,8 @@ productsRouter.delete('/:pid', async (req, res) => {
 
         // Paso 3: Se llama a ProductManager para eliminar el producto de la base de datos y obtener un mensaje de confirmación.
         const mensaje = await productModel.findByIdAndDelete(PRODUCTID);
-                  // Paso 4: Si la eliminación del producto es exitosa, se devuelve un mensaje de éxito con el código de estado 200 (OK).
-            res.status(200).send(mensaje);
+        // Paso 4: Si la eliminación del producto es exitosa, se devuelve un mensaje de éxito con el código de estado 200 (OK).
+        res.status(200).send(mensaje);
 
     } catch (e) {
         // Paso 6: Si ocurre algún error durante el proceso de eliminación del producto, se maneja aquí y se devuelve un mensaje de error 500 (Internal Server Error).
