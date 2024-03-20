@@ -179,9 +179,31 @@ try {
   res.status(500).send(`Error interno del servidor al actualizar carrito: ${error}`);
 }
 
-
-
 })
+
+
+
+//*****ELIMINAR TODOS LOS PRODUCTOS DEL CARRITO****
+
+// Endpoint DELETE para eliminar todos los productos del carrito
+cartRouter.delete('/:cid', async (req, res) => {
+    try {
+         // Obtener el ID del carrito de la URL con req.params
+        const cartId = req.params.cid;
+
+        // Actualizar el carrito para eliminar todos los productos
+        //findByIdAndUpdate para buscar el carrito por su ID y actualizarlo con un array vacío en el campo products, eliminando así todos los productos del carrito.
+        const updatedCart = await cartModel.findByIdAndUpdate(cartId, { products: [] });
+
+        // Si todo ok, envío el carrito actualizado como respuesta con el código de estado 200 
+        res.status(200).send(updatedCart);
+
+    } catch (error) {
+        // Manejar cualquier error y enviar una respuesta con el código de estado 500 (Error interno del servidor)
+        res.status(500).send(`Error interno del servidor al eliminar todos los productos del carrito: ${error}`);
+    }
+});
+
 
 
 
