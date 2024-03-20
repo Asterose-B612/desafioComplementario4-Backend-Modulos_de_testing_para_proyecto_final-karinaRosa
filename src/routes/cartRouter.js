@@ -31,7 +31,7 @@ cartRouter.get('/:cid', async (req, res) => {
         const cartId = req.params.cid
         // Buscar el carrito por su ID        
         // Enviar respuesta con el carrito encontrado y código 200 (OK)
-        const cart = await cartModel.findOne({ _id : cartId })
+        const cart = await cartModel.findOne({ _id: cartId })
         res.status(200).send(cart)
     } catch (error) {
         // Si ocurre un error al obtener el carrito, devuelve un mensaje de error con un código de estado 500 (Error interno del servidor).
@@ -77,5 +77,41 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
         res.status(500).send(`Error interno del servidor al crear producto: ${error}`)
     }
 })
+
+
+
+//*****ELIMINAR DEL CARRITO EL PRODUCTO SELECCIONADO****** */
+
+// Endpoint DELETE en el router de carritos que escucha en la URL, para eliminar un producto específico de un carrito
+cartRouter.delete('/:cid/products/:pid', async (req, res) => {
+
+    try {
+        // Obtener el ID del carrito de la URL usando req.params
+        const cartId = req.params.cid;
+        // Obtener el ID del producto de la URL usando req.params
+        const productId = req.params.pid;
+
+        // Actualizar el carrito eliminando el producto con el ID proporcionado
+        //uso metodo de Mongoose findByIdAndUpdate para BUSCAR UN DOCUMENTO X SU ID Y LO ACTUALIZA
+        const updatedCart = await cartModel.findByIdAndUpdate(cartId, {
+           //método $pull de MongoDB:  para eliminar el producto con el ID especificado del array de productos del carrito.
+            $pull: { products: { id_prod: productId } }
+        });
+
+        // Si todo ok, se envía el carrito actualizado como respuesta con el código de estado 200
+        res.status(200).send(updatedCart);
+
+    } catch (error) {
+        // Manejar errores y enviar respuesta con código 500 (Internal Server Error)
+        res.status(500).send(`Error interno del servidor al crear producto: ${error}`)
+    }
+
+});
+
+
+
+
+
+
 // Exporta el router cartRouter para su uso en otras partes de la aplicación.
 export default cartRouter
