@@ -69,7 +69,8 @@ app.set('views', __dirname + '/views')
 //las vistas de mi aplicacion se encuentran en __dirname es mi path →seria la carpeta src y lo concateno con la carpeta views
 
 //establece que el middleware indexRouter manejará las solicitudes en la ruta raíz de la aplicación.
-app.use('/', indexRouter) 
+app.use('/', indexRouter)
+
 
 //...........SOCKET.IO..................
 
