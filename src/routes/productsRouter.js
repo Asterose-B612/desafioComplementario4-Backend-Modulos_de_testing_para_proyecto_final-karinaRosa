@@ -15,48 +15,34 @@ const productsRouter = Router();
 // Recibe opcionalmente los parámetros 'limit', 'page', 'filter' y 'ord' desde la URL para limitar la cantidad de productos devueltos, paginar los resultados, filtrar por estado o categoría, y ordenar por precio.
 productsRouter.get('/', async (req, res) => {
     try {
-        //....CONSULTAS......
-        // Paso 1: Obtiene los parámetros 'limit', 'page', 'filter' y 'ord' de la consulta HTTP.
-        const { limit, page, filter, ord } = req.query;
-        //declaro la variable metFilter para determinar si se filtrará por estado o categoría.
-        let metFilter;
-        // Asigna el valor de 'page' enviado en la consulta, sino se especifica  por defecto consulto por 1.
+        // Paso 1: Obtiene los parámetros 'limit', 'page', 'filter' y 'sort' de la consulta HTTP.
+        const { limit = 10, page = 1, filter, sort } = req.query;
 
-        const PAG = page !== undefined ? page : 1;
-        // Asigno el valor de 'limit' enviado en la consulta, o por defecto 10 si no se especifica.
-        const LIM = limit !== undefined ? limit : 10;
+        // Paso 2: Construye el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
+        const query = filter ? (filter === 'true' || filter === 'false' ? { status: filter } : { category: filter }) : {};
 
+        // Paso 3: Construye el objeto de consulta para el método de ordenamiento, utilizando 'price' como clave y 'sort' como dirección de ordenamiento.
+        const sortQuery = sort ? { price: sort === 'asc' ? 1 : -1 } : {};
 
+        // Paso 4: Realiza la consulta a la base de datos, aplicando el filtro, paginación y ordenamiento.
+        const options = { limit: parseInt(limit), page: parseInt(page), sort: sortQuery };
+        const products = await productModel.paginate(query, options);
 
+        // Paso 5: Calcula si hay páginas previas y siguientes.
+        const prevPage = products.prevPage ? parseInt(page) - 1 : null;
+        const nextPage = products.nextPage ? parseInt(page) + 1 : null;
 
-        //Condicional: para determinar si se filtrará por estado o categoría.
-        // Si 'filter' es un booleano, se filtra por estado ('status'), de lo contrario se filtra por categoría ('category').
-        if (filter === "true" || filter === "false") {
-            metFilter = "status"
-        } else {
-            if (filter !== undefined)
-                metFilter = "category";
-        }
-        // Crea el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
-        const query = metFilter !== undefined ? { [metFilter]: filter } : {};
-        // Crea el objeto de consulta para el método de ordenamiento, utilizando 'price' como clave y 'ord' como dirección de ordenamiento.
-        const ordquery = ord !== undefined ? { price: ord } : {};
-
-
-        console.log(query)
-
-
-        // Realiza la consulta a la base de datos, aplicando el filtro, paginación y ordenamiento.
-        const PRODS = await productModel.paginate(query, { limit: LIM, page: PAG, sort: ordquery });
-
-
-        console.log(ordquery)
-
-
-        //Si ok: código de estado 200 y los productos limitados.
-        res.status(200).send(PRODS);
-
-        // Si hay un error, responde con código de estado 500 y renderiza una plantilla de error.
+        // Paso 6: Envía la respuesta con el formato requerido.
+        res.status(200).json({
+            status: "success",
+            payload: products.docs,
+            totalPages: products.totalPages,
+            prevPage: prevPage,
+            nextPage: nextPage,
+            page: parseInt(page),
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,           
+        });
     } catch (error) {
         res.status(500).render('templates/error', {
             error: error,
