@@ -1,5 +1,6 @@
 import { Router } from "express";
 import productModel from "../models/product.js";
+// Importa la función fileURLToPath del módulo 'url'
 
 
 const productsRouter = Router();
@@ -13,6 +14,7 @@ const productsRouter = Router();
 
 // Esta ruta maneja las solicitudes GET a '/products'.
 // Recibe opcionalmente los parámetros 'limit', 'page', 'filter' y 'ord' desde la URL para limitar la cantidad de productos devueltos, paginar los resultados, filtrar por estado o categoría, y ordenar por precio.
+
 productsRouter.get('/', async (req, res) => {
     try {
         // Paso 1: Obtiene los parámetros 'limit', 'page', 'filter' y 'sort' de la consulta HTTP.
@@ -33,23 +35,30 @@ productsRouter.get('/', async (req, res) => {
         const nextPage = products.nextPage ? parseInt(page) + 1 : null;
 
         // Paso 6: Envía la respuesta con el formato requerido.
-        res.status(200).json({
+        // Renderiza la plantilla home.handlebars ubicada en la ruta proporcionada y devuelve el HTML generado como parte de la respuesta HTTP con un código de estado 200.
+        res.status(200).send({
             status: "success",
             payload: products.docs,
             totalPages: products.totalPages,
             prevPage: prevPage,
             nextPage: nextPage,
-            page: parseInt(page),
+            page: page,
             hasPrevPage: products.hasPrevPage,
-            hasNextPage: products.hasNextPage,           
+            hasNextPage: products.hasNextPage,
         });
     } catch (error) {
+        // Maneja cualquier error y devuelve un mensaje de error 500 (Internal Server Error).
         res.status(500).render('templates/error', {
             error: error,
         });
     }
 });
 
+
+
+
+
+       
 
 
 
@@ -161,8 +170,9 @@ productsRouter.delete('/:pid', async (req, res) => {
         res.status(500).send(`Error interno del servidor al eliminar producto: ${e}`);
     }
 
-})
+}) 
 
 //exporto de este archivo para ser importado en app.js
 
 export default productsRouter
+ 
