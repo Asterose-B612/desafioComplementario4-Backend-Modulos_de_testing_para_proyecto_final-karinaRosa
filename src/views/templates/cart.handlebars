@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalles del Carrito</title>
     <!-- Enlace al archivo CSS -->
-    <link rel="stylesheet" href="../../public/css/cart.css">
+    <link rel="stylesheet" href="/css/cart.css">
     <!-- Asegúrate de proporcionar la ruta correcta al archivo CSS -->
 </head>
 <body>
@@ -19,7 +19,8 @@
                 <h3 class="product-title">{{this.id_prod.title}}</h3>
                 <p class="product-quantity">Cantidad: {{this.quantity}}</p>
                 <p class="product-price">Precio Unitario: ${{this.id_prod.price}}</p>
-                <p class="product-total">Precio Total: ${{this.id_prod.price this.quantity}}</p>
+                <p class="product-total">Precio Total: ${{this.id_prod.price * this.quantity}}</p>
+
             </div>
         </li>
         {{/each}}

@@ -89,21 +89,30 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
 cartRouter.delete('/:cid/products/:pid', async (req, res) => {
 
     try {
-        // Obtener el ID del carrito de la URL usando req.params
         const cartId = req.params.cid;
-        // Obtener el ID del producto de la URL usando req.params
         const productId = req.params.pid;
 
-        // Actualizar el carrito eliminando el producto con el ID proporcionado
-        //uso metodo de Mongoose findByIdAndUpdate para BUSCAR UN DOCUMENTO X SU ID Y LO ACTUALIZA
-        const updatedCart = await cartModel.findByIdAndUpdate(cartId, {
-            //método $pull de MongoDB:  para eliminar el producto con el ID especificado del array de productos del carrito.
-            $pull: { products: { id_prod: productId } }
-        });
+        // Encuentra el carrito por su ID
+        const cart = await Cart.findById(cartId);
 
-        // Si todo ok, se envía el carrito actualizado como respuesta con el código de estado 200
-        res.status(200).send(updatedCart);
+        if (!cart) {
+            return res.status(404).json({ message: 'Carrito no encontrado' });
+        }
 
+        // Encuentra el índice del producto en el arreglo de productos del carrito
+        const productIndex = cart.products.findIndex(product => product.id_prod.toString() === productId);
+
+        if (productIndex === -1) {
+            return res.status(404).json({ message: 'Producto no encontrado en el carrito' });
+        }
+
+        // Elimina el producto del arreglo de productos del carrito
+        cart.products.splice(productIndex, 1);
+
+        // Guarda los cambios en el carrito
+        await cart.save();
+
+        res.status(200).json({ message: 'Producto eliminado del carrito' });
     } catch (error) {
         // Manejar errores y enviar respuesta con código 500 (Internal Server Error)
         res.status(500).send(`Error interno del servidor al crear producto: ${error}`)

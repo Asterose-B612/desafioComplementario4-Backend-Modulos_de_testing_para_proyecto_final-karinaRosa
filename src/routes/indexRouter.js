@@ -9,7 +9,7 @@ import { __dirname } from '../path.js'
 
 const indexRouter = express.Router()
 
-
+//indexRouter.use('/public', express.static(__dirname + '/public'))
 //defino que la ruta products va a implementar la carpeta publica
 indexRouter.use('/api/products', productsRouter, express.static(__dirname + '/public'))
 //productsRouter va a importar las rutas de todos esos elementos. 
