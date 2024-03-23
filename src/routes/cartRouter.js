@@ -85,34 +85,27 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
 //*****ELIMINAR DEL CARRITO EL PRODUCTO SELECCIONADO, BUSCAR Y ACTUALIZAR CARRITO EN LA BASE DE DATOS****** */
 
 
-// Endpoint DELETE en el router de carritos que escucha en la URL, para eliminar un producto específico de un carrito, buscar y actualizar los datos del carrito en la base de datos.
+// Endpoint DELETE en el router de carritos que escucha en la URL, para eliminar un producto específico de un carrito
 cartRouter.delete('/:cid/products/:pid', async (req, res) => {
 
     try {
-        const cartId = req.params.cid;
-        const productId = req.params.pid;
-
-        // Encuentra el carrito por su ID
-        const cart = await Cart.findById(cartId);
-
+         // Paso 1: Obtener el ID del carrito y del producto desde los parámetros de la solicitud.
+     
+        const { cid, pid } = req.params;
+        // Paso 2: Eliminar el producto del carrito en la base de datos.
+        const cart = await cartModel.findById(cid);
         if (!cart) {
-            return res.status(404).json({ message: 'Carrito no encontrado' });
+            return res.status(404).send('Carrito no encontrado');
         }
 
-        // Encuentra el índice del producto en el arreglo de productos del carrito
-        const productIndex = cart.products.findIndex(product => product.id_prod.toString() === productId);
+      // Filtrar los productos del carrito, excluyendo el producto con el ID proporcionado.
+      cart.products = cart.products.filter(product => product._id !== pid);
 
-        if (productIndex === -1) {
-            return res.status(404).json({ message: 'Producto no encontrado en el carrito' });
-        }
-
-        // Elimina el producto del arreglo de productos del carrito
-        cart.products.splice(productIndex, 1);
 
         // Guarda los cambios en el carrito
         await cart.save();
 
-        res.status(200).json({ message: 'Producto eliminado del carrito' });
+        res.status(200).send("Producto eliminado del carrito correctamente");
     } catch (error) {
         // Manejar errores y enviar respuesta con código 500 (Internal Server Error)
         res.status(500).send(`Error interno del servidor al crear producto: ${error}`)
@@ -233,4 +226,4 @@ cartRouter.get('/:cid', async (req, res) => {
 
 
 // Exporta el router cartRouter para su uso en otras partes de la aplicación.
-export default cartRouter
+export default cartRouter;
