@@ -11,6 +11,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import messageModel from './models/messages.js'
 import indexRouter from './routes/indexRouter.js'
+import cookieParser from 'cookie-parser'
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
@@ -52,6 +53,7 @@ mongoose.connect("mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retr
 app.use(express.json())
 //permite que se pueda mandar informacion tambien desde la URL
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
 
 
 
