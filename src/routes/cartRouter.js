@@ -6,9 +6,12 @@ import cartModel from "../models/cart.js";
 const cartRouter = Router()
 
 
-//*******CARRITO VACÍO******************
 
-// Nuevo endpoint para crear un carrito vacío
+
+//*******CREAR CARRITO CARRITO VACÍO******************
+
+//ruta para Postman: api/cart
+
 cartRouter.post('/', async (req, res) => {
     try {
         // Crear un carrito vacío inicializando 'products' como un array vacío
@@ -22,7 +25,15 @@ cartRouter.post('/', async (req, res) => {
 })
 
 
+
+
+
+
+
 //*******OBTENER UN CARRITO POR SU ID******************
+
+//ruta para Postman: api/cart/idDelCarrito
+
 
 // Nuevo endpoint para obtener un carrito por su ID
 cartRouter.get('/:cid', async (req, res) => {
@@ -40,43 +51,46 @@ cartRouter.get('/:cid', async (req, res) => {
 })
 
 
-//*******AGREGAR O ACTUALIZAR LA CANT. DE UN PRODUCTO EN EL CARRITO****************
 
-// Nuevo endpoint para agregar o actualizar la cantidad de un producto en el carrito
+
+
+
+
+
+
+//****AGREGAR o ACTUALIZAR LA CANT. DE UN PRODUCTO EN EL CARRITO***********
+
+
+//ruta para Postman: api/cart/idDelCarrito/idDeUnProducto
+
+
+//El método actualiza la cantidad de un producto en un carrito de compras, o lo agrega si no está presente, y luego actualiza el carrito en la base de datos.
 cartRouter.post('/:cid/:pid', async (req, res) => {
-    // Obtiene el ID del producto y la cantidad proporcionada del cuerpo de la solicitud.
     try {
-        // Obtener el ID del carrito y del producto de los parámetros de la URL
         const cartId = req.params.cid
         const productId = req.params.pid
-        //// Obtener la cantidad del producto del cuerpo de la solicitud
         const { quantity } = req.body
-        // Buscar el carrito por su ID
         const cart = await cartModel.findById(cartId)
 
-        // Buscar el índice del producto en el array de productos del carrito
         const indice = cart.products.findIndex(product => product.id_prod == productId)
-        //Consulta un producto cuyo id sea igual a product Id
+
         if (indice != -1) {
-            // Si el producto ya existe en el carrito, actualizar su cantidad
-            cart.products[indice].quantity = quantity
-            //RECORDAR: cart sería EL OBJETO EN SU TOTALIDAD
-            //cart.products→ sería EL ARRAY DE MIS ELEMENTOS
+            //Consultar Stock para ver cantidades
+            cart.products[indice].quantity = quantity //5 + 5 = 10, asigno 10 a quantity
         } else {
-            // Si el producto no existe en el carrito, agregarlo al array de productos
             cart.products.push({ id_prod: productId, quantity: quantity })
-        }//tanto si lo agrego o lo modifico lo tengo que actualizar
-
-        // ......Actualizar el carrito en la base de datos.........
-
+        }
         const mensaje = await cartModel.findByIdAndUpdate(cartId, cart)
-        // Enviar respuesta con el mensaje de confirmación y código 200 (OK)).
         res.status(200).send(mensaje)
     } catch (error) {
-        // Manejar errores y enviar respuesta con código 500 (Internal Server Error)
         res.status(500).send(`Error interno del servidor al crear producto: ${error}`)
     }
 })
+
+
+
+
+
 
 
 
@@ -84,73 +98,70 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
 
 //*****ELIMINAR DEL CARRITO EL PRODUCTO SELECCIONADO, BUSCAR Y ACTUALIZAR CARRITO EN LA BASE DE DATOS****** */
 
+//Postman: http://localhost:8000/api/cart/idCARRITO/products/idPRODUCTO
 
-// Endpoint DELETE en el router de carritos que escucha en la URL, para eliminar un producto específico de un carrito
+
 cartRouter.delete('/:cid/products/:pid', async (req, res) => {
-
     try {
-         // Paso 1: Obtener el ID del carrito y del producto desde los parámetros de la solicitud.
-     
+         // Paso 1: Obtener el ID del carrito y del producto desde los parámetros de la solicitud.     
         const { cid, pid } = req.params;
         // Paso 2: Eliminar el producto del carrito en la base de datos.
         const cart = await cartModel.findById(cid);
         if (!cart) {
             return res.status(404).send('Carrito no encontrado');
         }
-
       // Filtrar los productos del carrito, excluyendo el producto con el ID proporcionado.
-      cart.products = cart.products.filter(product => product._id !== pid);
-
-
+          cart.products = cart.products.filter(product => product._id.toString() !== pid);
         // Guarda los cambios en el carrito
         await cart.save();
-
         res.status(200).send("Producto eliminado del carrito correctamente");
     } catch (error) {
         // Manejar errores y enviar respuesta con código 500 (Internal Server Error)
         res.status(500).send(`Error interno del servidor al crear producto: ${error}`)
     }
-
 });
 
 
-//LA SIGUIENTE RUTA ESTA DESTINADA PARA HACER PRÁCTICAS, PARA PODER MODIFICAR MI CARRITO HACIENDO PEQUEÑOS TEST SIN TENER QUE ESTAR VIENDO ELEMENTO A ELEMENTO, UNO X UNO. DIRECTAMENTE ENVÍO UN ARRAY DE OBJETOS EN EL BODY A MODIFICAR Y LISTO.
-//NO VA A SER USADA EN PRODUCCION, SÍ EN TESTING
-//     ↓
+
+
 
 
 //*******ACTUALIZAR EL CARRITO CON UN ARREGLO DE PRODUCTOS ****************
 
-//Endpoint PUT para actualizar el carrito con un arreglo de productos.
+//Postman: http://localhost:8000/api/cart/6600bdefb9ce7ff643b57ae0
+
+
+//LA SIGUIENTE RUTA ESTA DESTINADA PARA HACER PRÁCTICAS, PARA PODER MODIFICAR MI CARRITO HACIENDO PEQUEÑOS TEST SIN TENER QUE ESTAR VIENDO ELEMENTO A ELEMENTO, UNO X UNO. DIRECTAMENTE ENVÍO UN ARRAY DE OBJETOS EN EL BODY A MODIFICAR Y LISTO.
+//NO VA A SER USADA EN PRODUCCION, SÍ EN TESTING
+
+
 //Esta ruta debe aceptar un parámetro en la URL :cid para el ID del carrito y recibir el arreglo de productos en el cuerpo de la solicitud.
 cartRouter.put('/:cid', async (req, res) => {
-
     try {
         // Obtener el ID del carrito de la URL
         const cartId = req.params.cid;
         // Obtener el arreglo de productos del cuerpo de la solicitud
         const newProducts = req.body.products;
-
         // Actualizar el carrito con el nuevo arreglo de productos
         const updatedCart = await cartModel.findByIdAndUpdate(cartId, { products: newProducts });
-
         // Enviar el carrito actualizado como respuesta
         res.status(200).send(updatedCart);
-
     } catch (error) {
         // Manejar cualquier error y enviar una respuesta con el código de estado 500 (Error interno del servidor)
         res.status(500).send(`Error interno del servidor al actualizar carrito: ${error}`);
     }
-
 })
 
 
 
-//****************ACTUALIZAR SOLO LA CANTIDAD DE EJEMPLARES DEL PRODUCTO POR CUALQUIER CANTIDAD PASADA DESDE REQ.BODY********************
 
-// Endpoint PUT para actualizar la cantidad de ejemplares de un producto en el carrito
+
+//***ACTUALIZAR SOLO LA CANTIDAD PASADA POR REQ.BODY DE EJEMPLARES DE UN PRODUCTO EN EL CARRITO***********}
+
+// Postman: http://localhost:8000/api/cart/6600bdefb9ce7ff643b57ae0/products/6600c1fbf3e844d2ffeb122d
+
+
 cartRouter.put('/:cid/products/:pid', async (req, res) => {
-
     try {
         // Obtener el ID del carrito de la URL con req.params
         const cartId = req.params.cid;
@@ -158,12 +169,10 @@ cartRouter.put('/:cid/products/:pid', async (req, res) => {
         const productId = req.params.pid;
         // Obtener la nueva cantidad del cuerpo de la solicitud
         const { quantity } = req.body;
-
-
         // Utiliza el método findOneAndUpdate para buscar y actualizar un documento en la colección de carritos
         const updatedCart = await cartModel.findOneAndUpdate(
             // LacCondición de la búsqueda: busca un carrito con el ID proporcionado y que contenga un producto con el ID igual a productId  
-            { _id: cartId, "products.id_prod": productId },
+            { _id: cartId, "products._id": productId },
             // Objeto de actualización: establece la nueva cantidad del producto en el carrito con el valor proporcionado en quantity.Uso del operador Set en Mongo DB para cambiar el valor de un campo existente o agregar un campo si no existe previamente en el documento.
             //products.$.quantity:especificar el campo que queremos actualizar. products.$.quantity indica que queremos actualizar el campo quantity dentro de un objeto products que coincide con la condición de búsqueda. quantity: Es el nuevo valor que queremos establecer en el campo quantity
             //$set se utiliza aquí para actualizar el campo quantity del producto encontrado en el carrito con el nuevo valor proporcionado en quantity
@@ -172,22 +181,30 @@ cartRouter.put('/:cid/products/:pid', async (req, res) => {
             // Devuelve el documento actualizado después de la actualización
             { new: true }
         );
+        // Verificar si se encontró el carrito y se actualizó correctamente
+        if (!updatedCart) {
+            return res.status(404).send('Carrito no encontrado o producto no actualizado');
+        }
 
         // Envio el carrito actualizado como respuesta
         res.status(200).send(updatedCart);
-
     } catch (error) {
         // Manejar cualquier error y enviar una respuesta con el código de estado 500 (Error interno del servidor)
         res.status(500).send(`Error interno del servidor al actualizar carrito: ${error}`);
     }
-
 })
+
+
+
+
 
 
 
 //*****ELIMINAR TODOS LOS PRODUCTOS DEL CARRITO****
 
-// Endpoint DELETE para eliminar todos los productos del carrito
+// Postman: http://localhost:8000/api/cart/6601074172db673d48801f5b
+
+
 cartRouter.delete('/:cid', async (req, res) => {
     try {
         // Obtener el ID del carrito de la URL con req.params
@@ -207,8 +224,17 @@ cartRouter.delete('/:cid', async (req, res) => {
 });
 
 
+
+
+
+
+
+
 //********VISUALIZAR UN CARRITO ESPECIFICO*****
-// Definir una ruta para visualizar un carrito específico
+
+// Postman: http://localhost:8000/api/cart/6600d79d11d768c8832c7d51
+
+
 cartRouter.get('/:cid', async (req, res) => {
 
     try {

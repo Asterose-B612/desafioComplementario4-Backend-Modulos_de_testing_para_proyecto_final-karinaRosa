@@ -39,7 +39,7 @@ const io = new Server(SERVER)
 
 //----CONECTION DB---------
 //contraseña que yo defino
-mongoose.connect("mongodb+srv://azul:rosa@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 //cuando esta conexion me devuelva un valor voy a mostrar este mensaje
 .then(() => console.log ("DB is connected"))
 //si hay error muestro el error
@@ -65,7 +65,7 @@ app.set('view engine', 'handlebars')
 //para las vistas de mi aplicacion voy a implementar handlebars
 
 //CON ESTO INDICO DONDE SE ESTA UTILIZANDO
-app.set('views', __dirname + '/views')
+app.set('views', __dirname +  '/views')
 //las vistas de mi aplicacion se encuentran en __dirname es mi path →seria la carpeta src y lo concateno con la carpeta views
 
 //establece que el middleware indexRouter manejará las solicitudes en la ruta raíz de la aplicación.

@@ -16,7 +16,8 @@ const productSchema = new Schema({
         type: Number,
         required: true
     },
-    image: {
+    
+    thumbnail: {
         default: []
     },//Defino x defecto q sea un array vacío, q si no me ingresa el valor sea vacío.
     code: {
