@@ -22,6 +22,7 @@ import mongoose from 'mongoose'
 import messageModel from './models/messages.js'
 import indexRouter from './routes/indexRouter.js'
 import cookieParser from 'cookie-parser'
+import session from 'express-session'
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
@@ -81,8 +82,21 @@ mongoose.connect("mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retr
 app.use(express.json())
 //permite que se pueda mandar informacion tambien desde la URL
 app.use(express.urlencoded({ extended: true }))
-//cookie:todas las generadas aqui se van a hacer con esta clave secreta
+
+//COOKIES
+//todas las generadas aqui se van a hacer con esta clave secreta
 app.use(cookieParser("claveSecreta"))
+
+//SESSION.
+//Configuro que:
+app.use(session({
+  //voy a tener un valor secreto
+  secret: 'gerhardSecret',
+  //voy a guardar cada vez que recargue
+  resave: true,
+  //Fuerzo a q se guarde la sesion en el storage cuando reinicio y que se pueda almacenar cuando tengo una recarga.
+  saveUninitialized: true
+}))
 
 
 
@@ -136,6 +150,46 @@ app.get('/deleteCookie', (req, res) => {
 });
 
 
+
+
+
+
+//........Routes of SESSION............
+
+//ruta para guardar una sesion del usuario
+//esta es una forma de guardar un contador de usuarios.
+//Consulto: si existe la sesion del usuario consulto por el valor sino la creo con el valor de 1
+app.get('/session', (req, res) => {
+  console.log(req.session)
+  if (req.session.counter) {
+    //genero atributo counter: va a contar la cantidad de veces que ingreso mi usuario a esta ruta
+    //si ya habias entrado antes lo incremento en 1
+    req.session.counter++;
+    res.send(`Visitaste el sitio ${req.session.counter} veces.`)
+  } else {
+    //sos el primer usuario que ingresa
+    req.session.counter = 1
+    res.send("Bienvenido!")
+  }
+})
+
+
+//rua para loguear usuarios
+app.get('/login', (req, res) => {
+  //consulto email y contraseña
+  const { email, password } = req.body
+  //Simulacion que tengo una Base de datos como tal.
+  if (email == "decoracion@gmail.com" && password == "265444") {
+    //si se cumple me pude loguear
+    //entonces guardo la session en mi servidor estos valores:
+    req.session.email = email
+    req.session.password = password
+    console.log(req.session)
+    return res.send("Login ok")
+  }
+  // si no cumple con estas condiciones
+  res.send("Login invalido")
+})
 
 
 
