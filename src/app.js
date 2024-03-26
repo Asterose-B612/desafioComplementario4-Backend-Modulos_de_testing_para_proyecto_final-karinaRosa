@@ -1,6 +1,16 @@
-/*Desafío N°4
-Crear una vista llamada homehandlebars con todos los productos agregados hasta el momento.
-Formato: Link al repositorio de Github con el proyecto completo, sin la carpeta de Node_modules.
+/*Desafío N°5:Implementación de login
+Ajustar nuestro servidor principal para trabajar con un sistema de login.
+Deberá contar con todas las vistas realizadas en el hands on lab, así también como las rutas de router para procesar el registro y el login. 
+Una vez completado el login, realizar la redirección directamente a la vista de productos.
+Agregar a la vista de productos un mensaje de bienvenida con los datos del usuario.
+Agregar un sistema de roles, de manera que si colocamos en el login como correo adminCoder@coder.com, y la contraseña adminCod3r123, el usuario de la sesión además tenga un campo 
+Todos los usuarios que no sean admin deberán contar con un rol “usuario”.
+Implementar botón de “logout” para destruir la sesión y redirigir a la vista de login.
+Link al repositorio de Github sin node_modules
+Sugerencias: Recuerda que las vistas son importantes, más no el diseño, concéntrate en la funcionalidad de las sesiones antes que en la presentación.
+Cuida las redirecciones a las múltiples vistas.
+
+
 */
 
 
@@ -18,12 +28,20 @@ import { Server } from 'socket.io' //llaves es una dependencia
 
 //console.log(__dirname)
 
+
+
+
+
 //*******CONFIGURACIONES O DECLARACIONES******************
 
 // Se crea una instancia de Express para configurar el servidor.
 const app = express();
 // Se define el puerto en el que el servidor estará escuchando.
 const PORT = 8000
+
+
+
+
 
 
 //----SERVER---------
@@ -38,13 +56,23 @@ const SERVER = app.listen(PORT, () => {
 //declaro un nuevo servidor de sockets.io
 const io = new Server(SERVER)
 
+
+
+
+
+
 //----CONECTION DB---------
 //contraseña que yo defino
 mongoose.connect("mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-//cuando esta conexion me devuelva un valor voy a mostrar este mensaje
-.then(() => console.log ("DB is connected"))
-//si hay error muestro el error
-.catch(e => console.log (e))
+  //cuando esta conexion me devuelva un valor voy a mostrar este mensaje
+  .then(() => console.log("DB is connected"))
+  //si hay error muestro el error
+  .catch(e => console.log(e))
+
+
+
+
+
 
 
 //*******MIDDLEWARES******************
@@ -53,7 +81,12 @@ mongoose.connect("mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retr
 app.use(express.json())
 //permite que se pueda mandar informacion tambien desde la URL
 app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
+//cookie:todas las generadas aqui se van a hacer con esta clave secreta
+app.use(cookieParser("claveSecreta"))
+
+
+
+
 
 
 
@@ -67,11 +100,43 @@ app.set('view engine', 'handlebars')
 //para las vistas de mi aplicacion voy a implementar handlebars
 
 //CON ESTO INDICO DONDE SE ESTA UTILIZANDO
-app.set('views', __dirname +  '/views')
+app.set('views', __dirname + '/views')
 //las vistas de mi aplicacion se encuentran en __dirname es mi path →seria la carpeta src y lo concateno con la carpeta views
 
 //establece que el middleware indexRouter manejará las solicitudes en la ruta raíz de la aplicación.
 app.use('/', indexRouter)
+
+
+
+
+
+
+
+//........Routes of COOKIES............
+
+//setea, crea una cookie
+//fecha de expiración: maxAge
+//signed: true →FIRMA DE COOKIE
+app.get('/setCookie', (req, res) => {
+  res.cookie('CookieCookie', 'Esto es una cookie :)', { maxAge: 3000000, signed: true }).send("Cookie creada")
+})
+
+
+//Consultar las cookies de mi aplicacion
+app.get('/getCookie', (req, res) => {
+  //signedCookies: consulto solo por cookies firmadas. SEGURIDAD GARANTIZADA
+  res.send(req.signedCookies)
+})
+
+
+//Eliminar cookies
+app.get('/deleteCookie', (req, res) => {
+  res.clearCookie('CookieCookie').send("Cookie eliminada")
+  //res.cookie('CookieCokie', '', { expires: new Date(0) })
+});
+
+
+
 
 
 //...........SOCKET.IO..................
