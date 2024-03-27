@@ -23,6 +23,7 @@ import messageModel from './models/messages.js'
 import indexRouter from './routes/indexRouter.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
+import MongoStore from 'connect-mongo'
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
@@ -87,13 +88,23 @@ app.use(express.urlencoded({ extended: true }))
 //todas las generadas aqui se van a hacer con esta clave secreta
 app.use(cookieParser("claveSecreta"))
 
-//SESSION.
+
+
+//SESSION.......
 //Configuro que:
 app.use(session({
   //voy a tener un valor secreto
   secret: 'gerhardSecret',
   //voy a guardar cada vez que recargue
   resave: true,
+  store: MongoStore.create({
+    //misma url con la que me conecto a la base de datos
+    mongoUrl: "mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    //ttl es el tiempo en el cual vive mi sesion. Yo lo defino. ej: 2hs, 3dias,etc
+    //me va a prmitir ingresar sin que yo me loguee
+    //El tiempo de vida esta en segundos. 60 minutos x 60 segundos = 1 hora
+    ttl: 60 * 60
+  }),
   //Fuerzo a q se guarde la sesion en el storage cuando reinicio y que se pueda almacenar cuando tengo una recarga.
   saveUninitialized: true
 }))
@@ -135,13 +146,11 @@ app.get('/setCookie', (req, res) => {
   res.cookie('CookieCookie', 'Esto es una cookie :)', { maxAge: 3000000, signed: true }).send("Cookie creada")
 })
 
-
 //Consultar las cookies de mi aplicacion
 app.get('/getCookie', (req, res) => {
   //signedCookies: consulto solo por cookies firmadas. SEGURIDAD GARANTIZADA
   res.send(req.signedCookies)
 })
-
 
 //Eliminar cookies
 app.get('/deleteCookie', (req, res) => {
@@ -174,8 +183,8 @@ app.get('/session', (req, res) => {
 })
 
 
-//rua para loguear usuarios
-app.get('/login', (req, res) => {
+//ruta para loguear usuarios
+app.post('/login', (req, res) => {
   //consulto email y contraseña
   const { email, password } = req.body
   //Simulacion que tengo una Base de datos como tal.
