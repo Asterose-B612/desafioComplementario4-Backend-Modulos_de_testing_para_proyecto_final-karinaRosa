@@ -5,6 +5,7 @@ import userRouter from './userRoutes.js'
 import upload from '../utils.js'//.js es un archivo
 import express from 'express'
 import { __dirname } from '../path.js'
+import sessionRouter from './sessionRouter.js'
 
 
 const indexRouter = express.Router()
@@ -19,6 +20,7 @@ indexRouter.use(express.static(__dirname + '/public'));
 indexRouter.use('/api/cart', cartRouter)
 indexRouter.use('/api/chat', chatRouter, express.static(__dirname + '/public'))
 indexRouter.use('/api/users', userRouter)
+indexRouter.use('/api/session', sessionRouter)
 
 //PARA LA CARGA DE IMAGENES
 indexRouter.post('/upload', upload.single('product'), (req, res) => {
