@@ -9,7 +9,10 @@ import sessionRouter from './sessionRouter.js'
 
 
 const indexRouter = express.Router()
-
+//ruta de inicio. clase 19. Dar la bienvenida al usuario.
+indexRouter.get('/', (req, res) => {
+  res.status(200).send("Bienvenido/a!")
+})
 //indexRouter.use('/public', express.static(__dirname + '/public'))
 //defino que la ruta products va a implementar la carpeta publica
 indexRouter.use('/api/products', productsRouter, express.static(__dirname + '/public'))

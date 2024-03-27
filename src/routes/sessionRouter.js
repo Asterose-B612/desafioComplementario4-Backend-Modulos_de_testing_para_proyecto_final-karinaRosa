@@ -53,7 +53,7 @@ sessionRouter.post('/login', async (req, res) => {
 sessionRouter.post('/register', async (req, res) => {
     try {
         // Extrae datos del cuerpo de la solicitud.
-        const { name, surname, password, age, email, rol } = req.body
+        const { name, surname, password, age, email } = req.body
           // Busca si ya existe un usuario con el email proporcionado.
         const findUser = await userModel.findOne({ email: email })
          // Verificar si se encontró un usuario con el email proporcionado.
@@ -62,7 +62,7 @@ sessionRouter.post('/register', async (req, res) => {
             res.status(400).send("Ya existe un usuario con este mail")            
         } else {
              // Si no se encontró un usuario con el email proporcionado, crear un nuevo usuario con los datos proporcionados.
-            await userModel.create({ name, surname, password, age, email, rol })
+            await userModel.create({ name, surname, password, age, email })
             // Enviar una respuesta de estado 200 indicando que el usuario se creó correctamente.
             res.status(200).send("Usuario creado correctamente")
         }
@@ -71,6 +71,30 @@ sessionRouter.post('/register', async (req, res) => {
         res.status(500).send("Error al registrar users: ", e)
     }
 })
+
+
+
+//.....LOGOUT: desloguears.........
+// Definición de la ruta GET '/logout' en el enrutador de sesiones.
+sessionRouter.get('/logout', (req, res) => {
+    // Destruye la sesión actual del usuario.
+    req.session.destroy(function (e) {
+        // Verifica si ocurrió algún error durante la destrucción de la sesión.
+        if (e) {
+            // Si hubo un error, imprimirlo en la consola.
+            console.log(e)
+        } else {
+            // Si la sesión se destruyó correctamente, enviar una respuesta de estado 200 y redirigir al usuario a la página de inicio ('/').
+            res.status(200).redirect("/")
+            //res.status(200).redirect("/api/session/login") Esta ruta aun no esta implementada visualmente. Aca deberia haber un formulario.Con lo cual optamos por la de inicio.
+        }
+    })
+})
+
+
+
+
+
 
 
 
