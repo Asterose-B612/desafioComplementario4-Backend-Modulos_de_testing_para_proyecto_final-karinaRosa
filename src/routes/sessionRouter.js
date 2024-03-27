@@ -53,7 +53,7 @@ sessionRouter.post('/login', async (req, res) => {
 sessionRouter.post('/register', async (req, res) => {
     try {
         // Extrae datos del cuerpo de la solicitud.
-        const { name, surname, password, age, email } = req.body
+        const { name, surname, password, age, email, rol } = req.body
           // Busca si ya existe un usuario con el email proporcionado.
         const findUser = await userModel.findOne({ email: email })
          // Verificar si se encontró un usuario con el email proporcionado.
@@ -62,7 +62,7 @@ sessionRouter.post('/register', async (req, res) => {
             res.status(400).send("Ya existe un usuario con este mail")            
         } else {
              // Si no se encontró un usuario con el email proporcionado, crear un nuevo usuario con los datos proporcionados.
-            await userModel.create({ name, surname, password, age, email })
+            await userModel.create({ name, surname, password, age, email, rol })
             // Enviar una respuesta de estado 200 indicando que el usuario se creó correctamente.
             res.status(200).send("Usuario creado correctamente")
         }
