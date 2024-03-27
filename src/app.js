@@ -183,7 +183,8 @@ app.get('/session', (req, res) => {
 })
 
 
-//ruta para loguear usuarios
+//ruta para loguear usuarios.................
+
 app.post('/login', (req, res) => {
   //consulto email y contraseña
   const { email, password } = req.body

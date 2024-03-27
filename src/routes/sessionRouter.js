@@ -44,9 +44,6 @@ sessionRouter.post('/login', async (req, res) => {
 
 
 
-
-
-
 //...................REGISTRO......
 
 // Definición de la ruta POST '/register' en el enrutador de sesiones.
@@ -82,7 +79,9 @@ sessionRouter.get('/logout', (req, res) => {
         // Verifica si ocurrió algún error durante la destrucción de la sesión.
         if (e) {
             // Si hubo un error, imprimirlo en la consola.
-            console.log(e)
+            console.error("Error al cerrar sesión:", e)
+      res.status(500).send("Error al cerrar sesión")
+          
         } else {
             // Si la sesión se destruyó correctamente, enviar una respuesta de estado 200 y redirigir al usuario a la página de inicio ('/').
             res.status(200).redirect("/")
@@ -90,10 +89,6 @@ sessionRouter.get('/logout', (req, res) => {
         }
     })
 })
-
-
-
-
 
 
 
