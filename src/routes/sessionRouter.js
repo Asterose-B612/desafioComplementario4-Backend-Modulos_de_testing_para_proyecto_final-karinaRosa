@@ -4,6 +4,10 @@ import { userModel } from "../models/user.js";
 // Crea un enrutador en Express.js para manejar las solicitudes relacionadas con las operaciones de usuario en la aplicación web.
 const sessionRouter = Router();
 
+
+
+//......INICIO DE SESION....................
+
 // Este endpoint maneja la solicitud de inicio de sesión de un usuario.
 // Espera recibir una solicitud POST con los campos 'email' y 'password' en el cuerpo.
 sessionRouter.post('/login', async (req, res) => {
@@ -36,5 +40,38 @@ sessionRouter.post('/login', async (req, res) => {
         res.status(500).send("Error al loguear usuario", error);
     }
 });
+
+
+
+
+
+
+
+//...................REGISTRO......
+
+// Definición de la ruta POST '/register' en el enrutador de sesiones.
+sessionRouter.post('/register', async (req, res) => {
+    try {
+        // Extrae datos del cuerpo de la solicitud.
+        const { name, surname, password, age, email } = req.body
+          // Busca si ya existe un usuario con el email proporcionado.
+        const findUser = await userModel.findOne({ email: email })
+         // Verificar si se encontró un usuario con el email proporcionado.
+        if (findUser) { 
+            // Si se encontró un usuario, enviar una respuesta de estado 400 con un mensaje indicando que ya existe un usuario con ese email.
+            res.status(400).send("Ya existe un usuario con este mail")            
+        } else {
+             // Si no se encontró un usuario con el email proporcionado, crear un nuevo usuario con los datos proporcionados.
+            await userModel.create({ name, surname, password, age, email })
+            // Enviar una respuesta de estado 200 indicando que el usuario se creó correctamente.
+            res.status(200).send("Usuario creado correctamente")
+        }
+    } catch (e) {
+        // En caso de producirse un error durante el proceso, enviar una respuesta de estado 500 con un mensaje de error.
+        res.status(500).send("Error al registrar users: ", e)
+    }
+})
+
+
 
 export default sessionRouter;

@@ -65,7 +65,7 @@ const io = new Server(SERVER)
 
 //----CONECTION DB---------
 //contraseña que yo defino
-mongoose.connect("mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("mongodb+srv://azul:rosa@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
   //cuando esta conexion me devuelva un valor voy a mostrar este mensaje
   .then(() => console.log("DB is connected"))
   //si hay error muestro el error
@@ -99,7 +99,7 @@ app.use(session({
   resave: true,
   store: MongoStore.create({
     //misma url con la que me conecto a la base de datos
-    mongoUrl: "mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    mongoUrl: "mongodb+srv://azul:rosa@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
     //ttl es el tiempo en el cual vive mi sesion. Yo lo defino. ej: 2hs, 3dias,etc
     //me va a prmitir ingresar sin que yo me loguee
     //El tiempo de vida esta en segundos. 60 minutos x 60 segundos = 1 hora
