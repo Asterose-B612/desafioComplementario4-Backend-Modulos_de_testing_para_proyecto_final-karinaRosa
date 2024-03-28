@@ -22,6 +22,7 @@ sessionRouter.post('/login', async (req, res) => {
         if (user && password === user.password) {
             // Se asigna el correo electrónico del usuario que ha iniciado sesión a la propiedad 'email' de la sesión actual.
             req.session.email = email;
+            await userModel.findOneAndUpdate({ email: email }, { isLoggedIn: true });
             // Si el usuario tiene el rol de "Admin", se establece la sesión de administrador.
             if (user.rol === "Admin") {
                 // Se establece la propiedad 'admin' en la sesión actual como verdadera para indicar que el usuario que ha iniciado sesión es un administrador.
@@ -51,14 +52,14 @@ sessionRouter.post('/register', async (req, res) => {
     try {
         // Extrae datos del cuerpo de la solicitud.
         const { name, surname, password, age, email } = req.body
-          // Busca si ya existe un usuario con el email proporcionado.
+        // Busca si ya existe un usuario con el email proporcionado.
         const findUser = await userModel.findOne({ email: email })
-         // Verificar si se encontró un usuario con el email proporcionado.
-        if (findUser) { 
+        // Verificar si se encontró un usuario con el email proporcionado.
+        if (findUser) {
             // Si se encontró un usuario, enviar una respuesta de estado 400 con un mensaje indicando que ya existe un usuario con ese email.
-            res.status(400).send("Ya existe un usuario con este mail")            
+            res.status(400).send("Ya existe un usuario con este mail")
         } else {
-             // Si no se encontró un usuario con el email proporcionado, crear un nuevo usuario con los datos proporcionados.
+            // Si no se encontró un usuario con el email proporcionado, crear un nuevo usuario con los datos proporcionados.
             await userModel.create({ name, surname, password, age, email })
             // Enviar una respuesta de estado 200 indicando que el usuario se creó correctamente.
             res.status(200).send("Usuario creado correctamente")
@@ -71,24 +72,48 @@ sessionRouter.post('/register', async (req, res) => {
 
 
 
+
+
+
+
 //.....LOGOUT: desloguears.........
 // Definición de la ruta GET '/logout' en el enrutador de sesiones.
-sessionRouter.get('/logout', (req, res) => {
-    // Destruye la sesión actual del usuario.
-    req.session.destroy(function (e) {
-        // Verifica si ocurrió algún error durante la destrucción de la sesión.
-        if (e) {
-            // Si hubo un error, imprimirlo en la consola.
-            console.error("Error al cerrar sesión:", e)
-      res.status(500).send("Error al cerrar sesión")
-          
+sessionRouter.get('/logout', async (req, res) => {
+    try {
+        if (req.session.email) {
+            await userModel.findOneAndUpdate({ email: req.session.email }, { isLoggedIn: false });
+            // Destruye la sesión actual del usuario.
+            req.session.destroy(function (e) {
+                // Verifica si ocurrió algún error durante la destrucción de la sesión.
+                if (e) {
+                    // Si hubo un error, imprimirlo en la consola.
+                    console.error("Error al cerrar sesión:", e);
+                    res.status(500).send("Error al cerrar sesión");
+
+                } else {
+                    // Si la sesión se destruyó correctamente, enviar una respuesta de estado 200 y redirigir al usuario a la página de inicio ('/').
+                    res.status(200).redirect("/");
+                    //res.status(200).redirect("/api/session/login") Esta ruta aun no esta implementada visualmente. Aca deberia haber un formulario.Con lo cual optamos por la de inicio.
+                }
+            });
+
         } else {
-            // Si la sesión se destruyó correctamente, enviar una respuesta de estado 200 y redirigir al usuario a la página de inicio ('/').
-            res.status(200).redirect("/")
-            //res.status(200).redirect("/api/session/login") Esta ruta aun no esta implementada visualmente. Aca deberia haber un formulario.Con lo cual optamos por la de inicio.
+            // Si el usuario no está autenticado, simplemente redirigirlo a la página de inicio
+            res.redirect("/");
         }
-    })
-})
+
+
+    } catch (error) {
+        // Manejo de errores
+        console.error("Error al cerrar sesión:", error);
+        res.status(500).send("Error al cerrar sesión");
+    }
+});
+
+
+
+
+
 
 
 
