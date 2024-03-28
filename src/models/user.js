@@ -38,7 +38,15 @@ const userSchema = new Schema({
     rol: {
         type: String,
         default: "User"
-    }
+    },
+
+
+    isLoggedIn: {
+        type: Boolean, 
+        default: false
+      }
+
+
 
 })
 
