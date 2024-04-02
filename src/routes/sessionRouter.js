@@ -61,6 +61,7 @@ sessionRouter.post('/register', async (req, res) => {
             res.status(400).send("Ya existe un usuario con este mail")
         } else {
             // Si no se encontró un usuario con el email proporcionado, crear un nuevo usuario con los datos proporcionados.
+            //CREO LA CONTRASEÑA HASHEADA. LA ENVÍO ENCRIPTADA
             await userModel.create({ name:name, surname:surname, password: createHash(password), age:age, email:email })
             // Enviar una respuesta de estado 200 indicando que el usuario se creó correctamente.
             res.status(200).send("Usuario creado correctamente")
