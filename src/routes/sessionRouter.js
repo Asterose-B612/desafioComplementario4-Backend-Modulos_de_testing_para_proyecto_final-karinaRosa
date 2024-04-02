@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { userModel } from "../models/user.js";
+import { validatePassword,createHash } from "../utils/bcrypt.js";
 
 // Crea un enrutador en Express.js para manejar las solicitudes relacionadas con las operaciones de usuario en la aplicación web.
 const sessionRouter = Router();
@@ -19,7 +20,7 @@ sessionRouter.post('/login', async (req, res) => {
         // lean() como JSON se utiliza para obtener un objeto plano en lugar de un documento de Mongoose.
         const user = await userModel.findOne({ email: email }).lean();
         // Si el usuario existe y la contraseña coincide, se inicia sesión correctamente.
-        if (user && password === user.password) {
+        if (user && validatePassword (password, user.password)) {
             // Se asigna el correo electrónico del usuario que ha iniciado sesión a la propiedad 'email' de la sesión actual.
             req.session.email = email;
             await userModel.findOneAndUpdate({ email: email }, { isLoggedIn: true });
@@ -60,7 +61,7 @@ sessionRouter.post('/register', async (req, res) => {
             res.status(400).send("Ya existe un usuario con este mail")
         } else {
             // Si no se encontró un usuario con el email proporcionado, crear un nuevo usuario con los datos proporcionados.
-            await userModel.create({ name, surname, password, age, email })
+            await userModel.create({ name:name, surname:surname, password: createHash(password), age:age, email:email })
             // Enviar una respuesta de estado 200 indicando que el usuario se creó correctamente.
             res.status(200).send("Usuario creado correctamente")
         }
