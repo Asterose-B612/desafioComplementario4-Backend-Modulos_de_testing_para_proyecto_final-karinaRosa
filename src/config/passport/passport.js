@@ -1,6 +1,8 @@
 //importo la estrategia local
 import local from 'passport-local'
 import passport from 'passport'
+import crypto from 'crypto'
+import GithubStrategy from 'passport-github2'
 //cuando estoy trabajando con estrategia local importo userModel, consulto usuarios (user.js)
 import { userModel } from '../../models/user.js'
 //importo bcrypt (el hasheo y validacion)
@@ -88,7 +90,51 @@ const initializePassport = () => {
     }))
 
 
-//AQUI PUEDO AGREGAR LA ESTRATEGIA DE GITHUB, GMAIL, ETC
+
+
+
+
+    //ESTRATEGIA DE GITHUB
+
+
+
+// Declara una estrategia de autenticación para la autenticación mediante GitHub, con el nombre "github"
+//github es el nombre de mi estrategia
+passport.use('github', new GithubStrategy({
+    // Configura el ID de cliente de la aplicación GitHub.
+    clientID: "",
+    // Configura la clave secreta del cliente de la aplicación GitHub.
+    clientSecret: "",
+    // Configura la URL de devolución de llamada para la autenticación.
+    callbackURL: "http://localhost:8000/api/session/githubSession"
+}, async (accessToken, refreshToken, profile, done) => {
+    //done es lo que voy a retornar
+    try {
+        console.log(accessToken)
+        console.log(refreshToken)
+        //LOGUEO DE USUARIO
+        // Busca un usuario en la base de datos por su correo electrónico obtenido de la información del perfil.
+        const user = await userModel.findOne({ email: profile._json.email }).lean()
+        // Si se encuentra un usuario, pasa el control al siguiente middleware con el usuario autenticado.
+        if (user) {
+            done(null, user)
+        } else {
+            // Genera un número aleatorio único.
+            const randomNumber = crypto.randomUUID()
+            // Registra en consola la información del perfil de GitHub.
+            console.log(profile._json)
+            // Crea un nuevo usuario en la base de datos utilizando la información del perfil de GitHub.
+            const userCreated = await userModel.create({ name: profile._json.name, surname: ' ', email: profile._json.email, age: 18, password: createHash(`${profile._json.name}`) })
+            // Registra en consola el número aleatorio generado.
+            console.log(randomNumber)
+            // Pasa el control al siguiente middleware con el usuario creado.
+            return done(null, userCreated)
+        }
+    } catch (error) {
+        // Si ocurre un error durante el proceso, pasa el error al siguiente middleware.
+        return done(error)
+    }
+}))
 
 
 }
