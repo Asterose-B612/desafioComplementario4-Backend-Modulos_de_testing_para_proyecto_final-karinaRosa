@@ -1,9 +1,95 @@
 //importo la estrategia local
 import local from 'passport-local'
-
 import passport from 'passport'
-
 //cuando estoy trabajando con estrategia local importo userModel, consulto usuarios (user.js)
 import { userModel } from '../../models/user.js'
 //importo bcrypt (el hasheo y validacion)
 import { createHash, validatePassword } from '../../utils/bcrypt.js'
+
+//Passport trabaje con uno o mas middlewares, cuantas estrategias voy a implementar
+//mi estrategia local va a ser igual a la estrategia local de passport-local
+const localStrategy = local.Strategy
+
+const initializePassport = () => {
+    //Definir en que rutas se aplican mis estrategias, en este caso las estrategias de consultarlos localmente lo que seria login y registro
+
+
+    //ESTRATEGIAS DE REGISTRO
+
+    passport.use('register', new localStrategy({ passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => { //llamo a la estrategia register, que va a implementar la estrategia local
+        //local strategies trabaja por defecto con user.name y password. En este caso no tengo un user,name, tenemos un email:Por lo cual definimos en usernameField que va a ser un email. Lo que va a simplificar la tarea de poderme registrar va a ser el email.
+        //username seria mi email
+        //password es la contraseña
+
+        //consulto del req.body lo mismo que /register en sessionRouter.js. Lo copio y pego.
+        try {
+            const { name, surname, password, age, email } = req.body
+            const findUser = await userModel.findOne({ email: email })
+
+            if (findUser) {
+                //busco un usuario. Devuelvo un done en vez de un estatus como lo hicimos en el sessionRouter
+                //done va a ser mi retorno/return  
+                return done(null, false)
+                /*EL DONE MANEJA SOLO ESOS 2 VALORES.SI: existe algun error?Ninguno, entonces → null.
+               El usuario lo pude registrar correctamente? No → entonces false.
+               SI EXISTE EL USUARIO NO LO PUEDO REGISTRAR*/
+            } else {
+                //guardo en variable el usuario para luego usar el valor
+                const user = await userModel.create({ name: name, surname: surname, password: createHash(password), age: age, email: email })
+                return done(null, user)
+                //Aqui voy a poder generar mi usuario por lo cual retorno null y true. True xq pude crear a mi usuario.
+                //devuelvo el usuario
+            }
+        } catch (e) {
+            return done(e)
+            //si sucede algun error envío el error
+        }
+    }))
+
+
+
+
+
+    //ESTRATEGIAS DE LOGUEO
+
+    //APARTE PARA IMPLEMENTAR LAS SESONES DE LOS USUARIOS VOY A TRABAJAR CON 2 FUNCIONES, PARA AGREGAR O ELIMINAR LAS SESIONES:
+
+    // 1: Inicializar la sesion del usuario (con su respectivo id)
+    passport.serializeUser((user, done) => {
+        //consulto x un usuario y por un return:done 
+        done(null, user._id)
+        //me devuelve 2 valores: : que no existió ningun error: null y el identificador deo usuario
+    })
+    // 2: Eliminar la sesion del usuario
+    passport.deserializeUser(async (id, done) => {
+        //pido un id, un done        
+        const user = await userModel.findById(id)
+        //devuelvo un valor. Busco un usuario dicho id...
+        done(null, user)
+        //...elimino la sesion
+    })
+
+    //no uso callback solo uso el usernameField especificando que mi username va a ser mi email
+    //aqui no voy a pedir un request porque me voy a loguear
+    passport.use('login', new localStrategy({ usernameField: 'email' }, async (username, password, done) => {
+        //username representa al email y password a la contraseña
+        try {
+            const user = await userModel.findOne({ email: username }).lean()
+            //aqui indico que email es el username.
+            //LA ESTRATEGIA LOCAL NECESITA UN USERNAME Y YO LE ESPECIFICO QUE LO QUE SERIA EL REQUEST BODY DE MI CONSULTA VA A SER EL EMAIL. EN ESTE CASO USERNAME Y EMAIL REPRESENTAN LO MISMO. PASSWORD SIGUE COMO PASSWORD, NO CAMBIA
+            if (user && validatePassword(password, user.password)) {
+                return done(null, user)
+            } else {
+                return done(null, false)
+            }
+        } catch (e) {
+            return done(e)
+        }
+    }))
+
+
+//AQUI PUEDO AGREGAR LA ESTRATEGIA DE GITHUB, GMAIL, ETC
+
+
+}
+export default initializePassport

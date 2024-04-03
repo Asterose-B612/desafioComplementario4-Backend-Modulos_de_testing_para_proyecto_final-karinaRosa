@@ -24,6 +24,8 @@ import indexRouter from './routes/indexRouter.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
+import passport from 'passport'
+import initializePassport from './config/passport/passport.js'
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
@@ -111,10 +113,6 @@ app.use(session({
 
 
 
-
-
-
-
 //......CON ESTO CONFIGURO HANDLEBARS.....
 
 app.engine('handlebars', engine())
@@ -127,6 +125,32 @@ app.set('view engine', 'handlebars')
 //CON ESTO INDICO DONDE SE ESTA UTILIZANDO
 app.set('views', __dirname + '/views')
 //las vistas de mi aplicacion se encuentran en __dirname es mi path →seria la carpeta src y lo concateno con la carpeta views
+
+
+
+
+
+
+
+
+//******* Routes of PASSPORT**********
+
+initializePassport()
+//ejecuto la funcion
+app.use(passport.initialize())
+//iniciá todo lo que serian las estrategias de autentificacion
+app.use(passport.session())
+//generame lo que sería las sesiones
+
+//TODO LO
+
+
+
+
+
+
+
+//******* RUTA RAÍZ: Manejo de solicitudes**********
 
 //establece que el middleware indexRouter manejará las solicitudes en la ruta raíz de la aplicación.
 app.use('/', indexRouter)
