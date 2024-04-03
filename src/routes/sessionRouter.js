@@ -68,6 +68,51 @@ sessionRouter.post('/register', passport.authenticate('register'), async (req, r
 
 
 
+//////// Ruta GITHUB    //////////////
+
+
+// Ruta GET para la autenticación de GitHub de mi usuario, que utiliza Passport.js para iniciar la autenticación utilizando la estrategia 'github' configurada previamente.
+sessionRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }), async (req, res) => { r })
+//el scope de mi aplicacion, el SCOPE es lo que yo voy a devolver va a ser mi email (user:email). Cuando hago referencia a mi usuario, hago referencia a mi email.
+//El usuario en Github va a ser mi email
+
+//LA ANTERIOR ME VA A REDIRECCIONAR AUTOMATICAMENTE A LA SIGUIENTE RUTA CUANDO MI USUARIO SE LOGUEA CORRECTAMENTE
+// Ruta GET para manejar la devolución de llamada de autenticación de GitHub, utilizada después de que el usuario haya autorizado la aplicación en GitHub.
+//nombre de la estrategis ('github')
+sessionRouter.get('/githubSession', passport.authenticate('github'), async (req, res) => {
+    // Registra en consola la solicitud HTTP entrante.
+    console.log(req)
+    // Establece los datos de usuario en la sesión actual basados en la información del usuario autenticado.
+    req.session.user = {
+        email: req.user.email,
+        name: req.user.name
+    }
+    // Redirige al usuario a la página principal de la aplicación. "API/PRODUCT"
+    res.redirect('/api/products')
+})
+
+// Ruta GET para manejar la solicitud de cierre de sesión.
+sessionRouter.get('/logout', (req, res) => {
+    // Destruye la sesión actual del usuario.
+    req.session.destroy(function (e) {
+        if (e) {
+            // Si hay un error al destruir la sesión, registra el error en consola.
+            console.log(e)
+        } else {
+            // Si la sesión se destruye correctamente, devuelve un estado 200 y redirige al usuario a la página principal.
+            res.status(200).redirect("/")
+        }
+    })
+})
+
+
+
+
+
+////////fin  Ruta GITHUB    //////////////
+
+
+
 
 
 
