@@ -10,7 +10,7 @@ import { userModel } from "../../models/user.js";
 
 const jwtOptions = {
     //Este token →jwtFromRequest lo voy a consultar de el archivo llamado ExtractJwt donde yo digo de donde lo voy a traer el token. Puedo extraerlo del query, header, del mismo archivo o de la forma mas común que es del headerAsBeaererToken
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
     //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken() esperar el token de JWT desde la peticion
     //jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]) consultando desde las cookies
     secretOrKey: "coderhouse"
@@ -43,4 +43,4 @@ export const strategyJWT = new JwtStrategy(jwtOptions, async (payload, done) => 
         return done(e, null);
     }
 });
-/*ES PARECIDO AL LOGUIN*/
+/*ES IDENTICO AL LOGUIN (ver en pssport.js)*/

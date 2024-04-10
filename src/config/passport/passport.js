@@ -7,6 +7,7 @@ import GithubStrategy from 'passport-github2'
 import { userModel } from '../../models/user.js'
 //importo bcrypt (el hasheo y validacion)
 import { createHash, validatePassword } from '../../utils/bcrypt.js'
+import { strategyJWT } from './jwtStrategy.js'
 
 //Passport trabaje con uno o mas middlewares, cuantas estrategias voy a implementar
 //mi estrategia local va a ser igual a la estrategia local de passport-local
@@ -137,5 +138,22 @@ passport.use('github', new GithubStrategy({
 }))
 
 
+
+
+
+
+
+    //ESTRATEGIA DE JWT
+
+    //En lugar de escribir todo el codigo como la estrategia anterior lo que hago es guardarlo en una constante en otro archivo. Entonces queda lo que es el passport solamente el uso de las estrategias y NO su definición.
+
+    passport.use('jwt', strategyJWT)
+
+    
+
+    
+
 }
+
+
 export default initializePassport
