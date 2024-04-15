@@ -97,6 +97,11 @@ const initializePassport = () => {
 
     //ESTRATEGIA DE GITHUB
 
+/*
+NOTA: ESTA ESTRATEGIA SE COMENTO DEBIDO A UN ERROR EN POSTMAN AL TESTEAR LA ESTRATEGIA DE JWT, YA QUE SE DEBE INGRESAR LA CLAVE: clientID Y clientSecret. PARA QUE FUNCIONE SE DEBE COLOCAR LAS CLAVES.
+
+
+
 
 
 // Declara una estrategia de autenticación para la autenticación mediante GitHub, con el nombre "github"
@@ -138,6 +143,7 @@ passport.use('github', new GithubStrategy({
 }))
 
 
+*/
 
 
 

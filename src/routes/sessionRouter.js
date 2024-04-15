@@ -36,7 +36,7 @@ sessionRouter.get('/login', passport.authenticate('login'), async (req, res) => 
         res.status(500).send("Error al loguear usuario")
         //si tengo algun error
     }
-   
+
 });
 
 
@@ -63,7 +63,7 @@ sessionRouter.post('/register', passport.authenticate('register'), async (req, r
         res.status(500).send("Error al registrar usuario")
         //captura errores
     }
-  
+
 })
 
 
@@ -117,7 +117,7 @@ sessionRouter.get('/logout', (req, res) => {
 
 
 
-//.....LOGOUT: desloguears.........
+/////.....inicio LOGOUT.....///////
 // Definición de la ruta GET '/logout' en el enrutador de sesiones.
 sessionRouter.get('/logout', async (req, res) => {
     try {
@@ -151,11 +151,24 @@ sessionRouter.get('/logout', async (req, res) => {
     }
 });
 
+/////..... fin  LOGOUT.....///////desloguearse
 
 
 
 
+////////inicio  Ruta JWT    //////////////
 
+
+// Configuración de la ruta '/testJWT' en el enrutador 'sessionRouter' para probar la autenticación JWT
+//session: fale porque no quiero generar una sesion como tal sino solo testear.
+sessionRouter.get('/testJWT', passport.authenticate('jwt', { session: false }), (req, res) => {
+      // La solicitud ha pasado la autenticación JWT y req.user contiene los datos del usuario autenticado
+     // Envía una respuesta con estado HTTP 200 y envía los datos del usuario en la respuesta
+    res.status(200).send(req.user)
+})
+
+
+////////fin  Ruta JWT    //////////////
 
 
 
