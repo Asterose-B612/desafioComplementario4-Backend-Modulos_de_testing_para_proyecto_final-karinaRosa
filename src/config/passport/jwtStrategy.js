@@ -2,6 +2,21 @@
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { userModel } from "../../models/user.js";
 
+// Definición de la función cookieExtractor que toma un objeto req (presumiblemente una solicitud HTTP) como argumento
+const cookieExtractor = req => {
+    // Imprime en la consola el objeto cookies de la solicitud req para propósitos de depuración o comprensión
+    console.log(req.cookies) 
+       // Verifica si req.cookies existe
+    // Si existe, asigna el valor de req.cookies.jwtCookie a la variable token
+    // Si no existe, asigna un objeto vacío {} a token
+    const token = req.cookies ? req.cookies.jwtCookie : {}
+        // Imprime en la consola el contenido de token
+    console.log(token)
+      // Retorna el valor de token
+    return token
+}
+
+
 
 /*****STRATEGY OF JWT***** */
 
@@ -27,6 +42,7 @@ export const strategyJWT = new JwtStrategy(jwtOptions, async (payload, done) => 
         // Imprime en la consola el payload del token JWT recibido
         console.log(payload);
         // Utiliza el modelo userModel para buscar en la base de datos un usuario con el ID especificado en el payload del token
+        //es un objeto dentro de un objeto
         const user = await userModel.findById(payload.user._id);        
         // Imprime en la consola el usuario encontrado en la base de datos
         console.log(user);
