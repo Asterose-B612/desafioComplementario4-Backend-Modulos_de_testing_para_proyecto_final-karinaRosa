@@ -7,8 +7,7 @@ import productModel from "../models/product.js";
 
 export const getProducts = async (query, options) => {
 
-    try {
-        // Paso 2: Construye el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
+          // Paso 2: Construye el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
         const query = filter ? (filter === 'true' || filter === 'false' ? { status: filter } : { category: filter }) : {};
         // Paso 3: Construye el objeto de consulta para el método de ordenamiento, utilizando 'price' como clave y 'sort' como dirección de ordenamiento.
         const sortQuery = sort ? { price: sort === 'asc' ? 1 : -1 } : {};
@@ -23,12 +22,25 @@ export const getProducts = async (query, options) => {
         const products = await productModel.paginate(query, options);
         return products
 
-    } catch (e) {
-        return (e)
-    }
 }
 
+//..........................................
 
+//Función para obtener un producto por su ID
+
+// Realiza la consulta a la base de datos para encontrar un producto por su ID
+
+export const getProduct = async (PRODUCTID) => {
+             
+    // Paso 2: Consulta en la base de datos el producto con el ID proporcionado.
+    /* Nota: Todo dato consultado desde un parámetro es de tipo string. Si el ID es numérico, se necesita convertirlo. */
+    // Llama a ProductManager para devolver el producto con el ID solicitado.
+    const PROD = await productModel.findById(PRODUCTID)
+    return PROD
+
+    
+
+}
 
 
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProducts } from "../controllers/productController.js";
+import { getProducts, getProduct } from "../controllers/productController.js";
 
 
 //TRAIGO TODOS LOS METODOS QUE ESTABA EN app.js y reemplazo app x productsRouter
@@ -62,10 +62,13 @@ productsRouter.get('/:pid', async (req, res) => {
     try {
         // Paso 1: Consulta el parámetro de la solicitud para obtener el identificador del producto.
         const PRODUCTID = req.params.pid
-        // Paso 2: Consulta en la base de datos el producto con el ID proporcionado.
-        /* Nota: Todo dato consultado desde un parámetro es de tipo string. Si el ID es numérico, se necesita convertirlo. */
-        // Llama a ProductManager para devolver el producto con el ID solicitado.
-        const PROD = await productModel.findById(PRODUCTID)
+
+
+        //paso2: CODIGO INTERNO EN EL CONTROLADOR
+
+
+        //LLAMO A LA FUNCIÓN DEL CONTROLADOR: 
+        const PROD = await getProduct(PRODUCTID);
 
         // Paso 3: Si producto existe, lo devuelve. Sino, devuelve un mensaje de error 404 al cliente por solicitar un ID que no existe.
 
