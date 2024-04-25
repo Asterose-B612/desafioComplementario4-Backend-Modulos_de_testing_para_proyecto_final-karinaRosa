@@ -1,10 +1,9 @@
 import { Router } from "express";
-import productModel from "../models/product.js";
-// Importa la función fileURLToPath del módulo 'url'
+import { getProducts } from "../controllers/productController.js";
+
 
 //TRAIGO TODOS LOS METODOS QUE ESTABA EN app.js y reemplazo app x productsRouter
 const productsRouter = Router();
-
 
 
 
@@ -22,16 +21,14 @@ productsRouter.get('/', async (req, res) => {
     try {
         // Paso 1: Obtiene los parámetros 'limit', 'page', 'filter' y 'sort' de la consulta HTTP.
         const { limit = 10, page = 1, filter, sort } = req.query;
-        // Paso 2: Construye el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
-        const query = filter ? (filter === 'true' || filter === 'false' ? { status: filter } : { category: filter }) : {};
-        // Paso 3: Construye el objeto de consulta para el método de ordenamiento, utilizando 'price' como clave y 'sort' como dirección de ordenamiento.
-        const sortQuery = sort ? { price: sort === 'asc' ? 1 : -1 } : {};
-        // Paso 4: Realiza la consulta a la base de datos, aplicando el filtro, paginación y ordenamiento.
-        const options = { limit: parseInt(limit), page: parseInt(page), sort: sortQuery };
-        const products = await productModel.paginate(query, options);
-        // Paso 5: Calcula si hay páginas previas y siguientes.
-        const prevPage = products.prevPage ? parseInt(page) - 1 : null;
-        const nextPage = products.nextPage ? parseInt(page) + 1 : null;
+        //los parametros son los mismos de los controladores: query y options
+        const products = await getProducts(query, options);
+
+
+        //CODIGO INTERNO TRABAJANDO EN EL CONTROLADOR
+
+
+
         // Paso 6: Envía la respuesta con el formato requerido.
         // Renderiza la plantilla home.handlebars ubicada en la ruta proporcionada y devuelve el HTML generado como parte de la respuesta HTTP con un código de estado 200.
         res.status(200).send({
@@ -42,8 +39,8 @@ productsRouter.get('/', async (req, res) => {
             nextPage: nextPage,
             page: page,
             hasPrevPage: products.hasPrevPage,
-            hasNextPage: products.hasNextPage,           
-        }); 
+            hasNextPage: products.hasNextPage,
+        });
     } catch (error) {
         // Maneja cualquier error y devuelve un mensaje de error 500 (Internal Server Error).
         res.status(500).render('templates/error', {
@@ -53,7 +50,7 @@ productsRouter.get('/', async (req, res) => {
 });
 
 
-       
+
 
 
 
@@ -165,9 +162,8 @@ productsRouter.delete('/:pid', async (req, res) => {
         res.status(500).send(`Error interno del servidor al eliminar producto: ${e}`);
     }
 
-}) 
+})
 
 //exporto de este archivo para ser importado en app.js
 
 export default productsRouter
- 
