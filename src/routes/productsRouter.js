@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProducts, getProduct } from "../controllers/productController.js";
+import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } from "../controllers/productController.js";
 
 
 //TRAIGO TODOS LOS METODOS QUE ESTABA EN app.js y reemplazo app x productsRouter
@@ -103,9 +103,18 @@ productsRouter.post('/', async (req, res) => {
         let product = req.body;
         console.log(product)
 
-        // Paso 2: Llamo al modelo. Al crear un nuevo prod.
-        //reemplacé productManager.addProduct x
-        const mensaje = await productModel.create(product);
+
+
+        //paso2: CODIGO INTERNO EN EL CONTROLADOR
+
+
+
+
+        //llamo a la función createProduct desde el controlador.
+        const mensaje = await createProduct(product)
+        return product
+
+
 
         // Paso 3: Si el producto se crea con éxito, mensaje de estado 201. 201 porqu fue creado.  
         res.status(201).send(mensaje)
@@ -129,10 +138,15 @@ productsRouter.put('/:pid', async (req, res) => {
         const PRODUCTID = req.params.pid;
 
         // Paso 2: Se obtienen los datos actualizados del producto desde el cuerpo de la solicitud.
-        let updateProduct = req.body;
+        let upProduct = req.body;
 
-        // Paso 3: Se llama a ProductManager para actualizar el producto en la base de datos y obtener un mensaje de confirmación.
-        const prod = await productModel.findByIdAndUpdate(PRODUCTID, updateProduct);
+
+        //paso3: CODIGO INTERNO EN EL CONTROLADOR
+
+
+        //llamo a la función createProduct desde el controlador.
+        const prod = await updateProduct(PRODUCTID, upProduct)
+
 
         // Paso 4: Si la actualización del producto es exitosa, se devuelve un mensaje de éxito con el código de estado 200 (OK).
         res.status(200).send(prod);
@@ -155,8 +169,17 @@ productsRouter.delete('/:pid', async (req, res) => {
 
         // Paso 2: No se consultan datos adicionales del cuerpo de la solicitud ya que la eliminación se realiza solo con el ID del producto.
 
-        // Paso 3: Se llama a ProductManager para eliminar el producto de la base de datos y obtener un mensaje de confirmación.
-        const mensaje = await productModel.findByIdAndDelete(PRODUCTID);
+
+
+        //paso3: CODIGO INTERNO EN EL CONTROLADOR
+
+
+
+        //llamo a la función deleteProduct desde el controlador.
+        const mensaje = await deleteProduct(PRODUCTID);
+
+
+
         // Paso 4: Si la eliminación del producto es exitosa, se devuelve un mensaje de éxito con el código de estado 200 (OK).
         res.status(200).send(mensaje);
 
