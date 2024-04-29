@@ -45,6 +45,7 @@ export const getProduct = async (PRODUCTID) => {
 
 
 export const createProduct = async (product) => {
+    
     // Paso 2: Llamo al modelo. Al crear un nuevo prod.
     // Crea un nuevo producto en la base de datos y devuelve un mensaje
     const mensaje = await productModel.create(product);

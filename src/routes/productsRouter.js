@@ -50,11 +50,6 @@ productsRouter.get('/', async (req, res) => {
 });
 
 
-
-
-
-
-
 // Esta ruta maneja la consulta de productos. El identificador de producto (pid) no es un valor fijo, es generado por crypto.
 
 productsRouter.get('/:pid', async (req, res) => {
@@ -106,8 +101,6 @@ productsRouter.post('/', async (req, res) => {
 
 
         //paso2: CODIGO INTERNO EN EL CONTROLADOR
-
-
 
 
         //llamo a la función createProduct desde el controlador.

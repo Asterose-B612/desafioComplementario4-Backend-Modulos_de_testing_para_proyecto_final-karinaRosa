@@ -83,7 +83,7 @@ app.use(cookieParser("claveSecreta"))
 //Configuro que:
 app.use(session({
   //voy a tener un valor secreto
-  secret: 'gerhardSecret',
+  secret: '',
   //voy a guardar cada vez que recargue
   resave: true,
   store: MongoStore.create({

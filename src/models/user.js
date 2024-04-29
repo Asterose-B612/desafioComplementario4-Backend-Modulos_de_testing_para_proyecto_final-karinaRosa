@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-
+import cartModel from './cart.js'
 
 //voy a definir un userSchema que se va a componer de un objeto llamado Schema
 //o sea voy a generar el Schema de lo que serian mis usuarios, los datos que van a componer mis usuarios
@@ -32,7 +32,6 @@ const userSchema = new Schema({
         unique: true,
         //agrego el indice
         index: true
-
     },
     //rol→ creado por defecto cada vez que se ingrese un usuario
     rol: {
@@ -44,11 +43,48 @@ const userSchema = new Schema({
     isLoggedIn: {
         type: Boolean, 
         default: false
-      }
+      },
 
-
+      cart_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'carts'
+    }
 
 })
+
+
+
+// Define un middleware pre-save para el modelo userSchema, que se ejecuta antes de guardar un nuevo documento de usuario
+userSchema.pre('save', async function (next) {
+    try {
+        // Crea un nuevo documento de carrito con un array de productos vacío
+        const newCart = await cartModel.create({ products: [] })
+        // Registra el documento de carrito recién creado
+        console.log(newCart)
+        // Asigna el _id del nuevo documento de carrito al campo cart_id del documento de usuario actual
+        this.cart_id = newCart._id
+    } catch (e) {
+        // Si ocurre un error, pásalo al siguiente middleware en la cadena
+        //NEXT se usa para continuar
+        next(e)
+    }
+})
+
+// Define un middleware pre-find para el modelo userSchema, que se ejecuta antes de buscar documentos de usuario
+userSchema.pre('find', async function (next) {
+    try {
+        // Encuentra un documento de carrito por su _id
+        const PRODS = await cartModel.findOne({ _id: '661739a0111773eba9eae766' })
+        // Registra el documento de carrito encontrado
+        console.log(PRODS)
+        // Rellena el campo 'cart_id' del documento de usuario actual con el documento de carrito referenciado
+        this.populate('cart_id')
+    } catch (e) {
+        // Si ocurre un error, pásalo al siguiente middleware en la cadena
+        next(e)
+    }
+})
+
 
 //exporto una constante que va a ser igual a este modelo de nombre users y el siguiente esquema: userSchema
 export const userModel = model("users", userSchema)
