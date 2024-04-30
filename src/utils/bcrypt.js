@@ -10,7 +10,7 @@ import bcrypt from 'bcrypt'
 //.hasSync es para hashear  la contraseña del usuario que envio como parametro
 //Para encriptar la contraseña necesito un Salt: es la forma de definir el prcoeso de hasheo. Es el costo de procesar los datos. Cunato va a costar encriptar esta contraseña. Por defecto 10. Mientras mas alto el numero mas cuesta procesarlo, mas segura seria esa contraseña porque costaria mas tiempo desencriptarlo. A eso hace referencia el Salt.
 
-export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(12))
+export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(process.env.SALT))
 
 //pruebo el hasheo
 //console.log(createHash("coderhouse"))

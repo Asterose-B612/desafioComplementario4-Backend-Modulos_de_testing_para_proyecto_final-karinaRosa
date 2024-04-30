@@ -8,7 +8,7 @@ export const generateToken = (user) => {
         3°: Tiempo de expiracion
     */
    //genero un token el cual recibe como parámetro un usuario, lo encripte con el Secret Key, la contraseña, y dure 12  horas. 
-    const token = jwt.sign({ user }, "", { expiresIn: '12h' })
+    const token = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '12h' })
     return token
 }
 

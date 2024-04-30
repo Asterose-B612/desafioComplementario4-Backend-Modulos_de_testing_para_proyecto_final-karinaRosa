@@ -2,7 +2,7 @@
 
 
 //*******IMPORTACIONES******************
-
+import dotenv from 'dotenv'
 // Importa el módulo Express para crear el servidor
 import express from 'express'
 import mongoose from 'mongoose'
@@ -29,7 +29,8 @@ import { Server } from 'socket.io' //llaves es una dependencia
 const app = express();
 // Se define el puerto en el que el servidor estará escuchando.
 const PORT = 8000
-
+//variable del entorno
+dotenv.config()
 
 
 
@@ -54,7 +55,7 @@ const io = new Server(SERVER)
 
 //----CONECTION DB---------
 //contraseña que yo defino
-mongoose.connect("mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect(process.env.MONGO_BD_URL)
   //cuando esta conexion me devuelva un valor voy a mostrar este mensaje
   .then(() => console.log("DB is connected"))
   //si hay error muestro el error
@@ -75,7 +76,7 @@ app.use(express.urlencoded({ extended: true }))
 
 //COOKIES
 //todas las generadas aqui se van a hacer con esta clave secreta
-app.use(cookieParser("claveSecreta"))
+app.use(cookieParser(process.env.COOKIES_SECRET))
 
 
 
@@ -83,12 +84,12 @@ app.use(cookieParser("claveSecreta"))
 //Configuro que:
 app.use(session({
   //voy a tener un valor secreto
-  secret: '',
+  secret: process.env.SESSION_SECRET,
   //voy a guardar cada vez que recargue
   resave: true,
   store: MongoStore.create({
     //misma url con la que me conecto a la base de datos
-    mongoUrl: "mongodb+srv://azul:password@cluster0.0wxpkun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    mongoUrl:process.env.MONGO_BD_URL,
     //ttl es el tiempo en el cual vive mi sesion. Yo lo defino. ej: 2hs, 3dias,etc
     //me va a prmitir ingresar sin que yo me loguee
     //El tiempo de vida esta en segundos. 60 minutos x 60 segundos = 1 hora
