@@ -5,7 +5,7 @@
 import productModel from "../models/product.js";
 
 
-export const getProducts = async (query, options) => {
+export const getProducts = async (limit, page, filter, sort) => {
 
     // Paso 2: Construye el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
     const query = filter ? (filter === 'true' || filter === 'false' ? { status: filter } : { category: filter }) : {};

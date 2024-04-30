@@ -2,6 +2,10 @@
 
 import bcrypt from 'bcrypt'
 
+import varenv from '../dotenv.js'
+
+
+
 //genero los 2 modulos que necesito:
 
 //1- es EL HASHEO DE LA CONTRASEÑA
@@ -10,7 +14,7 @@ import bcrypt from 'bcrypt'
 //.hasSync es para hashear  la contraseña del usuario que envio como parametro
 //Para encriptar la contraseña necesito un Salt: es la forma de definir el prcoeso de hasheo. Es el costo de procesar los datos. Cunato va a costar encriptar esta contraseña. Por defecto 10. Mientras mas alto el numero mas cuesta procesarlo, mas segura seria esa contraseña porque costaria mas tiempo desencriptarlo. A eso hace referencia el Salt.
 
-export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(process.env.SALT))
+export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(varenv.salt))
 
 //pruebo el hasheo
 //console.log(createHash("coderhouse"))

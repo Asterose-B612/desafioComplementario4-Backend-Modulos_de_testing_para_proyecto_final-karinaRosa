@@ -22,7 +22,7 @@ productsRouter.get('/', async (req, res) => {
         // Paso 1: Obtiene los parámetros 'limit', 'page', 'filter' y 'sort' de la consulta HTTP.
         const { limit = 10, page = 1, filter, sort } = req.query;
         //los parametros son los mismos de los controladores: query y options
-        const products = await getProducts(query, options);
+        const products = await getProducts(limit, page, filter, sort);
 
 
         //CODIGO INTERNO TRABAJANDO EN EL CONTROLADOR

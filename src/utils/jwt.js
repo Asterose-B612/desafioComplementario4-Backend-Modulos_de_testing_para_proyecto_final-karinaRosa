@@ -1,3 +1,4 @@
+import varenv from '../dotenv.js'
 import jwt from 'jsonwebtoken'
 //genero una funcion que me pide un usuario como parametro
 export const generateToken = (user) => {
@@ -8,7 +9,7 @@ export const generateToken = (user) => {
         3°: Tiempo de expiracion
     */
    //genero un token el cual recibe como parámetro un usuario, lo encripte con el Secret Key, la contraseña, y dure 12  horas. 
-    const token = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '12h' })
+    const token = jwt.sign({ user }, varenv.jwt_secret, { expiresIn: '12h' })
     return token
 }
 

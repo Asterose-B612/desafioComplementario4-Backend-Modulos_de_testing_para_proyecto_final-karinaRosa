@@ -1,8 +1,5 @@
-
-
-
 //*******IMPORTACIONES******************
-import dotenv from 'dotenv'
+
 // Importa el módulo Express para crear el servidor
 import express from 'express'
 import mongoose from 'mongoose'
@@ -13,6 +10,7 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import initializePassport from './config/passport/passport.js'
+import varenv from './dotenv.js'
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
@@ -29,8 +27,7 @@ import { Server } from 'socket.io' //llaves es una dependencia
 const app = express();
 // Se define el puerto en el que el servidor estará escuchando.
 const PORT = 8000
-//variable del entorno
-dotenv.config()
+
 
 
 
@@ -55,7 +52,7 @@ const io = new Server(SERVER)
 
 //----CONECTION DB---------
 //contraseña que yo defino
-mongoose.connect(process.env.MONGO_BD_URL)
+mongoose.connect(varenv.mongo_url)
   //cuando esta conexion me devuelva un valor voy a mostrar este mensaje
   .then(() => console.log("DB is connected"))
   //si hay error muestro el error
@@ -76,7 +73,7 @@ app.use(express.urlencoded({ extended: true }))
 
 //COOKIES
 //todas las generadas aqui se van a hacer con esta clave secreta
-app.use(cookieParser(process.env.COOKIES_SECRET))
+app.use(cookieParser(varenv.cookies_secret))
 
 
 
@@ -84,12 +81,12 @@ app.use(cookieParser(process.env.COOKIES_SECRET))
 //Configuro que:
 app.use(session({
   //voy a tener un valor secreto
-  secret: process.env.SESSION_SECRET,
+  secret: varenv.session_secret,
   //voy a guardar cada vez que recargue
   resave: true,
   store: MongoStore.create({
     //misma url con la que me conecto a la base de datos
-    mongoUrl:process.env.MONGO_BD_URL,
+    mongoUrl: varenv.mongo_url,
     //ttl es el tiempo en el cual vive mi sesion. Yo lo defino. ej: 2hs, 3dias,etc
     //me va a prmitir ingresar sin que yo me loguee
     //El tiempo de vida esta en segundos. 60 minutos x 60 segundos = 1 hora

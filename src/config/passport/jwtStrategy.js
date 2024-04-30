@@ -1,3 +1,4 @@
+import varenv from '../../dotenv.js'
 /*importa dos objetos, Strategy y ExtractJwt, desde el módulo "passport-jwt". Estos objetos son utilizados  para implementar una estrategia de autenticación basada en JSON Web Tokens (JWT) en una aplicación web utilizando la biblioteca Passport.js en Node.js.*/
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { userModel } from "../../models/user.js";
@@ -17,7 +18,7 @@ const cookieExtractor = req => {
 }
 
 
-
+console.log(varenv.jwt_secret)
 /*****STRATEGY OF JWT***** */
 
 //1° Defino, Donde voy a consultar esos valores?
@@ -28,7 +29,7 @@ const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
     //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken() esperar el token de JWT desde la peticion
     //jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]) consultando desde las cookies
-    secretOrKey: process.env.JWT_SECRET
+    secretOrKey: varenv.jwt_secret
 }
 
 
