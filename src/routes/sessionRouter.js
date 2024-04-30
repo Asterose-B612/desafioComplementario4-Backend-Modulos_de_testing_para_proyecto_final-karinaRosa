@@ -2,6 +2,7 @@ import { Router } from "express";
 import passport from "passport";
 
 
+
 // Crea un enrutador en Express.js para manejar las solicitudes relacionadas con las operaciones de usuario en la aplicación web.
 const sessionRouter = Router();
 
@@ -90,6 +91,24 @@ sessionRouter.get('/githubSession', passport.authenticate('github'), async (req,
     // Redirige al usuario a la página principal de la aplicación. "API/PRODUCT"
     res.redirect('/api/products')
 })
+////////fin  Ruta GITHUB    //////////////
+
+
+
+////////inicio  Ruta CURRENT    //////////////
+//consulto si el usuario se logueo correctamente o no
+//verifico que esta autenticado con jwt
+
+sessionRouter.get('/current', passport.authenticate('jwt'), (req, res) => {
+    //estrategia jwt. → passport.use('jwt', strategyJWT) se encuentra en config/passport/passport.js
+    console.log(req)
+    res.status(200).send("Usuario logueado")
+})
+////////fin  Ruta CURRENT    //////////////
+
+
+
+/* ORIGINALMENTE ESTE ES EL CODIGO DE LA CLASE para logout
 
 // Ruta GET para manejar la solicitud de cierre de sesión.
 sessionRouter.get('/logout', (req, res) => {
@@ -104,18 +123,7 @@ sessionRouter.get('/logout', (req, res) => {
         }
     })
 })
-
-
-
-
-
-////////fin  Ruta GITHUB    //////////////
-
-
-
-
-
-
+*/
 
 /////.....inicio LOGOUT.....///////
 // Definición de la ruta GET '/logout' en el enrutador de sesiones.
@@ -150,14 +158,12 @@ sessionRouter.get('/logout', async (req, res) => {
         res.status(500).send("Error al cerrar sesión");
     }
 });
-
 /////..... fin  LOGOUT.....///////desloguearse
 
 
 
 
 ////////inicio  Ruta JWT    //////////////
-
 
 // Configuración de la ruta '/testJWT' en el enrutador 'sessionRouter' para probar la autenticación JWT
 //session: fale porque no quiero generar una sesion como tal sino solo testear.
@@ -166,7 +172,6 @@ sessionRouter.get('/testJWT', passport.authenticate('jwt', { session: false }), 
      // Envía una respuesta con estado HTTP 200 y envía los datos del usuario en la respuesta
     res.status(200).send(req.user)
 })
-
 
 ////////fin  Ruta JWT    //////////////
 
