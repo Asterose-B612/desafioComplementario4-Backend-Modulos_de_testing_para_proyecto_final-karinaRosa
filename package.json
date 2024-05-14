@@ -1,12 +1,12 @@
 {
-  "name": "entrega1",
+  "name": "entrega3",
   "version": "1.0.0",
-  "description": "crear un servidor con express",
+  "description": "Profesionalizando el servidor",
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "devNodemon": "nodemon src/app.js",
-    "devNode": "node --watch src/app.js"
+    "devNodemon": "nodemon backend/src/app.js",
+    "devNode": "node --watch backend/src/app.js"
   },
   "keywords": [],
   "author": "Karina Rosa",
@@ -18,6 +18,7 @@
     "bcrypt": "^5.1.1",
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-handlebars": "^7.1.2",

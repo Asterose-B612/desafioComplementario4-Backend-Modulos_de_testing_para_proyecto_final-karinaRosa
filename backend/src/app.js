@@ -2,6 +2,7 @@
 
 // Importa el módulo Express para crear el servidor
 import express from 'express'
+import cors from 'cors'
 import mongoose from 'mongoose'
 import messageModel from './models/messages.js'
 import indexRouter from './routes/indexRouter.js'
@@ -28,8 +29,8 @@ const app = express();
 // Se define el puerto en el que el servidor estará escuchando.
 const PORT = 8000
 
-
-
+//Cors: whitelist (lista blanca de servidores que pueden acceder). 
+const whiteList = ['htpp://localhost: ']
 
 
 
