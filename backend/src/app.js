@@ -1,9 +1,10 @@
 //*******IMPORTACIONES******************
 
-// Importa el módulo Express para crear el servidor
+// Se importa el módulo Express, que es un marco de aplicación web para Node.js. Esto es necesario para poder crear y configurar nuestro servidor web.
 import express from 'express'
 import cors from 'cors'
-import mongoose from 'mongoose'
+// Se mporta el paquete mongoose, que es una biblioteca de modelado de objetos para MongoDB en Node.js. Lo utilizo en mi aplicación Node.js para interactuar con bases de datos MongoDB de manera más sencilla y eficiente. mongoose proporciona una capa de abstracción sobre las operaciones de MongoDB, lo que facilita la definición de modelos, la validación de datos y la realización de consultas a la base de datos.
+import mongoose from 'mongoose';
 import messageModel from './models/messages.js'
 import indexRouter from './routes/indexRouter.js'
 import cookieParser from 'cookie-parser'
@@ -11,7 +12,9 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import initializePassport from './config/passport/passport.js'
-import varenv from './dotenv.js'
+// Importa el módulo 'varenv' desde el archivo './dotenv.js'. Contiene funcionalidad relacionada con la configuración de variables de entorno, como cargar variables desde un archivo .env. Estas variables suelen contener información sensible o de configuración, como claves de API o URL de bases de datos.
+//esta importando basicamente el config.
+import varenv from './dotenv.js';
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
@@ -22,44 +25,107 @@ import { Server } from 'socket.io' //llaves es una dependencia
 
 
 
-//*******CONFIGURACIONES O DECLARACIONES******************
+//  CONFIGURACIONES Y DECLARACIONES   *********
+// Cors, Server, Mongo DB Conection
 
-// Se crea una instancia de Express para configurar el servidor.
+
+// Se crea una instancia de Express, que será nuestra aplicación de Express, a través de la cual definiremos rutas, configuraremos middleware y realizaremos otras tareas relacionadas con el manejo de solicitudes y respuestas HTTP. (es para configurar el servidor.)
 const app = express();
-// Se define el puerto en el que el servidor estará escuchando.
+
+// Se define el puerto en el que el servidor estará escuchando las solicitudes entrantes.
 const PORT = 8000
 
+
+
+//
+// inicio  Cors  ...............
+
 //Cors: whitelist (lista blanca de servidores que pueden acceder). 
-const whiteList = ['htpp://localhost: ']
+const whiteList = ['http://127.0.0.1:5500']
+
+//Se declara un objeto corsOptions para contener la configuración personalizada de CORS.
+// establece una función para determinar si una solicitud CORS debe ser permitida o denegada en función del origen de la solicitud.
+const corsOptions = {
+  /*
+   //origin es una función que toma dos parámetros: origin y callback. La función se utilizará para determinar si el origen de la solicitud está permitido.
+
+  origin: (origin, callback) => {
+
+     // muestra en consola el origen de la solicitud para propósitos de depuración.
+
+      console.log(origin)
+
+      //Verifica si el origen de la solicitud está presente (!origin) o si está incluido en una lista blanca de orígenes permitidos (whiteList.includes(origin)).
+
+      if (!origin || whiteList.includes(origin)) {
+
+        //Si el origen de la solicitud está permitido, se llama al callback con null como primer argumento (lo que indica que no hay errores) y true como segundo argumento (lo que indica que la solicitud está permitida).
+
+          callback(null, true)
+
+          //Si el origen de la solicitud no está permitido, se llama al callback con un nuevo Error que contiene el mensaje "No autorizado por políticas de cors".
+          //NEW ERROR ES LA NUEVA FORMA DE ENVIAR ERRORES
+
+      } else {
+          callback(new Error("No autorizado por politicas de cors"))
+      }
+  }  
+  */
+  // Permitir cualquier origen
+  origin: '*'
+}
+
+// Se aplica el middleware CORS con opciones personalizadas.
+app.use(cors(corsOptions))
+//ruta para verificar el funcionamiento de cors
+// Defino una ruta GET llamada '/bienvenida'
+app.get('/bienvenida', (req, res) => {
+  // Cuando se haga una solicitud GET a '/bienvenida', se ejecuta esta función de devolución de llamada
+  // req: representa la solicitud HTTP que llega al servidor
+  // res: representa la respuesta HTTP que será enviada de vuelta al cliente
+  // Configura el código de estado de la respuesta como 200 (OK) y envía un objeto JSON como respuesta
+  res.status(200).send({ mensaje: "Bienvenidos a Gerhard" })
+})
+
+// fin  Cors  ...............
 
 
 
-//----SERVER---------
-// Se define el servidor utilizando la variable 'app'.
-// El servidor escucha en el puerto definido por la variable 'PORT'.
-// Cuando el servidor está activo, se ejecuta una función anónima para mostrar un mensaje de estado en la consola.
+
+
+// inicio  Server  ...............
+
+// Se inicia el servidor utilizando la instancia de Express 'app' y se especifica que escuche en el puerto definido por la variable 'PORT'.
 const SERVER = app.listen(PORT, () => {
+  // Cuando el servidor se inicia correctamente, se ejecuta esta función de devolución de llamada
+
+   // Se imprime un mensaje en la consola indicando que el servidor se ha iniciado correctamente y en qué puerto está escuchando.
   console.log(`Server on port ${PORT}`);
 });
-// Muestra un mensaje en la consola indicando que el servidor está activo y escuchando en el puerto especificado.
+
 
 //declaro un nuevo servidor de sockets.io
 const io = new Server(SERVER)
 
+// fin Server  ...............
 
 
 
 
+// inicio MongoDB Connection  ...............
 
-//----CONECTION DB---------
-//contraseña que yo defino
+//Proceso de conexión a MongoDB: la configuración de la contraseña, la gestión de la conexión exitosa y la captura de errores en caso de fallo en la conexión.
+
+//onsole.log("URI de conexión a MongoDB:", varenv.mongo_url); // Agregado para depurar
+
+// Se utiliza la contraseña definida por el usuario.
 mongoose.connect(varenv.mongo_url)
-  //cuando esta conexion me devuelva un valor voy a mostrar este mensaje
+ // Cuando la conexión se establece correctamente, se muestra el mensaje "DB is connected".
   .then(() => console.log("DB is connected"))
-  //si hay error muestro el error
-  .catch(e => console.log(e))
+   // En caso de error, se muestra el error.    
+   .catch(error => console.error('Error al conectar a MongoDB:', error));
 
-
+// fin MongoDB Connection  ...............
 
 
 
