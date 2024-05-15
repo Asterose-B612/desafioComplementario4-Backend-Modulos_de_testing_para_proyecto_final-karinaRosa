@@ -46,33 +46,8 @@ const whiteList = ['http://127.0.0.1:5500']
 //Se declara un objeto corsOptions para contener la configuración personalizada de CORS.
 // establece una función para determinar si una solicitud CORS debe ser permitida o denegada en función del origen de la solicitud.
 const corsOptions = {
-  /*
-   //origin es una función que toma dos parámetros: origin y callback. La función se utilizará para determinar si el origen de la solicitud está permitido.
-
-  origin: (origin, callback) => {
-
-     // muestra en consola el origen de la solicitud para propósitos de depuración.
-
-      console.log(origin)
-
-      //Verifica si el origen de la solicitud está presente (!origin) o si está incluido en una lista blanca de orígenes permitidos (whiteList.includes(origin)).
-
-      if (!origin || whiteList.includes(origin)) {
-
-        //Si el origen de la solicitud está permitido, se llama al callback con null como primer argumento (lo que indica que no hay errores) y true como segundo argumento (lo que indica que la solicitud está permitida).
-
-          callback(null, true)
-
-          //Si el origen de la solicitud no está permitido, se llama al callback con un nuevo Error que contiene el mensaje "No autorizado por políticas de cors".
-          //NEW ERROR ES LA NUEVA FORMA DE ENVIAR ERRORES
-
-      } else {
-          callback(new Error("No autorizado por politicas de cors"))
-      }
-  }  
-  */
-  // Permitir cualquier origen
-  origin: '*'
+  origin: 'http://127.0.0.1:5500',
+  methods: ['GET', 'POST', 'UPDATE', 'DELETE']
 }
 
 // Se aplica el middleware CORS con opciones personalizadas.
@@ -99,7 +74,7 @@ app.get('/bienvenida', (req, res) => {
 const SERVER = app.listen(PORT, () => {
   // Cuando el servidor se inicia correctamente, se ejecuta esta función de devolución de llamada
 
-   // Se imprime un mensaje en la consola indicando que el servidor se ha iniciado correctamente y en qué puerto está escuchando.
+  // Se imprime un mensaje en la consola indicando que el servidor se ha iniciado correctamente y en qué puerto está escuchando.
   console.log(`Server on port ${PORT}`);
 });
 
@@ -120,18 +95,19 @@ const io = new Server(SERVER)
 
 // Se utiliza la contraseña definida por el usuario.
 mongoose.connect(varenv.mongo_url)
- // Cuando la conexión se establece correctamente, se muestra el mensaje "DB is connected".
+  // Cuando la conexión se establece correctamente, se muestra el mensaje "DB is connected".
   .then(() => console.log("DB is connected"))
-   // En caso de error, se muestra el error.    
-   .catch(error => console.error('Error al conectar a MongoDB:', error));
+  // En caso de error, se muestra el error.    
+  .catch(error => console.error('Error al conectar a MongoDB:', error));
 
 // fin MongoDB Connection  ...............
 
 
 
 
+//  MIDDLEWARES   *********
 
-//*******MIDDLEWARES******************
+
 
 //el servidor podrá recibir json al momento de la petición
 app.use(express.json())
@@ -144,7 +120,9 @@ app.use(cookieParser(varenv.cookies_secret))
 
 
 
-//SESSION.......
+
+// inicio  Session  ...............
+
 //Configuro que:
 app.use(session({
   //voy a tener un valor secreto

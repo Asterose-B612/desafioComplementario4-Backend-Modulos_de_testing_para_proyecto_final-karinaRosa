@@ -14,7 +14,6 @@ indexRouter.get('/', (req, res) => {
   res.status(200).send("Bienvenido/a!")
 })
 //indexRouter.use('/public', express.static(__dirname + '/public'))
-//defino que la ruta products va a implementar la carpeta publica
 indexRouter.use('/api/products', productsRouter, express.static(__dirname + '/public'))
 //productsRouter va a importar las rutas de todos esos elementos. 
 //Genero ruta donde subo las imagenes.

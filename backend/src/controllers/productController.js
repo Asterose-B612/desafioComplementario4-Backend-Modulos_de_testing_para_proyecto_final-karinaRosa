@@ -14,12 +14,14 @@ export const getProducts = async (limit, page, filter, sort) => {
     // Paso 4: Realiza la consulta a la base de datos, aplicando el filtro, paginación y ordenamiento.
     const options = { limit: parseInt(limit), page: parseInt(page), sort: sortQuery };
 
+    // Paso 5: Realiza la consulta a la base de datos utilizando el modelo de producto y los criterios de búsqueda.
+    const products = await productModel.paginate(query, options);
+
     // Paso 5: Calcula si hay páginas previas y siguientes.
     const prevPage = products.prevPage ? parseInt(page) - 1 : null;
     const nextPage = products.nextPage ? parseInt(page) + 1 : null;
 
 
-    const products = await productModel.paginate(query, options);
     return products
 
 }
@@ -35,7 +37,10 @@ export const getProduct = async (PRODUCTID) => {
     /* Nota: Todo dato consultado desde un parámetro es de tipo string. Si el ID es numérico, se necesita convertirlo. */
     // Llama a ProductManager para devolver el producto con el ID solicitado.
     const PROD = await productModel.findById(PRODUCTID)
-    return PROD
+    if (PROD)
+        return PROD
+    else
+        return null
 }
 
 
@@ -45,7 +50,7 @@ export const getProduct = async (PRODUCTID) => {
 
 
 export const createProduct = async (product) => {
-    
+
     // Paso 2: Llamo al modelo. Al crear un nuevo prod.
     // Crea un nuevo producto en la base de datos y devuelve un mensaje
     const mensaje = await productModel.create(product);
@@ -61,7 +66,7 @@ export const createProduct = async (product) => {
 
 export const updateProduct = async (PRODUCTID, upProduct) => {
     // Paso 3: Se llama a ProductManager para actualizar el producto en la base de datos y obtener un mensaje de confirmación.
-    const prod =await productModel.findByIdAndUpdate(PRODUCTID, upProduct);
+    const prod = await productModel.findByIdAndUpdate(PRODUCTID, upProduct);
     return prod
 }
 

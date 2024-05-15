@@ -24,25 +24,4 @@ userRouter.get('/', async (req, res) => {
 })
 
 
-//BORRAMOS ESTA RUTA POST PORQUE YA VOY A TRABAJARLO MEDIANTE UNA SESSION
-
-//ruta post para crear nuevo usuario
-
-/*userRouter.post('/', async (req, res) => {
-      try {
-            //creo un nuevo usuario
-            //req.body datos enviados x cliente al servidor en una solicitud HTTP POST o PUT.
-
-            const { name, surname, password, age, email } = req.body
-            //creo esos datos con create
-            //le envio a mi BDD x metodo create esos datos creados
-            const resultado = await userModel.create({ name, surname, password, age, email })
-            res.status(201).send(resultado)
-
-      } catch (e) {
-            res.status(500).send("Error al crear usuarios", e)
-      }
-})*/
-
-
 export default userRouter

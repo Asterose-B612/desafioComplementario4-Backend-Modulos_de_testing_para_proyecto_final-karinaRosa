@@ -17,6 +17,24 @@ const productsRouter = Router();
 // Esta ruta maneja las solicitudes GET a '/products'.
 // Recibe opcionalmente los parámetros 'limit', 'page', 'filter' y 'ord' desde la URL para limitar la cantidad de productos devueltos, paginar los resultados, filtrar por estado o categoría, y ordenar por precio.
 
+
+
+
+
+
+
+
+
+productsRouter.get('/', async (req, res) => {
+    try {
+        const prods = await getProducts()
+        res.status(200).send(prods)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+/*
 productsRouter.get('/', async (req, res) => {
     try {
         // Paso 1: Obtiene los parámetros 'limit', 'page', 'filter' y 'sort' de la consulta HTTP.
@@ -41,14 +59,19 @@ productsRouter.get('/', async (req, res) => {
             hasPrevPage: products.hasPrevPage,
             hasNextPage: products.hasNextPage,
         });
-    } catch (error) {
-        // Maneja cualquier error y devuelve un mensaje de error 500 (Internal Server Error).
-        res.status(500).render('templates/error', {
-            error: error,
-        });
-    }
+  //  } catch (error) {
+  //      res.status(500).send("No se puede acceder" + error)
+  //  }
+} catch (error) {
+    res.status(500).send({ error: "No se puede acceder", message: error });
+}
+
 });
 
+res.status(500).render('templates/error', {
+    error: error,
+});
+*/
 
 // Esta ruta maneja la consulta de productos. El identificador de producto (pid) no es un valor fijo, es generado por crypto.
 
@@ -57,21 +80,18 @@ productsRouter.get('/:pid', async (req, res) => {
     try {
         // Paso 1: Consulta el parámetro de la solicitud para obtener el identificador del producto.
         const PRODUCTID = req.params.pid
-
+        console.log(PRODUCTID)
 
         //paso2: CODIGO INTERNO EN EL CONTROLADOR
 
 
         //LLAMO A LA FUNCIÓN DEL CONTROLADOR: 
         const PROD = await getProduct(PRODUCTID);
-
         // Paso 3: Si producto existe, lo devuelve. Sino, devuelve un mensaje de error 404 al cliente por solicitar un ID que no existe.
 
         if (PROD) {
-
             res.status(200).send(PROD)
             // Devuelve el producto con el código de estado 200 (OK).
-
         } else {
             res.status(404).send("Producto no encontrado")
             // Devuelve un mensaje de error 404 (Not Found).
@@ -83,6 +103,14 @@ productsRouter.get('/:pid', async (req, res) => {
     }
 
 })
+
+
+
+
+
+
+
+
 
 
 //********METDOS POST********CREAR
