@@ -5,7 +5,6 @@ import productModel from "../models/product.js";
 
 
 
-
 //*******inicio OBTENER UN CARRITO POR SU ID******************
 
 // Función asíncrona para obtener un carrito por su ID
