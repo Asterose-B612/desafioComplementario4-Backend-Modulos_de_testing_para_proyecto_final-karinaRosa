@@ -5,84 +5,129 @@
 import productModel from "../models/product.js";
 
 
+// inicio OBTENER PRODUCTOS..............................
+
 export const getProducts = async (limit, page, filter, sort) => {
 
-    // Paso 2: Construye el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
-    const query = filter ? (filter === 'true' || filter === 'false' ? { status: filter } : { category: filter }) : {};
-    // Paso 3: Construye el objeto de consulta para el método de ordenamiento, utilizando 'price' como clave y 'sort' como dirección de ordenamiento.
-    const sortQuery = sort ? { price: sort === 'asc' ? 1 : -1 } : {};
-    // Paso 4: Realiza la consulta a la base de datos, aplicando el filtro, paginación y ordenamiento.
-    const options = { limit: parseInt(limit), page: parseInt(page), sort: sortQuery };
+    try {
+        // Paso 2: Construye el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
+        const query = filter ? (filter === 'true' || filter === 'false' ? { status: filter } : { category: filter }) : {};
+        // Paso 3: Construye el objeto de consulta para el método de ordenamiento, utilizando 'price' como clave y 'sort' como dirección de ordenamiento.
+        const sortQuery = sort ? { price: sort === 'asc' ? 1 : -1 } : {};
+        // Paso 4: Realiza la consulta a la base de datos, aplicando el filtro, paginación y ordenamiento.
+        const options = { limit: parseInt(limit), page: parseInt(page), sort: sortQuery };
 
-    // Paso 5: Realiza la consulta a la base de datos utilizando el modelo de producto y los criterios de búsqueda.
-    const products = await productModel.paginate(query, options);
+        // Paso 5: Realiza la consulta a la base de datos utilizando el modelo de producto y los criterios de búsqueda.
+        const products = await productModel.paginate(query, options);
 
-    // Paso 5: Calcula si hay páginas previas y siguientes.
-    const prevPage = products.prevPage ? parseInt(page) - 1 : null;
-    const nextPage = products.nextPage ? parseInt(page) + 1 : null;
+        // Paso 5: Calcula si hay páginas previas y siguientes.
+        const prevPage = products.prevPage ? parseInt(page) - 1 : null;
+        const nextPage = products.nextPage ? parseInt(page) + 1 : null;
+
+        return products
+
+    } catch (error) {
+        // Si ocurre un error, devuelve un objeto de error con un código de estado 500.
+        return { error: error };
+    }
+}
+// inicio OBTENER PRODUCTOS..............................
 
 
-    return products
 
+
+
+
+
+// inicio OBTENER PRODUCTO..............................
+
+export const getProduct = async (req, res) => {
+    try {
+        const idProducto = req.params.pid //Todo dato que se consulta desde un parametro es un string
+        const prod = await productModel.findById(idProducto)
+        if (prod)
+            res.status(200).send(prod)
+        else
+            res.status(404).send("Producto no existe")
+    } catch (error) {
+        res.status(500).send(`Error interno del servidor al consultar producto: ${error}`)
+    }
+}
+// fin OBTENER PRODUCTO..............................
+
+
+
+
+
+// inicio CREAR PRODUCTO .........................
+
+export const createProduct = async (req, res) => {
+    console.log(req.user)
+    console.log(req.user.rol)
+    try {
+        if (req.user.rol == "Admin") {
+            const product = req.body
+            const mensaje = await productModel.create(product)
+            res.status(201).send(mensaje)
+        } else {
+            res.status(403).send("Usuario no autorizado")
+        }
+
+
+    } catch (error) {
+        res.status(500).send(`Error interno del servidor al crear producto: ${error}`)
+    }
 }
 
-//..........................................
+// fin CREAR PRODUCTO .........................
 
-//Función para OBTENER un producto POR SU ID
 
-// Realiza la consulta a la base de datos para encontrar un producto por su ID
 
-export const getProduct = async (PRODUCTID) => {
-    // Paso 2: Consulta en la base de datos el producto con el ID proporcionado.
-    /* Nota: Todo dato consultado desde un parámetro es de tipo string. Si el ID es numérico, se necesita convertirlo. */
-    // Llama a ProductManager para devolver el producto con el ID solicitado.
-    const PROD = await productModel.findById(PRODUCTID)
-    if (PROD)
-        return PROD
-    else
-        return null
+
+
+
+// inicio ACTUALIZAR PRODUCTO EXISTENTE..........................................
+
+export const updateProduct = async (req, res) => {
+    try {
+        if (req.user.rol == "Admin") {
+            const idProducto = req.params.pid
+            const updateProduct = req.body
+            const prod = await productModel.findByIdAndUpdate(idProducto, updateProduct)
+            res.status(200).send(prod)
+        } else {
+            res.status(403).send("Usuario no autorizado")
+        }
+    } catch (error) {
+        res.status(500).send(`Error interno del servidor al actualizar producto: ${error}`)
+    }
 }
+// fin ACTUALIZAR PRODUCTO EXISTENTE..........................................
 
 
-//..........................................
-
-//Función para CREAR UN NUEVO producto
 
 
-export const createProduct = async (product) => {
 
-    // Paso 2: Llamo al modelo. Al crear un nuevo prod.
-    // Crea un nuevo producto en la base de datos y devuelve un mensaje
-    const mensaje = await productModel.create(product);
-    return mensaje;
+
+
+// inicio ElIMINAR PRODUCTO EXISTENTE x su id .........................
+
+
+export const deleteProduct = async (req, res) => {
+    try {
+        console.log(req.user.rol)
+        if (req.user.rol == "Admin") {
+            const idProducto = req.params.pid
+            const mensaje = await productModel.findByIdAndDelete(idProducto)
+            res.status(200).send(mensaje)
+        } else {
+            res.status(403).send("Usuario no autorizado")
+        }
+    } catch (error) {
+        res.status(500).send(`Error interno del servidor al eliminar producto: ${error}`)
+    }
 }
-
-
-
-
-//..........................................
-
-// Función para actualizar un producto existente
-
-export const updateProduct = async (PRODUCTID, upProduct) => {
-    // Paso 3: Se llama a ProductManager para actualizar el producto en la base de datos y obtener un mensaje de confirmación.
-    const prod = await productModel.findByIdAndUpdate(PRODUCTID, upProduct);
-    return prod
-}
-
-
-
-
-//..........................................
-
-// Función para eliminar un producto existente por su ID
-
-
-export const deleteProduct = async (PRODUCTID) => {
-    // Paso 3: Elimina un producto existente por su ID de la base de datos y devuelve un mensaje
-    const mensaje = await productModel.findByIdAndDelete(PRODUCTID);
-    return mensaje;
-}
+// fin ElIMINAR PRODUCTO EXISTENTE x su id .........................
 
 
 

@@ -26,7 +26,8 @@ console.log(varenv.jwt_secret)
 
 const jwtOptions = {
     //Este token →jwtFromRequest lo voy a consultar de el archivo llamado ExtractJwt donde yo digo de donde lo voy a traer el token. Puedo extraerlo del query, header, del mismo archivo o de la forma mas común que es del headerAsBeaererToken
-    jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+    //aqui lo extraigo desde el header
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken() esperar el token de JWT desde la peticion
     //jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]) consultando desde las cookies
     secretOrKey: varenv.jwt_secret
