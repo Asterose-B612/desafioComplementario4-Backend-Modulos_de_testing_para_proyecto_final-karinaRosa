@@ -41,11 +41,15 @@ const PORT = 8000
 // inicio  Cors  ...............
 
 //Cors: whitelist (lista blanca de servidores que pueden acceder). 
-const whiteList = ['http://127.0.0.1:5500']
+//const whiteList = ['http://127.0.0.1:5500']
+
+
+//Permitir todas las rutas:  app.use(cors())
 
 //Se declara un objeto corsOptions para contener la configuración personalizada de CORS.
 // establece una función para determinar si una solicitud CORS debe ser permitida o denegada en función del origen de la solicitud.
 const corsOptions = {
+  //solo las rutas que esten dentro de origin se va a poder conectar
   origin: 'http://127.0.0.1:5500',
   methods: ['GET', 'POST', 'UPDATE', 'DELETE']
 }

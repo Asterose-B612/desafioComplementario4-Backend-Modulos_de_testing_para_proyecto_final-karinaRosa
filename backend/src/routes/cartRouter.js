@@ -1,6 +1,8 @@
 // Importa la clase Router desde el módulo 'express'
 import { Router } from "express";
-import cartModel from "../models/cart.js";
+import passport from "passport";
+import { createCart, getCart, insertProductCart, createTicket } from "../controllers/cartController.js";
+
 
 // Se crea una nueva instancia de Router para manejar las rutas relacionadas con el carrito.
 const cartRouter = Router()
@@ -8,89 +10,46 @@ const cartRouter = Router()
 
 
 
-//*******CREAR CARRITO CARRITO VACÍO******************
+// inicio CREAR CARRITO VACÍO******************
 
 //ruta para Postman: api/cart
 
-cartRouter.post('/', async (req, res) => {
-    try {
-        // Crear un carrito vacío inicializando 'products' como un array vacío
-        const mensaje = await cartModel.create({ products: [] })
-        // Enviar respuesta con el carrito creado y código 201 (Created)
-        res.status(201).send(mensaje)
-    } catch (error) {
-        // Manejar errores y enviar respuesta con código 500 (Internal Server Error)
-        res.status(500).send(`Error interno del servidor al crear carrito: ${error}`)
-    }
-})
+cartRouter.post('/', createCart)
+
+// fin CREAR CARRITO VACÍO******************
 
 
 
 
 
 
-
-//*******OBTENER UN CARRITO POR SU ID******************
+// inicio OBTENER UN CARRITO POR SU ID******************
 
 //ruta para Postman: api/cart/idDelCarrito
 
+cartRouter.get('/:cid', getCart)
 
-// Nuevo endpoint para obtener un carrito por su ID
-cartRouter.get('/:cid', async (req, res) => {
-    try {
-        // Obtener el ID del carrito de los parámetros de la URL
-        const cartId = req.params.cid
-        // Buscar el carrito por su ID        
-        // Enviar respuesta con el carrito encontrado y código 200 (OK)
-        const cart = await cartModel.findOne({ _id: cartId })
-        res.status(200).send(cart)
-    } catch (error) {
-        // Si ocurre un error al obtener el carrito, devuelve un mensaje de error con un código de estado 500 (Error interno del servidor).
-        res.status(500).send(`Error interno del servidor al consultar carrito: ${error}`)
-    }
-})
+// fin OBTENER UN CARRITO POR SU ID******************
 
 
 
 
 
+// inicio AGREGAR UN PRODUCTO A UN CARRITO ESPECÍFICO***********
+
+/// Se espera el ID del carrito (:cid) y el ID del producto (:pid) como parámetros en la URL. Utiliza el middleware de autenticación JWT para verificar la identidad del usuario. Luego, llama a la función 'insertProductCart' para insertar el producto en el carrito.
+cartRouter.post('/:cid/:pid', passport.authenticate('jwt', { session: false }), insertProductCart);
+
+// fin AGREGAR UN PRODUCTO A UN CARRITO ESPECÍFICO***********
 
 
 
+// inicio REALIZAR LA COMPRA DE UN CARRITO***********
 
-//****AGREGAR o ACTUALIZAR LA CANT. DE UN PRODUCTO EN EL CARRITO***********
+// Se espera el ID del carrito (:cid) como parámetro en la URL. Llama a la función 'createTicket' para crear un ticket de compra basado en el contenido del carrito.
+cartRouter.post('/:cid/purchase', createTicket);
 
-
-//ruta para Postman: api/cart/idDelCarrito/idDeUnProducto
-
-
-//El método actualiza la cantidad de un producto en un carrito de compras, o lo agrega si no está presente, y luego actualiza el carrito en la base de datos.
-cartRouter.post('/:cid/:pid', async (req, res) => {
-    try {
-        const cartId = req.params.cid
-        const productId = req.params.pid
-        const { quantity } = req.body
-        const cart = await cartModel.findById(cartId)
-
-        const indice = cart.products.findIndex(product => product.id_prod == productId)
-
-        if (indice != -1) {
-            //Consultar Stock para ver cantidades
-            cart.products[indice].quantity = quantity //5 + 5 = 10, asigno 10 a quantity
-        } else {
-            cart.products.push({ id_prod: productId, quantity: quantity })
-        }
-        const mensaje = await cartModel.findByIdAndUpdate(cartId, cart)
-        res.status(200).send(mensaje)
-    } catch (error) {
-        res.status(500).send(`Error interno del servidor al crear producto: ${error}`)
-    }
-})
-
-
-
-
-
+// fin REALIZAR LA COMPRA DE UN CARRITO***********
 
 
 
@@ -100,7 +59,7 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
 
 //Postman: http://localhost:8000/api/cart/idCARRITO/products/idPRODUCTO
 
-
+/*
 cartRouter.delete('/:cid/products/:pid', async (req, res) => {
     try {
          // Paso 1: Obtener el ID del carrito y del producto desde los parámetros de la solicitud.     
@@ -249,7 +208,9 @@ cartRouter.get('/:cid', async (req, res) => {
         res.status(500).send(`Error interno del servidor al obtener el carrito específico: ${error}`);
     }
 });
-
+*/
 
 // Exporta el router cartRouter para su uso en otras partes de la aplicación.
 export default cartRouter;
+
+
