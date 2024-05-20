@@ -6,7 +6,36 @@ import productModel from "../models/product.js";
 
 
 // inicio OBTENER PRODUCTOS..............................
+export const getProducts = async (req, res) => {
+    console.log(req)
+    try {
+        const { limit, page, filter, ord } = req.query;
+        let metFilter;
+        const pag = page !== undefined ? page : 1;
+        const limi = limit !== undefined ? limit : 10;
 
+        if (filter == "true" || filter == "false") {
+            metFilter = "status"
+        } else {
+            if (filter !== undefined)
+                metFilter = "category";
+        }
+
+        const query = metFilter != undefined ? { [metFilter]: filter } : {};
+        const ordQuery = ord !== undefined ? { price: ord } : {};
+
+        const prods = await productModel.paginate(query, { limit: limi, page: pag, sort: ordQuery });
+
+        res.status(200).send(prods)
+
+    } catch (error) {
+        res.status(500).render('templates/error', {
+            error: error,
+        });
+    }
+}
+
+/*
 export const getProducts = async (limit, page, filter, sort) => {
     console.log (req)
 
@@ -31,7 +60,7 @@ export const getProducts = async (limit, page, filter, sort) => {
         // Si ocurre un error, devuelve un objeto de error con un código de estado 500.
         return { error: error };
     }
-}
+}*/
 // inicio OBTENER PRODUCTOS..............................
 
 

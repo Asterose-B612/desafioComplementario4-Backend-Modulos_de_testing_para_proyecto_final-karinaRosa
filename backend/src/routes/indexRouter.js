@@ -17,7 +17,7 @@ indexRouter.get('/', (req, res) => {
 
 
 
-//indexRouter.use('/public', express.static(__dirname + '/public'))
+indexRouter.use('/public', express.static(__dirname + '/public'))
 indexRouter.use('/api/products', productsRouter, express.static(__dirname + '/public'))
 //productsRouter va a importar las rutas de todos esos elementos. 
 //Genero ruta donde subo las imagenes.
