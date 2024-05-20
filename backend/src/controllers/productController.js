@@ -8,6 +8,7 @@ import productModel from "../models/product.js";
 // inicio OBTENER PRODUCTOS..............................
 
 export const getProducts = async (limit, page, filter, sort) => {
+    console.log (req)
 
     try {
         // Paso 2: Construye el objeto de consulta para la base de datos, utilizando el filtro correspondiente.
