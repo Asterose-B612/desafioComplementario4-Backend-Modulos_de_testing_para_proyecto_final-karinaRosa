@@ -10,9 +10,10 @@ export const generateToken = (user) => {
     */
    //genero un token el cual recibe como parámetro un usuario, lo encripte con el Secret Key, la contraseña, y dure 12  horas. 
     const token = jwt.sign({ user }, varenv.jwt_secret, { expiresIn: '12h' })
-    return token
+   return token
 }
 
+// Ejemplo de uso y prueba
 console.log(generateToken({
     "_id": "65fb7dbb4c863f6027e6da4b",
     "first_name": "Maria",

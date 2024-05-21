@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config();
 
 const varenv = {
     mongo_url: process.env.MONGO_BD_URL,
@@ -10,5 +10,5 @@ const varenv = {
     salt: process.env.SALT
 }
 
-export default varenv
+export default varenv;
 
