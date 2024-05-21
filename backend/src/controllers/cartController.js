@@ -2,6 +2,7 @@
 import cartModel from "../models/cart.js";
 // Importa el modelo 'productModel' desde el archivo '../models/product.js'
 import productModel from "../models/product.js";
+import ticketModel from "../models/ticket.js";
 
 
 
@@ -119,7 +120,24 @@ export const createTicket = async (req, res) => {
             });
             // Si no hay productos sin stock, finaliza la compra
             if (prodSinStock.length == 0) {
-                // Finaliza la compra
+                const totalPrice = cart.products.reduce((a,b)=> (a.price * a.quantity) + (b.price * b.quantity),0)
+                //genero un nuevo ticket 
+                const newTicket = await ticketModel.create({
+                    code: crypto.randomUUID(),
+                    //purchaser es el comprador
+                    purchaser: req.user.email,
+                    amount: totalPrice,
+                    //array de productos
+                    products: cart.products
+                })
+                //vaciar el carrito sin eliminarlo
+                res.status(200).send(newTicket)
+
+
+
+
+
+               
             } else {
                 // Si hay productos sin stock, retorna la lista de productos sin stock al cliente
             }
