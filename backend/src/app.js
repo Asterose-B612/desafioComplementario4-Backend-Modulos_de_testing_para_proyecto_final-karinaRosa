@@ -18,6 +18,7 @@ import varenv from './dotenv.js';
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
+import { generateRandomProducts } from './productController.js';//importo la función generateRandomProducts desde productController.js
 
 
 
@@ -75,6 +76,8 @@ app.get('/bienvenida', (req, res) => {
 
 
 
+
+
 // inicio  Server  ...............
 
 // Se inicia el servidor utilizando la instancia de Express 'app' y se especifica que escuche en el puerto definido por la variable 'PORT'.
@@ -108,6 +111,17 @@ mongoose.connect(varenv.mongo_url)
   .catch(error => console.error('Error al conectar a MongoDB:', error));
 
 // fin MongoDB Connection  ...............
+
+
+
+// inicio  MOCKS: entregar 100 productos ...............
+
+// Endpoint '/mockingproducts' manejado por el controlador
+app.get('/mockingproducts', generateRandomProducts);
+
+// fin MOCKS: entregar 100 productos  ...............
+
+
 
 
 

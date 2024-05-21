@@ -120,34 +120,34 @@ export const createTicket = async (req, res) => {
             });
             // Si no hay productos sin stock, finaliza la compra
             if (prodSinStock.length == 0) {
-                const totalPrice = cart.products.reduce((a,b)=> (a.price * a.quantity) + (b.price * b.quantity),0)
-                //genero un nuevo ticket 
+                // Calcula el precio total de los productos en el carrito
+                // reduce() recorre el array de productos y acumula el resultado de la multiplicación del precio y la cantidad de cada producto
+                const totalPrice = cart.products.reduce((a, b) => (a.price * a.quantity) + (b.price * b.quantity), 0);
+
+                // Genera un nuevo ticket
                 const newTicket = await ticketModel.create({
+                    // code: genera un identificador único para el ticket usando la función randomUUID() de crypto
                     code: crypto.randomUUID(),
-                    //purchaser es el comprador
+                    // purchaser: almacena el correo electrónico del usuario que realiza la compra, obtenido de req.user.email
                     purchaser: req.user.email,
+                    // amount: asigna el totalPrice calculado anteriormente como el monto total del ticket
                     amount: totalPrice,
-                    //array de productos
+                    // products: incluye el array de productos del carrito en el ticket
                     products: cart.products
-                })
-                //vaciar el carrito sin eliminarlo
-                res.status(200).send(newTicket)
+                });
 
-
-
-
-
-               
-            } else {
-                // Si hay productos sin stock, retorna la lista de productos sin stock al cliente
-            }
+                // Responde al cliente con el nuevo ticket y un código de estado 200 (OK)
+                res.status(200).send(newTicket);      
         } else {
-            // Si el carrito no existe, envía un mensaje de error al cliente con un código de estado 404 (Not Found)
-            res.status(404).send("Carrito no existe");
+            // Si hay productos sin stock, retorna la lista de productos sin stock al cliente
         }
-    } catch (e) {
-        // Si ocurre un error, envía un mensaje de error al cliente con un código de estado 500 (Internal Server Error)
-        res.status(500).send(e);
+    } else {
+        // Si el carrito no existe, envía un mensaje de error al cliente con un código de estado 404 (Not Found)
+        res.status(404).send("Carrito no existe");
     }
+} catch (e) {
+    // Si ocurre un error, envía un mensaje de error al cliente con un código de estado 500 (Internal Server Error)
+    res.status(500).send(e);
+}
 }
 // fin CREAR TICKET DE COMPRA***********

@@ -3,6 +3,7 @@
 
 // Importa el modelo de producto desde el archivo product.js en la carpeta models
 import productModel from "../models/product.js";
+import { createRandomProduct } from './mocking.js';
 
 
 // inicio OBTENER PRODUCTOS..............................
@@ -162,3 +163,16 @@ export const deleteProduct = async (req, res) => {
 
 
 
+
+
+
+
+// inicio GENERAR PRODUCTOS ALEATORIOS .........................
+export const generateRandomProducts = (req, res) => {
+    const products = [];
+    for (let i = 0; i < 100; i++) {
+        products.push(createRandomProduct());
+    }
+    res.json(products);
+};
+// inicio GENERAR PRODUCTOS ALEATORIOS .........................
