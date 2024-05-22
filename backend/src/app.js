@@ -298,7 +298,7 @@ io.on('connection', (socket) => {
   })
 })
 
-
+//RUTA DE PRUEBA EN POSTMAN: localhost:8000/mockingproducts
 
 // Endpoint '/mockingproducts' manejado por el controlador
 app.get('/mockingproducts', (req, res) => {
