@@ -1,4 +1,5 @@
 import { userModel } from "../models/user.js";
+import { createRandomUser } from "../mockings.js/mockingUsers.js";
 
 export const getUsers = async (req, res) => {
      //en try consulto los usuarios
@@ -15,3 +16,16 @@ export const getUsers = async (req, res) => {
 }
 
 
+
+
+// inicio GENERAR PRODUCTOS ALEATORIOS .........................
+
+export const generateRandomUsers = () => {
+    const products = [];
+    for (let i = 0; i < 100; i++) {
+        products.push(createRandomUser());
+    }
+    return products;
+};
+
+// inicio GENERAR PRODUCTOS ALEATORIOS .........................

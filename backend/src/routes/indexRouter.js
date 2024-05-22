@@ -30,7 +30,8 @@ indexRouter.use('/api/cart', cartRouter)
 indexRouter.use('/api/chat', chatRouter, express.static(__dirname + '/public'))
 indexRouter.use('/api/users', userRouter)
 indexRouter.use('/api/session', sessionRouter)
-indexRouter.use('/api/mockingproducts', mockRouter)
+indexRouter.use('/mockingproducts', mockRouter)
+indexRouter.use('/mockingusers', mockRouter)
 
 
 

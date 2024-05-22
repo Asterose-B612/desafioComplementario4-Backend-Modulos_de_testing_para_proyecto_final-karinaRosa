@@ -19,7 +19,7 @@ import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
 import { generateRandomProducts } from './controllers/productController.js';//importo la función generateRandomProducts desde productController.js
-
+import { generateRandomUsers } from './controllers/userController.js';//importo la función generateRandomUsers desde userController.js
 
 
 
@@ -314,3 +314,17 @@ app.get('/mockingproducts', (req, res) => {
 
 
 
+
+
+//RUTA DE PRUEBA EN POSTMAN: localhost:8000/mockingproducts
+
+// Endpoint '/mockingproducts' manejado por el controlador
+app.get('/mockingusers', (req, res) => {
+  const users = generateRandomUsers();
+  // Imprimir los productos en la consola
+  console.log(users);    
+  // Enviar los productos como respuesta JSON
+  res.json(users);
+});
+
+// fin MOCKS: entregar 100 productos  ...............

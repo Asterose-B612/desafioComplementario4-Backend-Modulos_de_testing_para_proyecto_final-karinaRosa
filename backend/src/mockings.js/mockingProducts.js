@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
 
-//const products = []
 
 //Función para generar productos random, aleatorios
 //NO ES NECESARIO AGREGAR EL ID EN ESTE MÓDULO.
@@ -22,7 +21,6 @@ export const createRandomProduct = () => {
         //otra opcion:  faker.string.alphanumeric(10),
         productPrice: faker.commerce.price(),
     }
-
 }
 
 

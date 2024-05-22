@@ -3,7 +3,7 @@
 
 // Importa el modelo de producto desde el archivo product.js en la carpeta models
 import productModel from "../models/product.js";
-import { createRandomProduct } from '../mocking.js';
+import { createRandomProduct } from '../mockings.js/mockingProducts.js';
 
 
 // inicio OBTENER PRODUCTOS..............................
