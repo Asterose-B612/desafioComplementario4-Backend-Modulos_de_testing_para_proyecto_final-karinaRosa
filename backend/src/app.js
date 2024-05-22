@@ -18,7 +18,7 @@ import varenv from './dotenv.js';
 import { __dirname } from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
-import { generateRandomProducts } from './productController.js';//importo la función generateRandomProducts desde productController.js
+import { generateRandomProducts } from './controllers/productController.js';//importo la función generateRandomProducts desde productController.js
 
 
 
@@ -115,11 +115,6 @@ mongoose.connect(varenv.mongo_url)
 
 
 // inicio  MOCKS: entregar 100 productos ...............
-
-// Endpoint '/mockingproducts' manejado por el controlador
-app.get('/mockingproducts', generateRandomProducts);
-
-// fin MOCKS: entregar 100 productos  ...............
 
 
 
@@ -304,6 +299,17 @@ io.on('connection', (socket) => {
 })
 
 
+
+// Endpoint '/mockingproducts' manejado por el controlador
+app.get('/mockingproducts', (req, res) => {
+  const products = generateRandomProducts();
+  // Imprimir los productos en la consola
+  console.log(products);    
+  // Enviar los productos como respuesta JSON
+  res.json(products);
+});
+
+// fin MOCKS: entregar 100 productos  ...............
 
 
 

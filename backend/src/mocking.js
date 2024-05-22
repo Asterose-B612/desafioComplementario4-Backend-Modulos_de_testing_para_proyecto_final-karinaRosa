@@ -24,9 +24,5 @@ export const createRandomProduct = () => {
     }
 
 }
-/*
-for (let i = 0; i < 100; i++) {
-    products.push(createRandomProduct())
-}
 
-console.log(products)*/
+
