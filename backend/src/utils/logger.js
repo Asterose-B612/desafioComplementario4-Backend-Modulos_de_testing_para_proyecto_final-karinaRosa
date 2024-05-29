@@ -37,25 +37,79 @@ const customLevelOpt = {
 };
 
 
+// 1°  CREACIÓN DE LOGGER
 
-// 1°  Creación de logger utilizando la biblioteca Winston, utilizando winston.createLogger()
+// utilizando la biblioteca Winston, utilizando winston.createLogger()
 const logger = winston.createLogger({
     //Se especifican los niveles de logs utilizando los niveles definidos en customLevelOpt.levels.
     levels: customLevelOpt.levels,
 
-    // 2° Configuración del transporte para la salida de logs a la consola, "especifico el formato, como quiero que se trabajen cada uno de ellos"
+
+
+    // 2° CONFIGURACIÓN DEL TRANSPORTE 
+
+    // para la salida de logs a la consola, "especifico el formato, como quiero que se trabajen cada uno de ellos"
     transports: [
-       // Se utiliza new winston.transports.Console() para especificar que los logs se enviarán a la consola.
+        // Se utiliza new winston.transports.Console() para especificar que los logs se enviarán a la CONSOLA.
         new winston.transports.Console({
-           // Se establece el nivel de logs en 'info', lo que significa que solo se registrarán mensajes de nivel 'info' y superiores.
+            // Se establece el nivel de logs en 'info', lo que significa que solo se registrarán mensajes de nivel 'info' y superiores.
             level: 'info',
             //Se utiliza winston.format.combine() para combinar los formatos de logs.
-            format: winston.format.combine( 
+            format: winston.format.combine(
                 // Se utiliza winston.format.colorize() para aplicar colores a los mensajes de logs, utilizando los colores definidos en customLevelOpt.colors.
-                winston.format.colorize({ color: customLevelOpt.colors }), 
+                winston.format.colorize({ color: customLevelOpt.colors }),
                 // Se utiliza winston.format.simple() para formatear los mensajes de logs de una manera simple y legible.
-                winston.format.simple() 
+                winston.format.simple()
             )
+        }),
+
+        //LOS QUE GUARDO EN UN ARCHIVO
+
+        new winston.transports.File({
+            // Establece el nivel de logs en 'warning'
+            level: 'warning',
+            //quiero que se guarde en un archivo. Especifica el archivo donde se guardarán los logs de nivel 'warning'
+            filename: './warnings.log',
+            // Formato simple para los mensajes de logs
+            format: winston.format.simple()
+        }),
+
+        new winston.transports.File({
+            // Establece el nivel de logs en 'error'
+            level: 'error',
+            // Especifica el archivo donde se guardarán los logs de nivel 'error'
+            filename: './errors.log',
+            // Formato simple para los mensajes de logs
+            format: winston.format.simple()
+        }),
+
+        new winston.transports.File({
+            // Establece el nivel de logs en 'fatal'
+            level: 'fatal',
+            // Especifica el archivo donde se guardarán los logs de nivel 'fatal' (mismo archivo que para 'error')
+            filename: './errors.log',
+            // Formato simple para los mensajes de logs
+            format: winston.format.simple()
         })
-    ]
-});
+
+    ]//fin transports
+
+});//fin const logger
+
+
+//ARCHIVO DE CONFIGURACION A NIVEL DE RUTAS.
+
+
+//Este código define una función middleware llamada addLogger que se exporta para su uso en otras partes de la aplicación. La voy a usar en este caso a nivel de ruta.
+
+// Función middleware para añadir el logger a la solicitud (request)
+export const addLogger = (req, res, next) => {
+    //next se usa para cuando continue con la ejecuccion
+    //Asigna el logger configurado previamente a req.logger (a la solicitud), permitiendo que el logger se use en otras partes del ciclo de vida de la solicitud.
+    req.logger = logger;
+    // Registra un mensaje de información con el método HTTP, la URL de la solicitud y la fecha y hora actuales
+    //Utiliza req.logger.info() para registrar un mensaje de información que incluye el método HTTP (req.method), la URL de la solicitud (req.url), la fecha y la hora actuales.
+    req.logger.info(`Metodo: ${req.method} en ruta ${req.url} - ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
+    //Llama a la función next() para pasar el control al siguiente middleware en la cadena de middleware de Express. Esto asegura que la solicitud continúe siendo procesada.
+    next();
+};
