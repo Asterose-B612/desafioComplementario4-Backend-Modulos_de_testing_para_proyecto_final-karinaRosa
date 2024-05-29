@@ -37,3 +37,25 @@ const customLevelOpt = {
 };
 
 
+
+// 1°  Creación de logger utilizando la biblioteca Winston, utilizando winston.createLogger()
+const logger = winston.createLogger({
+    //Se especifican los niveles de logs utilizando los niveles definidos en customLevelOpt.levels.
+    levels: customLevelOpt.levels,
+
+    // 2° Configuración del transporte para la salida de logs a la consola, "especifico el formato, como quiero que se trabajen cada uno de ellos"
+    transports: [
+       // Se utiliza new winston.transports.Console() para especificar que los logs se enviarán a la consola.
+        new winston.transports.Console({
+           // Se establece el nivel de logs en 'info', lo que significa que solo se registrarán mensajes de nivel 'info' y superiores.
+            level: 'info',
+            //Se utiliza winston.format.combine() para combinar los formatos de logs.
+            format: winston.format.combine( 
+                // Se utiliza winston.format.colorize() para aplicar colores a los mensajes de logs, utilizando los colores definidos en customLevelOpt.colors.
+                winston.format.colorize({ color: customLevelOpt.colors }), 
+                // Se utiliza winston.format.simple() para formatear los mensajes de logs de una manera simple y legible.
+                winston.format.simple() 
+            )
+        })
+    ]
+});
