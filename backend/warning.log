@@ -84,3 +84,12 @@ error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:06:11
 warning: Este es un mensaje de advertencia
 error: ERROR
 error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:26:15
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:44
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:45
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:45

@@ -239,7 +239,7 @@ app.get('/deleteCookie', (req, res) => {
 //esta es una forma de guardar un contador de usuarios.
 //Consulto: si existe la sesion del usuario consulto por el valor sino la creo con el valor de 1
 app.get('/session', (req, res) => {
-  console.log(req.session)
+  logger.info(req.session)
   if (req.session.counter) {
     //genero atributo counter: va a contar la cantidad de veces que ingreso mi usuario a esta ruta
     //si ya habias entrado antes lo incremento en 1
@@ -264,7 +264,7 @@ app.post('/login', (req, res) => {
     //entonces guardo la session en mi servidor estos valores:
     req.session.email = email
     req.session.password = password
-    console.log(req.session)
+    logger.info(req.session);
     return res.send("Login ok")
   }
   // si no cumple con estas condiciones
@@ -285,7 +285,7 @@ app.get('/loggerTest', (req, res) => {
     req.logger.info('Este es un mensaje de información');
     req.logger.warning('Este es un mensaje de advertencia');
     req.logger.error('ERROR');
-     req.logger.fatal('FATAL ERROR');
+    req.logger.fatal('FATAL ERROR');
 
     // Enviar una respuesta al cliente
     res.send('Los logs se han registrado en la consola y en los archivos correspondientes.');
@@ -296,22 +296,6 @@ app.get('/loggerTest', (req, res) => {
     res.status(500).send('Ocurrió un error al registrar los logs.');
   }
 });
-/*
-app.get('/suma', (req, res) => {
-  try {
-      let suma = 0
-      for (let i = 0; i < 10000; i++) {
-          suma += 1
-      }
-      res.status(200).send(`El resultado de la suma es ${suma}`)
-  } catch (e) {
-      console.log(e)
-      req.logger.error(`Metodo: ${req.method} en ruta ${req.url} - ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`)
-      res.status(500).send(e)
-  }
-})
-*/
-
 
 
 
@@ -327,7 +311,7 @@ app.get('/suma', (req, res) => {
 // Esta función recibe un socket que representa la conexión con el cliente.
 io.on('connection', (socket) => {
   // Se imprime un mensaje en la consola del servidor para indicar la conexión exitosa.
-  console.log("Conexión establecida con Socket.io")
+  logger.info("Conexión establecida con Socket.io")
 
   // Cuando el cliente envía un mensaje de 'mensaje', se ejecuta esta función.
   socket.on('mensaje', async (mensaje) => {
@@ -352,7 +336,7 @@ io.on('connection', (socket) => {
 app.get('/mockingproducts', (req, res) => {
   const products = generateRandomProducts();
   // Imprimir los productos en la consola
-  console.log(products);
+  logger.info(products);
   // Enviar los productos como respuesta JSON
   res.json(products);
 });
@@ -370,7 +354,7 @@ app.get('/mockingproducts', (req, res) => {
 app.get('/mockingusers', (req, res) => {
   const users = generateRandomUsers();
   // Imprimir los productos en la consola
-  console.log(users);
+  logger.info(users);
   // Enviar los productos como respuesta JSON
   res.json(users);
 });

@@ -280,3 +280,26 @@ info: Este es un mensaje de información
 warning: Este es un mensaje de advertencia
 error: ERROR
 error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:26:15
+info: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:44
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:44
+info: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:45
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:45
+info: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:45
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:45
+info: Metodo: GET en ruta / - 8/6/2024 00:49:51
+info: Metodo: GET en ruta /api/products?limit=3 - 8/6/2024 00:53:02
