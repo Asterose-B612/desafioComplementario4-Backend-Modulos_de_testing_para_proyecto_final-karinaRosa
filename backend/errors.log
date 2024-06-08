@@ -1,2 +1,41 @@
 
 
+error: Este es un mensaje de error
+error: Error al registrar los logs en /loggerTest
+error: Este es un mensaje de error
+error: Error al registrar los logs en /loggerTest
+error: Este es un mensaje de error
+error: Error al registrar los logs en /loggerTest
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 22:43:47
+error: ERROR
+error: Mensaje de ERROR
+error: Mensaje de ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 22:50:24
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 22:50:53
+error: Mensaje de ERROR
+error: ERROR
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 23:13:08
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 23:13:58
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 23:14:11
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 23:14:49
+error: ERROR
+error: ERROR
+error: ERROR
+error: ERROR
+error: ERROR
+error: ERROR
+error: ERROR
+error: ERROR
+error: ERROR
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:06:11
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:26:15
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:26:31
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:27:52

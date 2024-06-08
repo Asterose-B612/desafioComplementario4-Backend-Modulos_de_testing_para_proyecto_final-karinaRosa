@@ -1,0 +1,282 @@
+info: Metodo: GET en ruta / - 7/6/2024 10:38:19
+info: Metodo: GET en ruta /favicon.ico - 7/6/2024 10:38:19
+info: Metodo: GET en ruta / - 7/6/2024 10:38:24
+info: Metodo: GET en ruta / - 7/6/2024 10:43:18
+info: Metodo: GET en ruta /api/loggerTest - 7/6/2024 10:43:37
+info: Metodo: GET en ruta /api/loggerTest - 7/6/2024 10:43:53
+info: Metodo: GET en ruta /api/loggerTest - 7/6/2024 10:53:30
+info: Metodo: GET en ruta /api/loggerTest - 7/6/2024 10:54:44
+info: Metodo: GET en ruta / - 7/6/2024 10:54:53
+info: Metodo: GET en ruta / - 7/6/2024 10:55:53
+info: Metodo: GET en ruta /api/loggerTest - 7/6/2024 10:56:09
+info: Metodo: GET en ruta /api/loggerTest - 7/6/2024 10:56:28
+info: Metodo: GET en ruta / - 7/6/2024 17:11:51
+info: Metodo: GET en ruta /favicon.ico - 7/6/2024 17:11:51
+info: Metodo: GET en ruta /api/products?limit=3 - 7/6/2024 17:16:27
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 17:16:34
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 17:22:33
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 21:55:06
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 21:58:42
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 21:59:27
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:02:46
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:03:03
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:05:00
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: Este es un mensaje de error
+error: Error al registrar los logs en /loggerTest
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:05:18
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:05:31
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: Este es un mensaje de error
+error: Error al registrar los logs en /loggerTest
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:32:50
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:33:03
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: Este es un mensaje de error
+error: Error al registrar los logs en /loggerTest
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:37:48
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:39:54
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:40:14
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:42:42
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:42:44
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:42:45
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:43:21
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:43:27
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:43:47
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 22:43:47
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:44:17
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:44:25
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:45:50
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:45:58
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:45:59
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:45:59
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:45:59
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:46:14
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:46:28
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:49:25
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:49:51
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: Mensaje de ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:50:24
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: Mensaje de ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 22:50:24
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:50:53
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 22:50:53
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 22:51:39
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: Mensaje de ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:12:34
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:13:08
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 23:13:08
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:13:58
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 23:13:58
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:14:11
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 23:14:11
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:14:49
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 7/6/2024 23:14:49
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:16:16
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:16:43
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:22:58
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:52:27
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:54:52
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:55:22
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:56:09
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 7/6/2024 23:56:28
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /api/products?limit=3 - 7/6/2024 23:56:33
+info: Metodo: GET en ruta / - 7/6/2024 23:57:56
+info: Metodo: GET en ruta /suma - 7/6/2024 23:58:17
+info: Metodo: GET en ruta /loggerTest - 8/6/2024 00:05:48
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+info: Metodo: GET en ruta /loggerTest - 8/6/2024 00:06:11
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:06:11
+info: Metodo: GET en ruta /loggerTest - 8/6/2024 00:26:15
+debug: Este es un mensaje de depuración
+http: Este es un mensaje HTTP
+info: Este es un mensaje de información
+warning: Este es un mensaje de advertencia
+error: ERROR
+error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:26:15

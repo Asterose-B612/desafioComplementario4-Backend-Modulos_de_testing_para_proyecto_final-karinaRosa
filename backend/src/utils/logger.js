@@ -68,7 +68,7 @@ const logger = winston.createLogger({
                 //el color que se muestra por la consola, quiero que se muestre con el color que yo implementé
                 //RECORDEMOS QUE EN LOS TXT NO SE PUEDE GUARDAR EN COLORES
                 //aqui debe ir color para cprregir el ERROR de que no se ve el color por consola
-                winston.format.colorize({ colors: customLevelOpt.colors }),
+                winston.format.colorize({ color: customLevelOpt.colors }),
                 // Se utiliza winston.format.simple() para formatear los mensajes de logs de una manera simple y legible.
                 winston.format.simple()
             )
@@ -80,10 +80,12 @@ const logger = winston.createLogger({
             // Establece el nivel de logs en 'warning'
             level: 'warning',
             //quiero que se guarde en un archivo. Especifica el archivo donde se guardarán los logs de nivel 'warning'
-            filename: './warnings.log',
+            filename: './warning.log',
             // Formato simple para los mensajes de logs
             format: winston.format.simple()
         }),
+
+
 
         new winston.transports.File({
             // Establece el nivel de logs en 'error'
@@ -94,11 +96,34 @@ const logger = winston.createLogger({
             format: winston.format.simple()
         }),
 
+
+
+        new winston.transports.File({
+            // Establece el nivel de logs en 'fatal'
+            level: 'http',
+            // Especifica el archivo donde se guardarán los logs de nivel 'fatal' (mismo archivo que para 'error')
+            filename: './http.log',
+            // Formato simple para los mensajes de logs
+            format: winston.format.simple()
+        }),
+
+
+        new winston.transports.File({
+            // Establece el nivel de logs en 'fatal'
+            level: 'debug',
+            // Especifica el archivo donde se guardarán los logs de nivel 'fatal' (mismo archivo que para 'error')
+            filename: './debug.log',
+            // Formato simple para los mensajes de logs
+            format: winston.format.simple()
+        }),
+
+
+
         new winston.transports.File({
             // Establece el nivel de logs en 'fatal'
             level: 'fatal',
             // Especifica el archivo donde se guardarán los logs de nivel 'fatal' (mismo archivo que para 'error')
-            filename: './errors.log',
+            filename: './fatal.log',
             // Formato simple para los mensajes de logs
             format: winston.format.simple()
         })

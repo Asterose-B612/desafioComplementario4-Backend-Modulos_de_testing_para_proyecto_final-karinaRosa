@@ -181,10 +181,10 @@ app.set('views', __dirname + '/views')
 
 
 
+//**********inicio ROUTES***************
 
 
-//******* Routes of PASSPORT**********
-
+//........ Routes of PASSPORT..........
 initializePassport()
 //ejecuto la funcion
 app.use(passport.initialize())
@@ -192,19 +192,15 @@ app.use(passport.initialize())
 app.use(passport.session())
 //generame lo que sería las sesiones
 
-//TODO LO
 
 
 
 
 
-
-
-//******* RUTA RAÍZ: Manejo de solicitudes**********
+//........ RUTA RAÍZ: Manejo de solicitudes.............
 
 //establece que el middleware indexRouter manejará las solicitudes en la ruta raíz de la aplicación.
 app.use('/', indexRouter)
-
 
 
 
@@ -277,6 +273,54 @@ app.post('/login', (req, res) => {
 
 
 
+
+//........Routes of logger............
+
+
+app.get('/loggerTest', (req, res) => {
+  try {
+    // Acceder al logger desde la solicitud (req.logger) y registrar un mensaje de cada nivel de log
+    req.logger.debug('Este es un mensaje de depuración');
+    req.logger.http('Este es un mensaje HTTP');
+    req.logger.info('Este es un mensaje de información');
+    req.logger.warning('Este es un mensaje de advertencia');
+    req.logger.error('ERROR');
+     req.logger.fatal('FATAL ERROR');
+
+    // Enviar una respuesta al cliente
+    res.send('Los logs se han registrado en la consola y en los archivos correspondientes.');
+  } catch (e) {
+    // Registrar el error y enviar una respuesta de error al cliente
+    //CUANDO PASA ACA VA A SER UN FATAL O UN ERROR
+    req.logger.error(`Metodo: ${req.method} en ruta ${req.url} - ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`)
+    res.status(500).send('Ocurrió un error al registrar los logs.');
+  }
+});
+/*
+app.get('/suma', (req, res) => {
+  try {
+      let suma = 0
+      for (let i = 0; i < 10000; i++) {
+          suma += 1
+      }
+      res.status(200).send(`El resultado de la suma es ${suma}`)
+  } catch (e) {
+      console.log(e)
+      req.logger.error(`Metodo: ${req.method} en ruta ${req.url} - ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`)
+      res.status(500).send(e)
+  }
+})
+*/
+
+
+
+
+//**********fin ROUTES***************
+
+
+
+
+
 //...........SOCKET.IO..................
 
 // Cuando se establece una conexión con Socket.io, se ejecuta esta función.
@@ -308,7 +352,7 @@ io.on('connection', (socket) => {
 app.get('/mockingproducts', (req, res) => {
   const products = generateRandomProducts();
   // Imprimir los productos en la consola
-  console.log(products);    
+  console.log(products);
   // Enviar los productos como respuesta JSON
   res.json(products);
 });
@@ -326,7 +370,7 @@ app.get('/mockingproducts', (req, res) => {
 app.get('/mockingusers', (req, res) => {
   const users = generateRandomUsers();
   // Imprimir los productos en la consola
-  console.log(users);    
+  console.log(users);
   // Enviar los productos como respuesta JSON
   res.json(users);
 });
