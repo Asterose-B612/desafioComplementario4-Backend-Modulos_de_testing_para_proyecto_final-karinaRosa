@@ -1,10 +1,13 @@
-//Para que me devuelva la url. Dado este archivo devolveme el path
-// Importa las funciones fileUrlToPath y dirname de los módulos 'url' y 'path' respectivamente.
+// Importa la función 'fileURLToPath' del módulo 'url' de Node.js.
+// Esta función convierte un
 import { fileURLToPath } from 'url';
+// Importa la función 'dirname' del módulo 'path' de Node.js.
+// Esta función devuelve el directorio padre de una ruta de archivo dada.
 import { dirname } from 'path';
 
-// Convierte la URL del archivo actual en su correspondiente ruta de sistema de archivos.
-let __filename = fileURLToPath(import.meta.url);
+// Convierte la URL del módulo actual (import.meta.url) en una ruta de archivo absoluta.
+// 'import.meta.url' es una propiedad que contiene la URL del módulo actual en ES Modules.
+const __filename = fileURLToPath(import.meta.url);
 
 //dirname NO es palabra reservada
 //se implementa guiones bajos al trabajar con path

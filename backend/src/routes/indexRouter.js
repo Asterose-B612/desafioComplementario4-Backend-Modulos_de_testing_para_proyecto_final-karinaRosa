@@ -1,10 +1,10 @@
+import express from 'express'
+import { __dirname } from '../path.js'
 import productsRouter from './productsRouter.js'
 import chatRouter from './chatRouter.js'
 import cartRouter from './cartRouter.js'
 import userRouter from './userRoutes.js'
 import multerRouter from './multerRouter.js'
-import express from 'express'
-import { __dirname } from '../path.js'
 import sessionRouter from './sessionRouter.js'
 import mockRouter from './mockRouter.js'
 
@@ -42,6 +42,7 @@ indexRouter.use('/api/users', userRouter)
 indexRouter.use('/api/session', sessionRouter)
 indexRouter.use('/mockingproducts', mockRouter)
 indexRouter.use('/mockingusers', mockRouter)
+
 
 
 

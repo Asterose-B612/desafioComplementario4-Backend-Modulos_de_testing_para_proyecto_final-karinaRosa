@@ -1,0 +1,219 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtener todos los productos
+      tags:
+        - Productos
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Cantidad máxima de productos por página.
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Número de página.
+        - in: query
+          name: filter
+          schema:
+            type: string
+          description: Filtrar por categoría o estado (true/false).
+        - in: query
+          name: ord
+          schema:
+            type: string
+          description: Ordenar por precio (asc/desc).
+      responses:
+        '200':
+          description: Lista de productos obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  docs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  totalDocs:
+                    type: integer
+                    description: Total de productos encontrados.
+                  totalPages:
+                    type: integer
+                    description: Total de páginas disponibles.
+        '500':
+          description: Error interno del servidor.
+
+    post:
+      summary: Crear un nuevo producto
+      tags:
+        - Productos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Producto creado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Solicitud incorrecta.
+        '401':
+          description: No autorizado.
+        '500':
+          description: Error interno del servidor.
+
+  /api/products/{pid}:
+    get:
+      summary: Obtener un producto por ID
+      tags:
+        - Productos
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto a obtener.
+      responses:
+        '200':
+          description: Producto obtenido correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado.
+        '500':
+          description: Error interno del servidor.
+
+    put:
+      summary: Actualizar un producto por ID
+      tags:
+        - Productos
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto a actualizar.
+        - in: body
+          name: body
+          required: true
+          description: Datos actualizados del producto.
+          schema:
+            $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Producto actualizado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Solicitud incorrecta.
+        '401':
+          description: No autorizado.
+        '404':
+          description: Producto no encontrado.
+        '500':
+          description: Error interno del servidor.
+
+    delete:
+      summary: Eliminar un producto por ID
+      tags:
+        - Productos
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto a eliminar.
+      responses:
+        '200':
+          description: Producto eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '403':
+          description: Usuario no autorizado.
+        '404':
+          description: Producto no encontrado.
+        '500':
+          description: Error interno del servidor.
+
+ 
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado del producto.
+        title:
+          type: string
+          description: Título del producto.
+        description:
+          type: string
+          description: Descripción del producto.
+        price:
+          type: number
+          description: Precio del producto.
+        thumbnail:
+          type: array
+          description: Imágenes del producto.
+          items:
+            type: string
+        code:
+          type: string
+          description: Código único del producto.
+        stock:
+          type: integer
+          description: Cantidad disponible en stock.
+        category:
+          type: string
+          description: Categoría del producto.
+        status:
+          type: boolean
+          description: Estado actual del producto (activo/inactivo).
+    ProductInput:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Título del producto.
+        description:
+          type: string
+          description: Descripción del producto.
+        price:
+          type: number
+          description: Precio del producto.
+        thumbnail:
+          type: array
+          description: Imágenes del producto.
+          items:
+            type: string
+        code:
+          type: string
+          description: Código único del producto.
+        stock:
+          type: integer
+          description: Cantidad disponible en stock.
+        category:
+          type: string
+          description: Categoría del producto.
+        status:
+          type: boolean
+          description: Estado inicial del producto (activo/inactivo).
+

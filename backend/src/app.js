@@ -8,6 +8,8 @@ import mongoose from 'mongoose';
 import messageModel from './models/messages.js'
 import indexRouter from './routes/indexRouter.js'
 import cookieParser from 'cookie-parser'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
@@ -115,7 +117,51 @@ mongoose.connect(varenv.mongo_url)
 
 
 
-// inicio  MOCKS: entregar 100 productos ...............
+
+
+//inicio SWAGGER......................................
+
+// Definición de opciones para la configuración de Swagger
+const swaggerOptions = {
+  // Definición del documento OpenAPI
+  //definicion de un objeto que tenga lo siguiente..
+  definition: {
+      // Versión de OpenAPI que se está utilizando
+      //BUSCARLA AQUI: https://github.com/Surnet/swagger-jsdoc
+      openapi: '3.1.0',
+      // Información sobre la API documentada, defino como se va a llamar mi documentación
+      info: {
+          // Título de la documentación de la API
+          title: 'Documentacion de Gerhard',
+          // Descripción de la API
+          description: 'Descripción de la documentación'
+      }
+  },
+
+  //DEFINE DE DONDE VOY A SACAR LA INFORMACION
+  // Ubicación de los archivos de definición de la API (en formato YAML)
+
+  //__dirname es una variable global en Node.js que contiene la ruta absoluta al directorio del archivo JavaScript que se está ejecutando. Por ejemplo, si el archivo está ubicado en /usr/local/app, entonces __dirname será /usr/local/app.
+
+  //docs→ es el nombre de la carpeta en la que se encuentran los archivos YAML.
+  //**→ es un comodín que representa cualquier subdirectorio dentro de docs. Puede haber cero o más niveles de subdirectorios.
+  //*.yaml → es un comodín que representa cualquier archivo con la extensión .yaml.
+
+//** todas las subcarpetas y archivos terminados en . yaml
+  apis: [`${__dirname}/docs/**/*.yaml`]
+}
+
+//me genera un objeto llamado specs, lo podemos llamar como querramos
+// Generación de la especificación de Swagger utilizando las opciones definidas, o sea, me genera la documentacion de la forma en que la defini previamente.
+const specs = swaggerJSDoc(swaggerOptions)
+
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+
+// Exporta specs
+//export { specs };
+
+
+//fin SWAGGER...........................................
 
 
 

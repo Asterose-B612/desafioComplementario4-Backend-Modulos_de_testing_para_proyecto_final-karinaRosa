@@ -259,3 +259,17 @@ error: ERROR
 error: Metodo: GET en ruta /loggerTest - 8/6/2024 00:49:45
 info: Metodo: GET en ruta / - 8/6/2024 00:49:51
 info: Metodo: GET en ruta /api/products?limit=3 - 8/6/2024 00:53:02
+info: Metodo: GET en ruta /apidocs - 19/6/2024 11:15:07
+info: Metodo: GET en ruta /apidocs/ - 19/6/2024 11:15:07
+info: Metodo: GET en ruta /apidocs/swagger-ui.css - 19/6/2024 11:15:07
+info: Metodo: GET en ruta /apidocs/swagger-ui-standalone-preset.js - 19/6/2024 11:15:07
+info: Metodo: GET en ruta /apidocs/swagger-ui-bundle.js - 19/6/2024 11:15:07
+info: Metodo: GET en ruta /apidocs/swagger-ui-init.js - 19/6/2024 11:15:07
+info: Metodo: GET en ruta /apidocs/favicon-32x32.png - 19/6/2024 11:15:09
+info: Metodo: GET en ruta / - 19/6/2024 11:20:31
+info: Metodo: GET en ruta /favicon.ico - 19/6/2024 11:20:31
+info: Metodo: GET en ruta /api/products - 19/6/2024 11:49:02
+info: Metodo: GET en ruta /api/products - 19/6/2024 11:49:15
+info: Metodo: GET en ruta /api/products - 19/6/2024 11:49:17
+info: Metodo: GET en ruta /api/products/generate-random - 19/6/2024 11:49:40
+info: Metodo: POST en ruta /api/cart - 19/6/2024 12:15:03
