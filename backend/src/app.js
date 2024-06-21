@@ -17,7 +17,7 @@ import initializePassport from './config/passport/passport.js'
 // Importa el módulo 'varenv' desde el archivo './dotenv.js'. Contiene funcionalidad relacionada con la configuración de variables de entorno, como cargar variables desde un archivo .env. Estas variables suelen contener información sensible o de configuración, como claves de API o URL de bases de datos.
 //esta importando basicamente el config.
 import varenv from './dotenv.js';
-import { __dirname } from './path.js'
+import  __dirname from './path.js'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io' //llaves es una dependencia
 import { generateRandomProducts } from './controllers/productController.js';//importo la función generateRandomProducts desde productController.js
@@ -107,7 +107,7 @@ const io = new Server(SERVER)
 //onsole.log("URI de conexión a MongoDB:", varenv.mongo_url); // Agregado para depurar
 
 // Se utiliza la contraseña definida por el usuario.
-mongoose.connect(varenv.mongo_url)
+await mongoose.connect(varenv.mongo_url)
   // Cuando la conexión se establece correctamente, se muestra el mensaje "DB is connected".
   .then(() => console.log("DB is connected"))
   // En caso de error, se muestra el error.    

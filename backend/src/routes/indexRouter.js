@@ -1,5 +1,5 @@
 import express from 'express'
-import { __dirname } from '../path.js'
+import  __dirname from '../path.js'
 import productsRouter from './productsRouter.js'
 import chatRouter from './chatRouter.js'
 import cartRouter from './cartRouter.js'

@@ -1,5 +1,5 @@
 import multer from 'multer';
-import { __dirname } from "../path.js";
+import  __dirname  from "../path.js";
 
 // Configuración para el almacenamiento de imágenes
 const STORAGE = multer.diskStorage({
