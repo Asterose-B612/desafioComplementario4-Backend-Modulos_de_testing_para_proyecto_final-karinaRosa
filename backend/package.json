@@ -7,8 +7,9 @@
   "scripts": {
     "devNodemon": "nodemon src/app.js",
     "devNode": "node --watch src/app.js",
-    "test": "mocha test/supertest.test.js",
-    "testProd": "mocha test/productos.supertest.js"
+    "testSession": "mocha test/sessionRoutes.test.js",
+    "testProd": "mocha test/productsRoutes.test.js",
+    "testCart": "test/cartRoutes.test.js"
   },
   "keywords": [],
   "author": "Karina Rosa",
