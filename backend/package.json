@@ -9,7 +9,7 @@
     "devNode": "node --watch src/app.js",
     "testSession": "mocha test/sessionRoutes.test.js",
     "testProd": "mocha test/productsRoutes.test.js",
-    "testCart": "test/cartRoutes.test.js"
+    "testCart": "mocha test/cartRoutes.test.js"
   },
   "keywords": [],
   "author": "Karina Rosa",
